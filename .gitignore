@@ -1,0 +1,13 @@
+# Keep planner content and user exports out of the source repository.
+*.mp4
+*.webm
+*.mov
+*.mkv
+*.strategy.json
+strategy-exports/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
