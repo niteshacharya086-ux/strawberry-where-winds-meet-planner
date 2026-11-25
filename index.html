@@ -330,6 +330,8 @@ footer{color:var(--muted);font-size:13px;text-align:center}
 /* Decorative characters sit behind the app and only appear with a custom wallpaper. */
 .ambient-life{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;user-select:none}
 body:not(.wallpaper-active) .ambient-life{display:none}
+.ambient-fish-layer{position:fixed;inset:0;z-index:20;overflow:hidden;pointer-events:none;user-select:none}
+body:not(.wallpaper-active) .ambient-fish-layer{display:none}
 .ambient-water{position:absolute;left:0;top:22vh;width:100%;height:34px;opacity:.38;filter:drop-shadow(0 2px 6px rgba(36,190,255,.5))}
 .ambient-fish{position:absolute;left:-112px;top:calc(22vh - 64px);width:112px;height:84px;animation:fish-route 36s linear infinite}
 .ambient-fish.fish-two{top:calc(28vh - 60px);scale:.78;animation-duration:42s;animation-delay:-17s}
@@ -343,12 +345,12 @@ body:not(.wallpaper-active) .ambient-life{display:none}
 .ambient-runner.duck{width:124px;height:104px;animation-duration:27s;animation-delay:-12s}
 .ambient-runner>svg.runner-art{display:none}
 .ambient-runner>img.runner-art{display:block;width:100%;height:100%;overflow:visible}
-.ambient-fish{pointer-events:auto;cursor:pointer;touch-action:manipulation}
+.ambient-fish{z-index:1;pointer-events:auto;cursor:pointer;touch-action:manipulation}
 .ambient-fish:focus-visible{outline:2px solid #fff;outline-offset:5px;border-radius:50%}
 .ambient-fish.is-catching{pointer-events:none;z-index:4;animation-play-state:paused}
 .ambient-fish.is-catching .goldie,.ambient-fish.is-catching .splash{animation-play-state:paused}
 .ambient-fish.is-lifted{translate:0 -135vh;transition:translate 1.2s cubic-bezier(.2,.72,.3,1)}
-.cat-paw{position:fixed;z-index:20;left:0;top:0;width:126px;height:118px;opacity:0;pointer-events:none;filter:drop-shadow(0 9px 8px rgba(0,0,0,.45));transform:translateY(-130px) rotate(-26deg) scale(.68);transform-origin:50% 15%;transition:transform .34s cubic-bezier(.18,.82,.3,1),opacity .12s ease-out}
+.cat-paw{position:fixed;z-index:22;left:0;top:0;width:126px;height:118px;opacity:0;pointer-events:none;filter:drop-shadow(0 9px 8px rgba(0,0,0,.45));transform:translateY(-130px) rotate(-26deg) scale(.68);transform-origin:50% 15%;transition:transform .34s cubic-bezier(.18,.82,.3,1),opacity .12s ease-out}
 .cat-paw.active{opacity:1;transform:translateY(0) rotate(0) scale(1)}
 .cat-paw.dragging{transition:transform 1.2s cubic-bezier(.35,.02,.65,.32);transform:translateY(-145vh) rotate(-8deg) scale(.92)}
 @keyframes fish-route{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 230px))}}
@@ -429,6 +431,7 @@ body:not(.wallpaper-active) .ambient-life{display:none}
     </svg>
   </div>
 </div>
+<div class="ambient-fish-layer" aria-label="Interactive wallpaper fish"></div>
 <svg class="cat-paw" viewBox="0 0 126 118" aria-hidden="true">
   <defs><radialGradient id="pawFur" cx="34%" cy="18%" r="85%"><stop stop-color="#ffd28a"/><stop offset=".46" stop-color="#d98237"/><stop offset="1" stop-color="#843d24"/></radialGradient><radialGradient id="pawPad" cx="32%" cy="22%" r="80%"><stop stop-color="#ffc6b6"/><stop offset=".62" stop-color="#df806f"/><stop offset="1" stop-color="#984b4b"/></radialGradient></defs>
   <path d="M37-18Q40 25 44 46L82 47Q88 21 91-18Z" fill="url(#pawFur)"/><path d="M45 4Q54 11 62 4M70 7Q78 13 87 5M46 23Q54 29 61 22M72 25Q80 31 87 24" fill="none" stroke="#713a26" stroke-width="5" stroke-linecap="round" opacity=".74"/>
@@ -2610,6 +2613,8 @@ window.addEventListener('storage',function(e){if(e.key===KEY&&e.newValue)adopt(e
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){clearTimeout(saveT);flushSave()}});
 window.addEventListener('pagehide',function(){clearTimeout(saveT);flushSave()});
 var paw=document.querySelector('.cat-paw');
+var fishLayer=document.querySelector('.ambient-fish-layer');
+document.querySelectorAll('.ambient-life > .ambient-fish').forEach(function(fish){fishLayer.appendChild(fish)});
 document.querySelectorAll('.ambient-fish').forEach(function(fish){
   function catchFish(){
     if(fish.classList.contains('is-catching'))return;
