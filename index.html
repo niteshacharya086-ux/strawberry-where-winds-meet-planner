@@ -327,22 +327,43 @@ footer{color:var(--muted);font-size:13px;text-align:center}
 @keyframes pop{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
 @keyframes rise{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.fx{display:none}}
-/* Floating emoji critters sit behind the app and only appear with a custom wallpaper. */
+/* Decorative characters sit behind the app and only appear with a custom wallpaper. */
 .ambient-life{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;user-select:none}
 body:not(.wallpaper-active) .ambient-life{display:none}
-.ambient-fish{position:absolute;left:-10vw;top:18vh;font-size:clamp(30px,4vw,52px);line-height:1;filter:drop-shadow(0 5px 5px rgba(0,0,0,.45));animation:fish-leap 24s linear infinite}
-.ambient-fish.fish-two{top:29vh;font-size:clamp(24px,3vw,40px);animation-duration:31s;animation-delay:-13s}
-.ambient-fish.fish-three{top:12vh;font-size:clamp(22px,2.7vw,36px);animation-duration:35s;animation-delay:-24s}
+.ambient-water{position:absolute;left:0;top:22vh;width:100%;height:34px;opacity:.38;filter:drop-shadow(0 2px 6px rgba(36,190,255,.5))}
+.ambient-fish{position:absolute;left:-112px;top:calc(22vh - 64px);width:112px;height:84px;animation:fish-route 36s linear infinite}
+.ambient-fish.fish-two{top:calc(28vh - 60px);scale:.78;animation-duration:42s;animation-delay:-17s}
+.ambient-fish.fish-three{top:calc(16vh - 56px);scale:.66;animation-duration:48s;animation-delay:-29s}
+.ambient-fish .goldie{position:absolute;left:8px;bottom:0;width:94px;height:62px;overflow:visible;filter:drop-shadow(0 6px 5px rgba(0,0,0,.38));transform-origin:55% 90%;animation:goldfish-jump 6s cubic-bezier(.35,.02,.58,1) infinite}
+.ambient-fish .splash{position:absolute;left:0;bottom:-4px;width:112px;height:44px;overflow:visible;opacity:0;filter:drop-shadow(0 2px 4px rgba(19,150,222,.5));animation:splash-burst 6s ease-out infinite}
+.ambient-fish.fish-two .goldie,.ambient-fish.fish-two .splash{animation-delay:-2s}
+.ambient-fish.fish-three .goldie,.ambient-fish.fish-three .splash{animation-delay:-4s}
+.water-stroke{fill:none;stroke:#9aefff;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2 11;animation:water-drift 8s linear infinite}
 .ambient-runner{position:fixed;left:-90px;bottom:max(3px,env(safe-area-inset-bottom,0px));font-size:clamp(34px,4vw,54px);line-height:1;filter:drop-shadow(0 4px 5px rgba(0,0,0,.5));animation:run-across 32s linear infinite}
 .ambient-runner.duck{font-size:clamp(30px,3.5vw,48px);animation-duration:27s;animation-delay:-12s}
 .ambient-runner span{display:inline-block;animation:run-bob .36s ease-in-out infinite alternate}
-@keyframes fish-leap{0%{transform:translate3d(-10vw,35px,0) rotate(-8deg)}12%{transform:translate3d(5vw,-48px,0) rotate(8deg)}23%{transform:translate3d(18vw,30px,0) rotate(-4deg)}39%{transform:translate3d(38vw,-36px,0) rotate(7deg)}52%{transform:translate3d(54vw,32px,0) rotate(-8deg)}68%{transform:translate3d(75vw,-56px,0) rotate(10deg)}82%{transform:translate3d(94vw,25px,0) rotate(-5deg)}100%{transform:translate3d(120vw,-24px,0) rotate(7deg)}}
+@keyframes fish-route{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 230px))}}
+@keyframes goldfish-jump{0%,8%{transform:translateY(8px) scale(.78);opacity:.3}16%{transform:translateY(-24px) rotate(10deg) scale(.95);opacity:1}30%{transform:translateY(-88px) rotate(14deg) scale(1.02);opacity:1}42%{transform:translateY(-110px) rotate(3deg) scale(1);opacity:1}52%{transform:translateY(-88px) rotate(-12deg) scale(.98);opacity:1}62%{transform:translateY(-28px) rotate(-16deg) scale(.94);opacity:1}68%{transform:translateY(2px) rotate(-3deg) scale(.82);opacity:.9}74%{transform:translateY(16px) scale(.68);opacity:0}96%{transform:translateY(16px) scale(.68);opacity:0}100%{transform:translateY(8px) scale(.78);opacity:.3}}
+@keyframes splash-burst{0%,5%{opacity:.2;transform:scale(.45,.35)}10%{opacity:.95;transform:scale(1.1,.85)}16%{opacity:.45;transform:scale(1.3,1)}23%,55%{opacity:0;transform:scale(1.35,.45)}61%{opacity:.9;transform:scale(.6,.65)}68%{opacity:.8;transform:scale(1.1,.9)}76%,100%{opacity:0;transform:scale(1.4,.55)}}
+@keyframes water-drift{to{stroke-dashoffset:-104}}
 @keyframes run-across{from{transform:translateX(-12vw)}to{transform:translateX(115vw)}}
 @keyframes run-bob{from{transform:translateY(0) rotate(-5deg)}to{transform:translateY(-7px) rotate(5deg)}}
 @media (prefers-reduced-motion:reduce){.ambient-life{display:none}}
 </style>
 
-<div class="ambient-life" aria-hidden="true"><span class="ambient-fish fish-one">🐠</span><span class="ambient-fish fish-two">🐟</span><span class="ambient-fish fish-three">🐡</span><div class="ambient-runner panda"><span>🐼</span></div><div class="ambient-runner duck"><span>🦆</span></div></div>
+<div class="ambient-life" aria-hidden="true">
+  <svg class="ambient-water" viewBox="0 0 1200 34" preserveAspectRatio="none"><path class="water-stroke" d="M0 15 Q35 4 70 15 T140 15 T210 15 T280 15 T350 15 T420 15 T490 15 T560 15 T630 15 T700 15 T770 15 T840 15 T910 15 T980 15 T1050 15 T1120 15 T1200 15"/><path class="water-stroke" d="M0 25 Q35 14 70 25 T140 25 T210 25 T280 25 T350 25 T420 25 T490 25 T560 25 T630 25 T700 25 T770 25 T840 25 T910 25 T980 25 T1050 25 T1120 25 T1200 25" opacity=".55"/></svg>
+  <span class="ambient-fish fish-one">
+    <svg class="goldie" id="goldfishArt" viewBox="0 0 120 80" role="img" aria-label="Goldfish jumping">
+      <defs><radialGradient id="goldBody1" cx="35%" cy="28%" r="76%"><stop stop-color="#fff4ab"/><stop offset=".28" stop-color="#ffbf36"/><stop offset=".68" stop-color="#f1780b"/><stop offset="1" stop-color="#a83704"/></radialGradient><linearGradient id="goldFin1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe56b"/><stop offset=".5" stop-color="#ff8c1b"/><stop offset="1" stop-color="#c54407"/></linearGradient><radialGradient id="goldShadow1"><stop stop-color="#a83e08" stop-opacity=".65"/><stop offset="1" stop-color="#a83e08" stop-opacity="0"/></radialGradient></defs>
+      <ellipse cx="59" cy="69" rx="40" ry="7" fill="url(#goldShadow1)"/><path d="M35 42Q15 20 4 23Q7 42 3 60Q19 62 39 50Z" fill="url(#goldFin1)" stroke="#a84308" stroke-width="2"/><path d="M39 37Q47 13 70 17Q63 27 65 35Z" fill="url(#goldFin1)" stroke="#b94a08" stroke-width="1.5"/><path d="M42 51Q50 70 72 65Q64 57 67 48Z" fill="url(#goldFin1)" stroke="#b94a08" stroke-width="1.5"/><ellipse cx="64" cy="43" rx="37" ry="23" fill="url(#goldBody1)" stroke="#a84308" stroke-width="2"/><path d="M40 30Q63 17 85 29" fill="none" stroke="#fff2a3" stroke-width="4" opacity=".68" stroke-linecap="round"/><path d="M47 34Q58 39 67 34M44 43Q55 48 65 43M43 52Q54 57 64 52" fill="none" stroke="#d65d08" stroke-width="1.6" opacity=".55"/><path d="M75 37Q84 44 75 51Q89 50 92 43Q88 36 75 37Z" fill="#f3a223" opacity=".7"/><ellipse cx="83" cy="39" rx="4.4" ry="5" fill="#fff8db"/><circle cx="84" cy="39" r="2.5" fill="#24150d"/><circle cx="84.8" cy="38.2" r=".9" fill="#fff"/><path d="M95 45Q101 43 103 39" fill="none" stroke="#963c0b" stroke-width="1.5" stroke-linecap="round"/><circle cx="94" cy="52" r="1.2" fill="#fff2a3"/><circle cx="88" cy="57" r=".9" fill="#fff2a3"/>
+    </svg>
+    <svg class="splash" viewBox="0 0 112 44"><defs><linearGradient id="waterGold1" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d9faff" stop-opacity=".9"/><stop offset="1" stop-color="#41bbf5" stop-opacity=".28"/></linearGradient></defs><path d="M7 37Q15 31 23 36T39 36T55 36T71 36T87 36T105 36" fill="none" stroke="#79e7ff" stroke-width="3" stroke-linecap="round"/><path d="M38 35Q31 25 34 18Q38 22 41 28Q40 16 45 8Q51 18 49 28Q54 22 59 20Q57 30 51 36Z" fill="url(#waterGold1)" stroke="#8cecff" stroke-width="1.2"/><circle cx="26" cy="19" r="2.2" fill="#b8f7ff"/><circle cx="67" cy="12" r="2.7" fill="#b8f7ff"/><circle cx="79" cy="25" r="1.6" fill="#b8f7ff"/></svg>
+  </span>
+  <span class="ambient-fish fish-two"><svg class="goldie" viewBox="0 0 120 80" aria-hidden="true"><use href="#goldfishArt"/></svg><svg class="splash" viewBox="0 0 112 44"><path d="M7 37Q15 31 23 36T39 36T55 36T71 36T87 36T105 36" fill="none" stroke="#79e7ff" stroke-width="3" stroke-linecap="round"/><path d="M38 35Q31 25 34 18Q38 22 41 28Q40 16 45 8Q51 18 49 28Q54 22 59 20Q57 30 51 36Z" fill="#8cecff" fill-opacity=".72" stroke="#d8fbff" stroke-width="1.2"/><circle cx="26" cy="19" r="2.2" fill="#b8f7ff"/><circle cx="67" cy="12" r="2.7" fill="#b8f7ff"/></svg></span>
+  <span class="ambient-fish fish-three"><svg class="goldie" viewBox="0 0 120 80" aria-hidden="true"><use href="#goldfishArt"/></svg><svg class="splash" viewBox="0 0 112 44"><path d="M7 37Q15 31 23 36T39 36T55 36T71 36T87 36T105 36" fill="none" stroke="#79e7ff" stroke-width="3" stroke-linecap="round"/><path d="M38 35Q31 25 34 18Q38 22 41 28Q40 16 45 8Q51 18 49 28Q54 22 59 20Q57 30 51 36Z" fill="#8cecff" fill-opacity=".72" stroke="#d8fbff" stroke-width="1.2"/><circle cx="26" cy="19" r="2.2" fill="#b8f7ff"/><circle cx="67" cy="12" r="2.7" fill="#b8f7ff"/></svg></span>
+  <div class="ambient-runner panda"><span>🐼</span></div><div class="ambient-runner duck"><span>🦆</span></div>
+</div>
 <div class="wrap">
   <header>
     <div class="brand">
