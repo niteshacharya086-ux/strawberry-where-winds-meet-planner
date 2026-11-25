@@ -27,9 +27,9 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload site files
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: .
       - name: Deploy site
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
