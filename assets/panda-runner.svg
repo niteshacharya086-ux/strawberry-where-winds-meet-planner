@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 120" role="img" aria-label="Round panda in a kung fu sprint">
+  <defs>
+    <radialGradient id="fur" cx="34%" cy="23%" r="78%"><stop stop-color="#fff"/><stop offset=".6" stop-color="#f4f2ee"/><stop offset="1" stop-color="#c6c3be"/></radialGradient>
+    <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#514e4c"/><stop offset=".42" stop-color="#1b1a1b"/><stop offset="1" stop-color="#070708"/></linearGradient>
+    <radialGradient id="belly" cx="35%" cy="20%" r="85%"><stop stop-color="#fff"/><stop offset=".7" stop-color="#f0ede8"/><stop offset="1" stop-color="#c3c0bb"/></radialGradient>
+    <linearGradient id="sash" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e7bd67"/><stop offset=".5" stop-color="#9b682e"/><stop offset="1" stop-color="#f4d78c"/></linearGradient>
+  </defs>
+  <style>
+    .po { transform-box:fill-box; transform-origin:center bottom; animation: po-bounce .26s steps(2,end) infinite alternate; }
+    .leg-a { transform-box:view-box; transform-origin:63px 83px; animation: po-leg .26s ease-in-out infinite alternate; }
+    .leg-b { transform-box:view-box; transform-origin:78px 83px; animation: po-leg .26s ease-in-out infinite alternate-reverse; }
+    .arm-a { transform-box:view-box; transform-origin:48px 55px; animation: po-arm .26s ease-in-out infinite alternate; }
+    .arm-b { transform-box:view-box; transform-origin:91px 55px; animation: po-arm .26s ease-in-out infinite alternate-reverse; }
+    @keyframes po-bounce { from{transform:translateY(1px) rotate(-2deg)} to{transform:translateY(-3px) rotate(2deg)} }
+    @keyframes po-leg { from{transform:rotate(-42deg)} to{transform:rotate(48deg)} }
+    @keyframes po-arm { from{transform:rotate(35deg)} to{transform:rotate(-38deg)} }
+    @media (prefers-reduced-motion:reduce) { * { animation:none!important } }
+  </style>
+  <ellipse cx="70" cy="112" rx="40" ry="5" fill="#08090c" opacity=".27"/>
+  <g class="leg-a"><path d="M59 73Q49 80 47 91L40 101Q37 106 42 109Q52 112 63 107L71 94L72 81Z" fill="url(#ink)" stroke="#080809" stroke-width="1.4"/><path d="M41 105Q50 108 59 104" fill="none" stroke="#d8c18a" stroke-width="2" stroke-linecap="round"/><path d="M43 109l-2 2m8-1-1 2m8-3 1 2" stroke="#eee4ce" stroke-width="1.3" stroke-linecap="round"/></g>
+  <g class="leg-b"><path d="M78 74Q88 80 89 92L98 101Q102 105 98 109Q89 112 77 107L70 94L68 82Z" fill="url(#ink)" stroke="#080809" stroke-width="1.4"/><path d="M79 105Q88 108 97 104" fill="none" stroke="#d8c18a" stroke-width="2" stroke-linecap="round"/><path d="M81 109l-1 2m8-1 1 2m7-4 2 1" stroke="#eee4ce" stroke-width="1.3" stroke-linecap="round"/></g>
+  <g class="po">
+    <path d="M44 53Q48 47 57 49L86 50Q96 52 98 64L94 82Q87 91 71 91Q54 90 44 82L39 66Z" fill="url(#ink)" stroke="#09090a" stroke-width="1.4"/>
+    <path d="M52 58Q69 51 87 58L88 76Q84 84 70 84Q56 83 50 76Z" fill="url(#belly)"/>
+    <path d="M50 79Q70 84 91 78L89 86Q70 92 51 86Z" fill="url(#sash)" stroke="#62401f" stroke-width="1"/>
+    <path d="M76 83l9 3-5 8-8-2z" fill="#bd4425" stroke="#71301f" stroke-width="1"/>
+    <path d="M43 53Q35 50 31 57L23 68Q20 73 25 76Q30 79 35 73L47 64Z" fill="url(#ink)" stroke="#09090a" stroke-width="1.5"/>
+    <path d="M92 52Q101 50 105 58L111 68Q114 74 109 77Q104 79 100 73L89 64Z" fill="url(#ink)" stroke="#09090a" stroke-width="1.5"/>
+    <ellipse cx="70" cy="36" rx="31" ry="28" fill="url(#fur)" stroke="#d1cfca" stroke-width="1.2"/>
+    <circle cx="45" cy="17" r="12" fill="url(#ink)"/><circle cx="95" cy="17" r="12" fill="url(#ink)"/>
+    <ellipse cx="56" cy="36" rx="8" ry="11" transform="rotate(22 56 36)" fill="url(#ink)"/><ellipse cx="84" cy="36" rx="8" ry="11" transform="rotate(-22 84 36)" fill="url(#ink)"/>
+    <ellipse cx="57" cy="35" rx="3" ry="4" fill="#fff"/><ellipse cx="83" cy="35" rx="3" ry="4" fill="#fff"/><circle cx="58" cy="36" r="1.7" fill="#111"/><circle cx="82" cy="36" r="1.7" fill="#111"/>
+    <ellipse cx="70" cy="47" rx="6.5" ry="4.8" fill="#262326"/><path d="M64 51Q70 57 77 51" fill="none" stroke="#7e4443" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M48 27Q57 12 72 12" fill="none" stroke="#fff" stroke-width="2.7" opacity=".72" stroke-linecap="round"/>
+  </g>
+  <g class="arm-a"><path d="M47 55Q42 49 37 54L28 64Q25 68 29 72L34 74Q39 72 41 67L51 63Z" fill="url(#ink)" stroke="#09090a" stroke-width="1.4"/><path d="M28 69Q32 71 36 68" fill="none" stroke="#d8c18a" stroke-width="2"/></g>
+  <g class="arm-b"><path d="M91 54Q99 50 103 57L110 67Q112 71 108 75L103 76Q98 73 96 68L87 63Z" fill="url(#ink)" stroke="#09090a" stroke-width="1.4"/><path d="M103 71Q107 73 110 69" fill="none" stroke="#d8c18a" stroke-width="2"/></g>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 120" role="img" aria-label="White duck in sunglasses, a red and gold robe, running on webbed feet">
+  <defs>
+    <radialGradient id="feather" cx="32%" cy="20%" r="82%"><stop stop-color="#fff"/><stop offset=".62" stop-color="#f4f3ef"/><stop offset="1" stop-color="#c7cbd0"/></radialGradient>
+    <linearGradient id="robe" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ed7440"/><stop offset=".42" stop-color="#ad3025"/><stop offset="1" stop-color="#641b20"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff3b5"/><stop offset=".5" stop-color="#d69a35"/><stop offset="1" stop-color="#91591e"/></linearGradient>
+    <linearGradient id="bill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffc05a"/><stop offset="1" stop-color="#df6e20"/></linearGradient>
+  </defs>
+  <style>
+    .duck { transform-box:fill-box; transform-origin:center bottom; animation:waddle .3s ease-in-out infinite alternate; }
+    .leg-a { transform-box:view-box; transform-origin:74px 83px; animation:duck-run .22s ease-in-out infinite alternate; }
+    .leg-b { transform-box:view-box; transform-origin:94px 83px; animation:duck-run .22s ease-in-out infinite alternate-reverse; }
+    .wing-a { transform-box:view-box; transform-origin:49px 59px; animation:wing-run .3s ease-in-out infinite alternate; }
+    .wing-b { transform-box:view-box; transform-origin:108px 58px; animation:wing-run .3s ease-in-out infinite alternate-reverse; }
+    @keyframes waddle { from{transform:translateY(1px) rotate(-3deg)} to{transform:translateY(-3px) rotate(3deg)} }
+    @keyframes duck-run { from{transform:rotate(-47deg)} to{transform:rotate(52deg)} }
+    @keyframes wing-run { from{transform:rotate(11deg)} to{transform:rotate(-9deg)} }
+    @media (prefers-reduced-motion:reduce) { * { animation:none!important } }
+  </style>
+  <ellipse cx="79" cy="112" rx="44" ry="5" fill="#08090c" opacity=".28"/>
+  <g class="leg-a"><path d="M71 77Q69 85 69 94L65 102" fill="none" stroke="#e9872b" stroke-width="7" stroke-linecap="round"/><path d="M65 100Q60 102 56 105Q61 106 67 104Q65 110 69 113Q73 110 73 105Q79 108 85 106Q81 102 74 101L72 98Z" fill="url(#bill)" stroke="#b75d21" stroke-width="1.3"/></g>
+  <g class="leg-b"><path d="M96 77Q99 86 100 94L105 102" fill="none" stroke="#e9872b" stroke-width="7" stroke-linecap="round"/><path d="M104 100Q99 102 95 105Q100 106 106 104Q104 110 108 113Q112 110 112 105Q118 108 124 106Q120 102 113 101L111 98Z" fill="url(#bill)" stroke="#b75d21" stroke-width="1.3"/></g>
+  <g class="duck">
+    <!-- plump horizontal duck body and tail -->
+    <path d="M48 54Q35 48 27 43Q32 55 27 67Q39 67 51 63Z" fill="url(#feather)" stroke="#c7cbd0" stroke-width="1.2"/>
+    <ellipse cx="82" cy="67" rx="43" ry="25" fill="url(#feather)" stroke="#c7cbd0" stroke-width="1.2"/>
+    <!-- long curved neck, clearly joining the head to the body -->
+    <path d="M76 69Q67 57 67 45Q66 36 72 31Q79 26 87 32Q92 38 88 50L94 63Z" fill="url(#feather)" stroke="#c7cbd0" stroke-width="1.1"/>
+    <!-- red and gold travel robe with fluffy trim -->
+    <path d="M56 53Q68 48 91 53L104 65L101 84Q82 93 57 83L52 67Z" fill="url(#robe)" stroke="#75251f" stroke-width="1.4"/>
+    <path d="M53 62Q77 69 103 61L104 67Q79 76 54 69Z" fill="url(#gold)"/>
+    <path d="M55 79Q78 87 102 79L101 86Q78 94 56 86Z" fill="url(#gold)"/>
+    <path d="M58 65Q78 72 100 65M59 82Q79 89 99 82" fill="none" stroke="#fff0a0" stroke-width="1.2" stroke-dasharray="2 3" opacity=".9"/>
+    <path d="M65 49Q75 55 88 51Q94 54 98 59Q80 67 59 60Z" fill="#fff8eb" stroke="#d6d1c8" stroke-width="1"/>
+    <circle cx="78" cy="72" r="8" fill="url(#gold)" stroke="#ffe8a1" stroke-width="1.3"/><circle cx="78" cy="72" r="4.2" fill="#fff1b1" opacity=".86"/>
+    <!-- short feathered wings tucked in for the run -->
+    <g class="wing-a"><path d="M54 58Q45 51 40 58Q38 62 43 65Q37 66 40 70Q44 73 49 69Q46 75 51 77Q57 75 59 68Z" fill="#dce1e5" stroke="#b7bdc2" stroke-width="1.2"/><path d="M44 60Q50 60 53 65M43 67Q49 66 53 69" fill="none" stroke="#9fa7af" stroke-width="1.2" stroke-linecap="round"/></g>
+    <g class="wing-b"><path d="M100 57Q109 50 115 57Q117 61 112 65Q119 65 116 70Q112 73 107 69Q110 75 105 77Q99 75 97 68Z" fill="#dce1e5" stroke="#b7bdc2" stroke-width="1.2"/><path d="M111 60Q105 60 102 65M112 67Q106 66 102 69" fill="none" stroke="#9fa7af" stroke-width="1.2" stroke-linecap="round"/></g>
+    <!-- white duck head, flat orange bill, and reference sunglasses -->
+    <ellipse cx="81" cy="32" rx="18" ry="17" fill="url(#feather)" stroke="#c7cbd0" stroke-width="1.1"/>
+    <path d="M94 31Q109 29 125 35Q118 43 98 39Z" fill="url(#bill)" stroke="#aa541d" stroke-width="1.2"/><path d="M100 39Q113 42 123 36" fill="none" stroke="#a44b22" stroke-width="1"/>
+    <path d="M66 29Q73 24 80 29L79 36Q73 38 67 35ZM82 29Q89 24 96 29L96 35Q90 38 83 36Z" fill="#14171c" stroke="#080a0d" stroke-width="1.2"/>
+    <path d="M79 31L83 31M69 29L75 28M87 28L93 29" stroke="#fff" stroke-width="1.2" opacity=".88"/>
+    <path d="M69 21Q77 14 86 17" fill="none" stroke="#fff" stroke-width="2.1" opacity=".82" stroke-linecap="round"/>
+  </g>
+</svg>

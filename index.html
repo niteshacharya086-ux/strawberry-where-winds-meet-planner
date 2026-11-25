@@ -339,40 +339,39 @@ body:not(.wallpaper-active) .ambient-life{display:none}
 .ambient-fish.fish-two .goldie,.ambient-fish.fish-two .splash{animation-delay:-2s}
 .ambient-fish.fish-three .goldie,.ambient-fish.fish-three .splash{animation-delay:-4s}
 .water-stroke{fill:none;stroke:#9aefff;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2 11;animation:water-drift 8s linear infinite}
-.ambient-runner{position:fixed;left:-112px;bottom:max(2px,env(safe-area-inset-bottom,0px));width:92px;height:88px;line-height:1;filter:drop-shadow(0 5px 4px rgba(0,0,0,.45));animation:run-across 32s linear infinite}
-.ambient-runner.duck{width:98px;height:88px;animation-duration:27s;animation-delay:-12s}
-.runner-art{display:block;width:100%;height:100%;overflow:visible}
-.runner-shadow{transform-box:fill-box;transform-origin:center;animation:runner-shadow .24s ease-in-out infinite alternate}
-.runner-core{transform-box:fill-box;transform-origin:center bottom;animation:runner-bounce .24s steps(2,end) infinite alternate}
-.runner-leg{transform-box:fill-box;transform-origin:top center}
-.runner-leg.front{animation:runner-stride .24s ease-in-out infinite alternate}
-.runner-leg.back{animation:runner-stride .24s ease-in-out infinite alternate-reverse}
-.runner-arm.front{transform-box:fill-box;transform-origin:top center;animation:runner-arms .24s ease-in-out infinite alternate-reverse}
-.runner-arm.back{transform-box:fill-box;transform-origin:top center;animation:runner-arms .24s ease-in-out infinite alternate}
+.ambient-runner{position:fixed;left:-120px;bottom:max(2px,env(safe-area-inset-bottom,0px));width:112px;height:104px;line-height:1;filter:drop-shadow(0 5px 4px rgba(0,0,0,.45));animation:run-across 32s linear infinite}
+.ambient-runner.duck{width:124px;height:104px;animation-duration:27s;animation-delay:-12s}
+.ambient-runner>svg.runner-art{display:none}
+.ambient-runner>img.runner-art{display:block;width:100%;height:100%;overflow:visible}
+.ambient-fish{pointer-events:auto;cursor:pointer;touch-action:manipulation}
+.ambient-fish:focus-visible{outline:2px solid #fff;outline-offset:5px;border-radius:50%}
+.ambient-fish.is-catching{pointer-events:none;z-index:4;animation-play-state:paused}
+.ambient-fish.is-catching .goldie,.ambient-fish.is-catching .splash{animation-play-state:paused}
+.ambient-fish.is-lifted{translate:0 -135vh;transition:translate 1.2s cubic-bezier(.2,.72,.3,1)}
+.cat-paw{position:fixed;z-index:20;left:0;top:0;width:126px;height:118px;opacity:0;pointer-events:none;filter:drop-shadow(0 9px 8px rgba(0,0,0,.45));transform:translateY(-130px) rotate(-26deg) scale(.68);transform-origin:50% 15%;transition:transform .34s cubic-bezier(.18,.82,.3,1),opacity .12s ease-out}
+.cat-paw.active{opacity:1;transform:translateY(0) rotate(0) scale(1)}
+.cat-paw.dragging{transition:transform 1.2s cubic-bezier(.35,.02,.65,.32);transform:translateY(-145vh) rotate(-8deg) scale(.92)}
 @keyframes fish-route{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 230px))}}
 @keyframes goldfish-jump{0%,8%{transform:translateY(8px) scale(.78);opacity:.3}16%{transform:translateY(-24px) rotate(10deg) scale(.95);opacity:1}30%{transform:translateY(-88px) rotate(14deg) scale(1.02);opacity:1}42%{transform:translateY(-110px) rotate(3deg) scale(1);opacity:1}52%{transform:translateY(-88px) rotate(-12deg) scale(.98);opacity:1}62%{transform:translateY(-28px) rotate(-16deg) scale(.94);opacity:1}68%{transform:translateY(2px) rotate(-3deg) scale(.82);opacity:.9}74%{transform:translateY(16px) scale(.68);opacity:0}96%{transform:translateY(16px) scale(.68);opacity:0}100%{transform:translateY(8px) scale(.78);opacity:.3}}
 @keyframes splash-burst{0%,5%{opacity:.2;transform:scale(.45,.35)}10%{opacity:.95;transform:scale(1.1,.85)}16%{opacity:.45;transform:scale(1.3,1)}23%,55%{opacity:0;transform:scale(1.35,.45)}61%{opacity:.9;transform:scale(.6,.65)}68%{opacity:.8;transform:scale(1.1,.9)}76%,100%{opacity:0;transform:scale(1.4,.55)}}
 @keyframes water-drift{to{stroke-dashoffset:-104}}
 @keyframes run-across{from{transform:translateX(-12vw)}to{transform:translateX(115vw)}}
-@keyframes runner-bounce{from{transform:translateY(1px) rotate(-1deg)}to{transform:translateY(-3px) rotate(1deg)}}
-@keyframes runner-stride{from{transform:rotate(-28deg)}to{transform:rotate(30deg)}}
-@keyframes runner-arms{from{transform:rotate(24deg)}to{transform:rotate(-26deg)}}
-@keyframes runner-shadow{from{transform:scaleX(1);opacity:.38}to{transform:scaleX(.83);opacity:.25}}
 @media (prefers-reduced-motion:reduce){.ambient-life{display:none}}
 </style>
 
-<div class="ambient-life" aria-hidden="true">
-  <svg class="ambient-water" viewBox="0 0 1200 34" preserveAspectRatio="none"><path class="water-stroke" d="M0 15 Q35 4 70 15 T140 15 T210 15 T280 15 T350 15 T420 15 T490 15 T560 15 T630 15 T700 15 T770 15 T840 15 T910 15 T980 15 T1050 15 T1120 15 T1200 15"/><path class="water-stroke" d="M0 25 Q35 14 70 25 T140 25 T210 25 T280 25 T350 25 T420 25 T490 25 T560 25 T630 25 T700 25 T770 25 T840 25 T910 25 T980 25 T1050 25 T1120 25 T1200 25" opacity=".55"/></svg>
-  <span class="ambient-fish fish-one">
+<div class="ambient-life">
+  <svg class="ambient-water" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true"><path class="water-stroke" d="M0 15 Q35 4 70 15 T140 15 T210 15 T280 15 T350 15 T420 15 T490 15 T560 15 T630 15 T700 15 T770 15 T840 15 T910 15 T980 15 T1050 15 T1120 15 T1200 15"/><path class="water-stroke" d="M0 25 Q35 14 70 25 T140 25 T210 25 T280 25 T350 25 T420 25 T490 25 T560 25 T630 25 T700 25 T770 25 T840 25 T910 25 T980 25 T1050 25 T1120 25 T1200 25" opacity=".55"/></svg>
+  <span class="ambient-fish fish-one" role="button" tabindex="0" aria-label="Catch this goldfish with the cat paw">
     <svg class="goldie" id="goldfishArt" viewBox="0 0 120 80" role="img" aria-label="Goldfish jumping">
       <defs><radialGradient id="goldBody1" cx="35%" cy="28%" r="76%"><stop stop-color="#fff4ab"/><stop offset=".28" stop-color="#ffbf36"/><stop offset=".68" stop-color="#f1780b"/><stop offset="1" stop-color="#a83704"/></radialGradient><linearGradient id="goldFin1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe56b"/><stop offset=".5" stop-color="#ff8c1b"/><stop offset="1" stop-color="#c54407"/></linearGradient><radialGradient id="goldShadow1"><stop stop-color="#a83e08" stop-opacity=".65"/><stop offset="1" stop-color="#a83e08" stop-opacity="0"/></radialGradient></defs>
       <ellipse cx="59" cy="69" rx="40" ry="7" fill="url(#goldShadow1)"/><path d="M35 42Q15 20 4 23Q7 42 3 60Q19 62 39 50Z" fill="url(#goldFin1)" stroke="#a84308" stroke-width="2"/><path d="M39 37Q47 13 70 17Q63 27 65 35Z" fill="url(#goldFin1)" stroke="#b94a08" stroke-width="1.5"/><path d="M42 51Q50 70 72 65Q64 57 67 48Z" fill="url(#goldFin1)" stroke="#b94a08" stroke-width="1.5"/><ellipse cx="64" cy="43" rx="37" ry="23" fill="url(#goldBody1)" stroke="#a84308" stroke-width="2"/><path d="M40 30Q63 17 85 29" fill="none" stroke="#fff2a3" stroke-width="4" opacity=".68" stroke-linecap="round"/><path d="M47 34Q58 39 67 34M44 43Q55 48 65 43M43 52Q54 57 64 52" fill="none" stroke="#d65d08" stroke-width="1.6" opacity=".55"/><path d="M75 37Q84 44 75 51Q89 50 92 43Q88 36 75 37Z" fill="#f3a223" opacity=".7"/><ellipse cx="83" cy="39" rx="4.4" ry="5" fill="#fff8db"/><circle cx="84" cy="39" r="2.5" fill="#24150d"/><circle cx="84.8" cy="38.2" r=".9" fill="#fff"/><path d="M95 45Q101 43 103 39" fill="none" stroke="#963c0b" stroke-width="1.5" stroke-linecap="round"/><circle cx="94" cy="52" r="1.2" fill="#fff2a3"/><circle cx="88" cy="57" r=".9" fill="#fff2a3"/>
     </svg>
     <svg class="splash" viewBox="0 0 112 44"><defs><linearGradient id="waterGold1" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d9faff" stop-opacity=".9"/><stop offset="1" stop-color="#41bbf5" stop-opacity=".28"/></linearGradient></defs><path d="M7 37Q15 31 23 36T39 36T55 36T71 36T87 36T105 36" fill="none" stroke="#79e7ff" stroke-width="3" stroke-linecap="round"/><path d="M38 35Q31 25 34 18Q38 22 41 28Q40 16 45 8Q51 18 49 28Q54 22 59 20Q57 30 51 36Z" fill="url(#waterGold1)" stroke="#8cecff" stroke-width="1.2"/><circle cx="26" cy="19" r="2.2" fill="#b8f7ff"/><circle cx="67" cy="12" r="2.7" fill="#b8f7ff"/><circle cx="79" cy="25" r="1.6" fill="#b8f7ff"/></svg>
   </span>
-  <span class="ambient-fish fish-two"><svg class="goldie" viewBox="0 0 120 80" aria-hidden="true"><use href="#goldfishArt"/></svg><svg class="splash" viewBox="0 0 112 44"><path d="M7 37Q15 31 23 36T39 36T55 36T71 36T87 36T105 36" fill="none" stroke="#79e7ff" stroke-width="3" stroke-linecap="round"/><path d="M38 35Q31 25 34 18Q38 22 41 28Q40 16 45 8Q51 18 49 28Q54 22 59 20Q57 30 51 36Z" fill="#8cecff" fill-opacity=".72" stroke="#d8fbff" stroke-width="1.2"/><circle cx="26" cy="19" r="2.2" fill="#b8f7ff"/><circle cx="67" cy="12" r="2.7" fill="#b8f7ff"/></svg></span>
-  <span class="ambient-fish fish-three"><svg class="goldie" viewBox="0 0 120 80" aria-hidden="true"><use href="#goldfishArt"/></svg><svg class="splash" viewBox="0 0 112 44"><path d="M7 37Q15 31 23 36T39 36T55 36T71 36T87 36T105 36" fill="none" stroke="#79e7ff" stroke-width="3" stroke-linecap="round"/><path d="M38 35Q31 25 34 18Q38 22 41 28Q40 16 45 8Q51 18 49 28Q54 22 59 20Q57 30 51 36Z" fill="#8cecff" fill-opacity=".72" stroke="#d8fbff" stroke-width="1.2"/><circle cx="26" cy="19" r="2.2" fill="#b8f7ff"/><circle cx="67" cy="12" r="2.7" fill="#b8f7ff"/></svg></span>
+  <span class="ambient-fish fish-two" role="button" tabindex="0" aria-label="Catch this goldfish with the cat paw"><svg class="goldie" viewBox="0 0 120 80" aria-hidden="true"><use href="#goldfishArt"/></svg><svg class="splash" viewBox="0 0 112 44" aria-hidden="true"><path d="M7 37Q15 31 23 36T39 36T55 36T71 36T87 36T105 36" fill="none" stroke="#79e7ff" stroke-width="3" stroke-linecap="round"/><path d="M38 35Q31 25 34 18Q38 22 41 28Q40 16 45 8Q51 18 49 28Q54 22 59 20Q57 30 51 36Z" fill="#8cecff" fill-opacity=".72" stroke="#d8fbff" stroke-width="1.2"/></svg></span>
+  <span class="ambient-fish fish-three" role="button" tabindex="0" aria-label="Catch this goldfish with the cat paw"><svg class="goldie" viewBox="0 0 120 80" aria-hidden="true"><use href="#goldfishArt"/></svg><svg class="splash" viewBox="0 0 112 44" aria-hidden="true"><path d="M7 37Q15 31 23 36T39 36T55 36T71 36T87 36T105 36" fill="none" stroke="#79e7ff" stroke-width="3" stroke-linecap="round"/><path d="M38 35Q31 25 34 18Q38 22 41 28Q40 16 45 8Q51 18 49 28Q54 22 59 20Q57 30 51 36Z" fill="#8cecff" fill-opacity=".72" stroke="#d8fbff" stroke-width="1.2"/></svg></span>
   <div class="ambient-runner panda" role="img" aria-label="A panda running across the wallpaper">
+    <img class="runner-art" src="assets/panda-runner.svg" alt="">
     <svg class="runner-art" viewBox="0 0 100 92" aria-hidden="true">
       <defs>
         <radialGradient id="pandaFur" cx="34%" cy="24%" r="78%"><stop stop-color="#fff"/><stop offset=".58" stop-color="#f5f4ef"/><stop offset="1" stop-color="#c9c8c4"/></radialGradient>
@@ -399,6 +398,7 @@ body:not(.wallpaper-active) .ambient-life{display:none}
     </svg>
   </div>
   <div class="ambient-runner duck" role="img" aria-label="A goose in sunglasses and a red gold robe running across the wallpaper">
+    <img class="runner-art" src="assets/duck-runner.svg" alt="">
     <svg class="runner-art" viewBox="0 0 108 92" aria-hidden="true">
       <defs>
         <radialGradient id="gooseFeather" cx="32%" cy="20%" r="80%"><stop stop-color="#fff"/><stop offset=".64" stop-color="#f2f2ee"/><stop offset="1" stop-color="#bfc5ca"/></radialGradient>
@@ -429,6 +429,12 @@ body:not(.wallpaper-active) .ambient-life{display:none}
     </svg>
   </div>
 </div>
+<svg class="cat-paw" viewBox="0 0 126 118" aria-hidden="true">
+  <defs><radialGradient id="pawFur" cx="34%" cy="18%" r="85%"><stop stop-color="#ffd28a"/><stop offset=".46" stop-color="#d98237"/><stop offset="1" stop-color="#843d24"/></radialGradient><radialGradient id="pawPad" cx="32%" cy="22%" r="80%"><stop stop-color="#ffc6b6"/><stop offset=".62" stop-color="#df806f"/><stop offset="1" stop-color="#984b4b"/></radialGradient></defs>
+  <path d="M37-18Q40 25 44 46L82 47Q88 21 91-18Z" fill="url(#pawFur)"/><path d="M45 4Q54 11 62 4M70 7Q78 13 87 5M46 23Q54 29 61 22M72 25Q80 31 87 24" fill="none" stroke="#713a26" stroke-width="5" stroke-linecap="round" opacity=".74"/>
+  <ellipse cx="34" cy="60" rx="16" ry="20" transform="rotate(-22 34 60)" fill="url(#pawFur)" stroke="#8c4d2d" stroke-width="1.5"/><ellipse cx="58" cy="53" rx="15" ry="19" fill="url(#pawFur)" stroke="#8c4d2d" stroke-width="1.5"/><ellipse cx="82" cy="53" rx="15" ry="19" fill="url(#pawFur)" stroke="#8c4d2d" stroke-width="1.5"/><ellipse cx="104" cy="62" rx="15" ry="19" transform="rotate(22 104 62)" fill="url(#pawFur)" stroke="#8c4d2d" stroke-width="1.5"/>
+  <path d="M25 77Q25 62 42 61Q52 61 55 72Q61 58 74 59Q86 60 89 73Q97 64 109 72Q118 80 111 95Q102 110 69 111Q37 109 27 94Z" fill="url(#pawFur)" stroke="#8c4d2d" stroke-width="1.7"/><ellipse cx="69" cy="89" rx="23" ry="16" fill="url(#pawPad)"/><ellipse cx="40" cy="68" rx="7" ry="9" fill="url(#pawPad)"/><ellipse cx="59" cy="63" rx="7" ry="9" fill="url(#pawPad)"/><ellipse cx="81" cy="63" rx="7" ry="9" fill="url(#pawPad)"/><ellipse cx="100" cy="70" rx="7" ry="9" fill="url(#pawPad)"/>
+</svg>
 <div class="wrap">
   <header>
     <div class="brand">
@@ -2603,6 +2609,26 @@ function adopt(raw){
 window.addEventListener('storage',function(e){if(e.key===KEY&&e.newValue)adopt(e.newValue)});
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){clearTimeout(saveT);flushSave()}});
 window.addEventListener('pagehide',function(){clearTimeout(saveT);flushSave()});
+var paw=document.querySelector('.cat-paw');
+document.querySelectorAll('.ambient-fish').forEach(function(fish){
+  function catchFish(e){
+    if(fish.classList.contains('is-catching'))return;
+    var box=fish.getBoundingClientRect(),pawSize=126;
+    var x=e&&e.type==='click'?e.clientX:box.left+box.width/2;
+    var y=e&&e.type==='click'?e.clientY:box.top+box.height/2;
+    paw.style.left=Math.max(4,Math.min(window.innerWidth-pawSize,x-pawSize/2))+'px';
+    paw.style.top=Math.max(0,y-pawSize/2)+'px';
+    fish.classList.add('is-catching');
+    paw.classList.remove('dragging');paw.classList.add('active');
+    window.setTimeout(function(){fish.classList.add('is-lifted');paw.classList.add('dragging')},360);
+    window.setTimeout(function(){
+      fish.classList.remove('is-catching','is-lifted');paw.classList.remove('active','dragging');
+      paw.style.left='';paw.style.top='';
+    },1750);
+  }
+  fish.addEventListener('click',catchFish);
+  fish.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();catchFish()}});
+});
 sizeCanvas();
 })();
 </script>
