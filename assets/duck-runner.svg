@@ -6,13 +6,13 @@
     <linearGradient id="bill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffc05a"/><stop offset="1" stop-color="#df6e20"/></linearGradient>
   </defs>
   <style>
-    .duck { transform-box:fill-box; transform-origin:center bottom; animation:waddle .3s ease-in-out infinite alternate; }
-    .leg-a { transform-box:view-box; transform-origin:74px 83px; animation:duck-run .22s ease-in-out infinite alternate; }
-    .leg-b { transform-box:view-box; transform-origin:94px 83px; animation:duck-run .22s ease-in-out infinite alternate-reverse; }
-    .wing-a { transform-box:view-box; transform-origin:49px 59px; animation:wing-run .3s ease-in-out infinite alternate; }
-    .wing-b { transform-box:view-box; transform-origin:108px 58px; animation:wing-run .3s ease-in-out infinite alternate-reverse; }
-    @keyframes waddle { from{transform:translateY(1px) rotate(-3deg)} to{transform:translateY(-3px) rotate(3deg)} }
-    @keyframes duck-run { from{transform:rotate(-47deg)} to{transform:rotate(52deg)} }
+    .duck { transform-box:fill-box; transform-origin:center bottom; animation:waddle .32s cubic-bezier(.4,0,.6,1) infinite alternate; }
+    .leg-a { transform-box:view-box; transform-origin:74px 83px; animation:duck-run .24s cubic-bezier(.42,0,.58,1) infinite alternate; }
+    .leg-b { transform-box:view-box; transform-origin:94px 83px; animation:duck-run .24s cubic-bezier(.42,0,.58,1) infinite alternate-reverse; }
+    .wing-a { transform-box:view-box; transform-origin:49px 59px; animation:wing-run .32s cubic-bezier(.4,0,.6,1) infinite alternate; }
+    .wing-b { transform-box:view-box; transform-origin:108px 58px; animation:wing-run .32s cubic-bezier(.4,0,.6,1) infinite alternate-reverse; }
+    @keyframes waddle { from{transform:translateY(1px) rotate(-2deg)} to{transform:translateY(-2px) rotate(2deg)} }
+    @keyframes duck-run { from{transform:rotate(-36deg)} to{transform:rotate(40deg)} }
     @keyframes wing-run { from{transform:rotate(11deg)} to{transform:rotate(-9deg)} }
     @media (prefers-reduced-motion:reduce) { * { animation:none!important } }
   </style>

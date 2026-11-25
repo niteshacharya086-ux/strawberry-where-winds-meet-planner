@@ -6,12 +6,12 @@
     <linearGradient id="sash" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e7bd67"/><stop offset=".5" stop-color="#9b682e"/><stop offset="1" stop-color="#f4d78c"/></linearGradient>
   </defs>
   <style>
-    .po { transform-box:fill-box; transform-origin:center bottom; animation: po-bounce .26s steps(2,end) infinite alternate; }
-    .leg-a { transform-box:view-box; transform-origin:63px 83px; animation: po-leg .26s ease-in-out infinite alternate; }
-    .leg-b { transform-box:view-box; transform-origin:78px 83px; animation: po-leg .26s ease-in-out infinite alternate-reverse; }
-    .arm-a { transform-box:view-box; transform-origin:48px 55px; animation: po-arm .26s ease-in-out infinite alternate; }
-    .arm-b { transform-box:view-box; transform-origin:91px 55px; animation: po-arm .26s ease-in-out infinite alternate-reverse; }
-    @keyframes po-bounce { from{transform:translateY(1px) rotate(-2deg)} to{transform:translateY(-3px) rotate(2deg)} }
+    .po { transform-box:fill-box; transform-origin:center bottom; animation: po-bounce .32s cubic-bezier(.4,0,.6,1) infinite alternate; }
+    .leg-a { transform-box:view-box; transform-origin:63px 83px; animation: po-leg .24s cubic-bezier(.42,0,.58,1) infinite alternate; }
+    .leg-b { transform-box:view-box; transform-origin:78px 83px; animation: po-leg .24s cubic-bezier(.42,0,.58,1) infinite alternate-reverse; }
+    .arm-a { transform-box:view-box; transform-origin:48px 55px; animation: po-arm .24s cubic-bezier(.42,0,.58,1) infinite alternate; }
+    .arm-b { transform-box:view-box; transform-origin:91px 55px; animation: po-arm .24s cubic-bezier(.42,0,.58,1) infinite alternate-reverse; }
+    @keyframes po-bounce { from{transform:translateY(1px) rotate(-1.5deg)} to{transform:translateY(-3px) rotate(1.5deg)} }
     @keyframes po-leg { from{transform:rotate(-42deg)} to{transform:rotate(48deg)} }
     @keyframes po-arm { from{transform:rotate(35deg)} to{transform:rotate(-38deg)} }
     @media (prefers-reduced-motion:reduce) { * { animation:none!important } }
