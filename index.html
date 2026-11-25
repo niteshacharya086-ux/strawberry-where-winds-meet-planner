@@ -20,15 +20,15 @@
   --r-panel:24px; --r-card:18px; --r-ctl:14px;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#170B1E; --panel:#25122F; --fg:#FFF0F4; --muted:#BEA6CC; --line:#3D2349;
-  --edge:#7A4690; --shd:#07030B; --dot:#2A1636;
-  --accent:#FF3F67; --accent-fg:#FFFFFF; --seed:#FFD25E; --leaf:#3DDC97; --lilac:#321A3F; --strip:#3A1D4A;
+  --bg:#170B1E; --panel:#2B1834; --fg:#FFF5FA; --muted:#D3C0E2; --line:#553861;
+  --edge:#B27BC7; --shd:#07030B; --dot:#2A1636;
+  --accent:#FF3F67; --accent-fg:#FFFFFF; --seed:#FFD25E; --leaf:#3DDC97; --lilac:#482A56; --strip:#40224C;
   --ally:#6C93FF; --enemy:#FF5A78; --gold:#FFD25E; --danger:#FF5A78;
   --map:#2D1839; --grid:#3E2450; --shadow:0 2px 0 rgba(0,0,0,.55); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#170B1E; --panel:#25122F; --fg:#FFF0F4; --muted:#BEA6CC; --line:#3D2349;
-  --edge:#7A4690; --shd:#07030B; --dot:#2A1636;
-  --accent:#FF3F67; --accent-fg:#FFFFFF; --seed:#FFD25E; --leaf:#3DDC97; --lilac:#321A3F; --strip:#3A1D4A;
+  --bg:#170B1E; --panel:#2B1834; --fg:#FFF5FA; --muted:#D3C0E2; --line:#553861;
+  --edge:#B27BC7; --shd:#07030B; --dot:#2A1636;
+  --accent:#FF3F67; --accent-fg:#FFFFFF; --seed:#FFD25E; --leaf:#3DDC97; --lilac:#482A56; --strip:#40224C;
   --ally:#6C93FF; --enemy:#FF5A78; --gold:#FFD25E; --danger:#FF5A78;
   --map:#2D1839; --grid:#3E2450; --shadow:0 2px 0 rgba(0,0,0,.55); color-scheme:dark}
 
@@ -168,6 +168,11 @@ input[type=checkbox]{accent-color:var(--accent);width:17px;height:17px}
 .layout>section>.tabs .btn{box-shadow:none;border-color:rgba(255,255,255,.6);background:transparent;color:#fff}
 .layout>section>.tabs .btn:hover{background:rgba(255,255,255,.14);transform:none;box-shadow:none}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+:root[data-theme="dark"] .toolbar .btn:not(.primary):not(.on){background:#321D3D;color:#FFF5FA;border-color:#B27BC7}
+:root[data-theme="dark"] .toolbar .btn:not(.primary):not(.on):hover{background:#482A56}
+:root[data-theme="dark"] .row:not([class*="rc-"]){background:#321D3D;border-color:#B27BC7;color:#FFF5FA}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .toolbar .btn:not(.primary):not(.on){background:#321D3D;color:#FFF5FA;border-color:#B27BC7}:root:not([data-theme="light"]) .toolbar .btn:not(.primary):not(.on):hover{background:#482A56}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .row:not([class*="rc-"]){background:#321D3D;border-color:#B27BC7;color:#FFF5FA}}
 .tgroup{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-right:12px;margin-right:2px;border-right:2px dotted var(--edge)}
 .tgroup:last-child{border-right:0}
 .tbtn{display:inline-flex;align-items:center;gap:7px}
@@ -181,6 +186,9 @@ input[type=checkbox]{accent-color:var(--accent);width:17px;height:17px}
 .video-tool-group .btn{width:100%;justify-content:center}
 .video-control{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
 .video-control input[type=range],.video-control select{width:100%}
+.wallpaper-preview{min-height:190px;display:grid;place-items:center;border:3px solid var(--edge);border-radius:var(--r-card);background-size:cover;background-position:center;overflow:hidden;box-shadow:3px 3px 0 var(--shd)}
+.wallpaper-preview span{padding:8px 14px;border:1px solid rgba(255,255,255,.5);border-radius:999px;background:rgba(18,9,24,.68);color:#fff;font-weight:700;text-shadow:0 1px 2px #000}
+.wallpaper-preview.empty{background:var(--lilac);color:var(--fg);box-shadow:none}
 .video-controls-row{display:flex;gap:7px}
 .video-controls-row .btn{flex:1}
 .editor-stage.video-mode{display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,280px);gap:14px;align-items:start}
@@ -535,12 +543,13 @@ function iconHtml(k){
 }
 /* ---------- state ---------- */
 function sample(){
-  return {players:[],placed:{},objects:[],strokes:[],redo:[],bg:null,video:null,bgOpacity:.85,aspect:1.6,videoAspect:16/9,videoOpacity:1};
+  return {players:[],placed:{},objects:[],strokes:[],redo:[],bg:null,video:null,bgOpacity:.85,aspect:1.6,videoAspect:16/9,videoOpacity:1,wallpaper:null,wallpaperShade:.35};
 }
 var MAPKEYS=['placed','objects','strokes','redo','bg','video','bgOpacity','aspect','videoAspect','videoOpacity'];
 function newMapData(){return {placed:{},objects:[],strokes:[],redo:[],bg:null,video:null,bgOpacity:.85,aspect:1.6,videoAspect:16/9,videoOpacity:1}}
 function normalize(d){
-  var o={players:d.players||[],icons:d.icons||{},teamCount:Math.max(1,Math.min(10,parseInt(d.teamCount,10)||1)),mapSize:Math.max(100,Math.min(400,parseInt(d.mapSize,10)||100)),penW:Math.max(2,Math.min(24,parseInt(d.penW,10)||4)),userIcons:Array.isArray(d.userIcons)?d.userIcons:[],hiddenIcons:Array.isArray(d.hiddenIcons)?d.hiddenIcons:[],iconLabels:(d.iconLabels&&typeof d.iconLabels==='object')?d.iconLabels:{},pool:Array.isArray(d.pool)?d.pool:[]},a;
+  var keepWallpaper=(typeof S!=='undefined'&&S)?S.wallpaper:null,keepShade=(typeof S!=='undefined'&&S)?S.wallpaperShade:.35;
+  var o={players:d.players||[],icons:d.icons||{},teamCount:Math.max(1,Math.min(10,parseInt(d.teamCount,10)||1)),mapSize:Math.max(100,Math.min(400,parseInt(d.mapSize,10)||100)),penW:Math.max(2,Math.min(24,parseInt(d.penW,10)||4)),userIcons:Array.isArray(d.userIcons)?d.userIcons:[],hiddenIcons:Array.isArray(d.hiddenIcons)?d.hiddenIcons:[],iconLabels:(d.iconLabels&&typeof d.iconLabels==='object')?d.iconLabels:{},pool:Array.isArray(d.pool)?d.pool:[],wallpaper:safeImg(d.wallpaper!==undefined?d.wallpaper:keepWallpaper),wallpaperShade:numIn(d.wallpaperShade,0,.75,numIn(keepShade,0,.75,.35))},a;
   if(Array.isArray(d.tabs)&&d.tabs.length){
     o.tabs=d.tabs.map(function(t){var n=newMapData();MAPKEYS.forEach(function(k){if(t[k]!==undefined&&t[k]!==null)n[k]=t[k]});n.id=t.id||uid();n.name=t.name||'Map';return n});
     o.active=d.active;
@@ -562,6 +571,7 @@ function numIn(x,lo,hi,def){x=parseFloat(x);return isFinite(x)?Math.max(lo,Math.
 function str(x,n){return String(x==null?'':x).slice(0,n)}
 function sanitizeData(o){
   var pm={},um={},tm={},ROLES=['tank','dps','healer','hunter'];
+  o.wallpaper=safeImg(o.wallpaper);o.wallpaperShade=numIn(o.wallpaperShade,0,.75,.35);
   o.players=(Array.isArray(o.players)?o.players:[]).filter(function(p){return p&&typeof p==='object'}).slice(0,200).map(function(p){
     var e=!!p.enemy;
     return {id:cleanId(p.id,pm),name:str(p.name,40),role:ROLES.indexOf(p.role)>=0?p.role:'dps',team:e?Math.round(numIn(p.team,0,10,0)):Math.round(numIn(p.team,1,10,1)),w1:str(p.w1,40),w2:str(p.w2,40),note:str(p.note,60),enemy:e};
@@ -597,7 +607,12 @@ function sanitizeData(o){
 function curTab(){for(var i=0;i<S.tabs.length;i++){if(S.tabs[i].id===S.active)return S.tabs[i]}return S.tabs[0]}
 function stashTab(){var t=curTab();MAPKEYS.forEach(function(k){t[k]=S[k]})}
 function loadTab(t){MAPKEYS.forEach(function(k){S[k]=t[k]})}
-function serialize(){stashTab();return {players:S.players,icons:S.icons,teamCount:S.teamCount||1,mapSize:S.mapSize||100,penW:S.penW||4,userIcons:S.userIcons,hiddenIcons:S.hiddenIcons||[],iconLabels:S.iconLabels||{},pool:S.pool,tabs:S.tabs,active:S.active}}
+function serialize(){stashTab();return {players:S.players,icons:S.icons,teamCount:S.teamCount||1,mapSize:S.mapSize||100,penW:S.penW||4,userIcons:S.userIcons,hiddenIcons:S.hiddenIcons||[],iconLabels:S.iconLabels||{},pool:S.pool,tabs:S.tabs,active:S.active,wallpaper:S.wallpaper||null,wallpaperShade:S.wallpaperShade}}
+function applyWallpaper(){
+  var b=document.body;
+  if(S.wallpaper){var shade=numIn(S.wallpaperShade,0,.75,.35);b.style.backgroundImage='linear-gradient(rgba(16,8,22,'+shade+'),rgba(16,8,22,'+shade+')),url("'+S.wallpaper+'")';b.style.backgroundSize='cover,cover';b.style.backgroundPosition='center,center';b.style.backgroundAttachment='fixed,fixed';b.style.backgroundRepeat='no-repeat,no-repeat'}
+  else{b.style.backgroundImage='radial-gradient(var(--dot) 2px,transparent 2.4px)';b.style.backgroundSize='30px 30px';b.style.backgroundPosition='0 0';b.style.backgroundAttachment='';b.style.backgroundRepeat='repeat'}
+}
 var S=null;
 try{var raw=localStorage.getItem(KEY); if(raw){S=JSON.parse(raw)}}catch(e){}
 if(!S||!S.players){S=sample()}
@@ -611,7 +626,7 @@ S=normalize(S);
     MAPKEYS.forEach(function(k){S[k]=a[k]});
   }
 })();
-S.icons=S.icons||{}; S.redo=S.redo||[]; S.strokes=S.strokes||[]; S.objects=S.objects||[]; S.placed=S.placed||{};
+S.icons=S.icons||{}; S.redo=S.redo||[]; S.strokes=S.strokes||[]; S.objects=S.objects||[]; S.placed=S.placed||{};applyWallpaper();
 var ui={group:'team',role:'all',tool:null,draw:false,erase:false,auto:false,color:'#e0a030',sel:null};
 var saveT=null;
 var warned=false,dirty=false;
@@ -1397,10 +1412,24 @@ function applyIconLabels(){
   Object.keys(OBJ).forEach(function(k){OBJ[k].label=(S.iconLabels&&S.iconLabels[k])||ICON_DEFAULT_LABELS[k]});
 }
 function manageTabs(active){
-  return '<div class="seg" style="margin:6px 0 10px"><button type="button" data-mt="players" class="'+(active==='players'?'on':'')+'">Players</button><button type="button" data-mt="icons" class="'+(active==='icons'?'on':'')+'">Icons</button></div>';
+  return '<div class="seg" style="margin:6px 0 10px"><button type="button" data-mt="players" class="'+(active==='players'?'on':'')+'">Players</button><button type="button" data-mt="icons" class="'+(active==='icons'?'on':'')+'">Icons</button><button type="button" data-mt="wallpaper" class="'+(active==='wallpaper'?'on':'')+'">Wallpaper</button></div>';
 }
 function bindManageTabs(m){
   m.querySelectorAll('[data-mt]').forEach(function(b){b.onclick=function(){ui.manageTab=b.dataset.mt;manage()}});
+}
+function manageWallpaper(){
+  var preview=S.wallpaper?'<div class="wallpaper-preview" style="background-image:linear-gradient(rgba(16,8,22,'+numIn(S.wallpaperShade,0,.75,.35)+'),rgba(16,8,22,'+numIn(S.wallpaperShade,0,.75,.35)+')),url(&quot;'+S.wallpaper+'&quot;)"><span>Planner background preview</span></div>':'<div class="wallpaper-preview empty">No wallpaper selected</div>';
+  var h='<div class="panel-h"><h2>Planner Wallpaper</h2><button class="btn sm" data-x>Close</button></div>'+manageTabs('wallpaper')+
+    '<p class="hint">Choose an image for the planner page background. It is saved in this browser; map backgrounds stay separate.</p>'+preview+
+    '<div class="ctl"><label class="btn primary" style="cursor:pointer">Choose wallpaper<input type="file" data-wallfile accept="image/*" hidden></label><button class="btn" data-wallremove'+(S.wallpaper?'':' disabled')+'>Remove wallpaper</button></div>'+
+    '<label class="video-control">Dim wallpaper for readability<input type="range" min="0" max="75" value="'+Math.round(numIn(S.wallpaperShade,0,.75,.35)*100)+'" data-wallshade></label>';
+  openModal(h,function(m){
+    m.style.maxWidth='min(680px,96vw)';m.style.width='min(680px,96vw)';
+    m.querySelector('[data-x]').onclick=closeModal;bindManageTabs(m);
+    m.querySelector('[data-wallfile]').onchange=function(e){var f=e.target.files&&e.target.files[0];if(!f)return;if(f.size>30*1048576){toast('That image is too large (30 MB maximum).');return}readImage(f,1800,'image/jpeg',function(data){S.wallpaper=data;applyWallpaper();save();manageWallpaper()})};
+    m.querySelector('[data-wallshade]').oninput=function(e){S.wallpaperShade=Number(e.target.value)/100;applyWallpaper();save();var p=m.querySelector('.wallpaper-preview');if(p&&S.wallpaper)p.style.backgroundImage='linear-gradient(rgba(16,8,22,'+S.wallpaperShade+'),rgba(16,8,22,'+S.wallpaperShade+')),url("'+S.wallpaper+'")'};
+    m.querySelector('[data-wallremove]').onclick=function(){if(!S.wallpaper)return;S.wallpaper=null;applyWallpaper();save();manageWallpaper()};
+  });
 }
 function manageIcons(){
   var hid=S.hiddenIcons||[],ic='position:static;transform:none;width:32px;height:32px;flex:none';
@@ -1467,6 +1496,7 @@ function manageIcons(){
 }
 function manage(){
   if(ui.manageTab==='icons'){manageIcons();return}
+  if(ui.manageTab==='wallpaper'){manageWallpaper();return}
   var g=ui.group,tc=teamCount();
   var title=g==='team'?'Manage Teams':g==='roster'?'Manage Rostered Players':'Manage All Players';
   function prow(p){

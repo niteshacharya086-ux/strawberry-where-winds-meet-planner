@@ -7,6 +7,9 @@ A browser-based strategy planner for **Where Winds Meet**. It runs as a static w
 - Image and video map editors with separate backgrounds.
 - Import a map image or add a video file from your device as the map background.
 - Play and edit a device video in the dedicated video editor, with seek, skip, volume, speed, and opacity controls.
+- Scan labeled player screenshots for names, roles, weapons, and optional team numbers, then review the results.
+- Choose a planner wallpaper and tune its dimming from **Manage → Wallpaper**.
+- High contrast dark theme controls for placing players and map objectives.
 - Place players and markers, draw and annotate plans, and export strategies.
 - Store planner data in the current browser. No account is required.
 
