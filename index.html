@@ -80,6 +80,7 @@ input[type=checkbox]{accent-color:var(--accent);width:17px;height:17px}
 .layout{display:grid;grid-template-columns:minmax(270px,330px) minmax(0,1fr);gap:24px;align-items:start}
 @media (max-width:820px){.layout{grid-template-columns:minmax(0,1fr)}}
 .panel{background:var(--panel);border:2px solid var(--edge);border-radius:var(--r-panel);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0;box-shadow:6px 6px 0 var(--shd)}
+body.wallpaper-active .panel,body.wallpaper-active .tcard,body.wallpaper-active .rbox,body.wallpaper-active .tpl,body.wallpaper-active #videoTools{background-color:color-mix(in srgb,var(--panel) 82%,transparent)}
 .panel-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .layout>aside>.panel-h:first-child{background:var(--accent);color:#fff;margin:-16px -16px 2px;padding:13px 18px;border-radius:calc(var(--r-panel) - 3px) calc(var(--r-panel) - 3px) 0 0;border-bottom:2px solid var(--edge)}
 .layout>aside>.panel-h:first-child .count{color:#fff;opacity:.85}
@@ -610,6 +611,7 @@ function loadTab(t){MAPKEYS.forEach(function(k){S[k]=t[k]})}
 function serialize(){stashTab();return {players:S.players,icons:S.icons,teamCount:S.teamCount||1,mapSize:S.mapSize||100,penW:S.penW||4,userIcons:S.userIcons,hiddenIcons:S.hiddenIcons||[],iconLabels:S.iconLabels||{},pool:S.pool,tabs:S.tabs,active:S.active,wallpaper:S.wallpaper||null,wallpaperShade:S.wallpaperShade}}
 function applyWallpaper(){
   var b=document.body;
+  b.classList.toggle('wallpaper-active',!!S.wallpaper);
   if(S.wallpaper){var shade=numIn(S.wallpaperShade,0,.75,.35);b.style.backgroundImage='linear-gradient(rgba(16,8,22,'+shade+'),rgba(16,8,22,'+shade+')),url("'+S.wallpaper+'")';b.style.backgroundSize='cover,cover';b.style.backgroundPosition='center,center';b.style.backgroundAttachment='fixed,fixed';b.style.backgroundRepeat='no-repeat,no-repeat'}
   else{b.style.backgroundImage='radial-gradient(var(--dot) 2px,transparent 2.4px)';b.style.backgroundSize='30px 30px';b.style.backgroundPosition='0 0';b.style.backgroundAttachment='';b.style.backgroundRepeat='repeat'}
 }
@@ -1421,7 +1423,7 @@ function manageWallpaper(){
   var preview=S.wallpaper?'<div class="wallpaper-preview" style="background-image:linear-gradient(rgba(16,8,22,'+numIn(S.wallpaperShade,0,.75,.35)+'),rgba(16,8,22,'+numIn(S.wallpaperShade,0,.75,.35)+')),url(&quot;'+S.wallpaper+'&quot;)"><span>Planner background preview</span></div>':'<div class="wallpaper-preview empty">No wallpaper selected</div>';
   var h='<div class="panel-h"><h2>Planner Wallpaper</h2><button class="btn sm" data-x>Close</button></div>'+manageTabs('wallpaper')+
     '<p class="hint">Choose an image for the planner page background. It is saved in this browser; map backgrounds stay separate.</p>'+preview+
-    '<div class="ctl"><label class="btn primary" style="cursor:pointer">Choose wallpaper<input type="file" data-wallfile accept="image/*" hidden></label><button class="btn" data-wallremove'+(S.wallpaper?'':' disabled')+'>Remove wallpaper</button></div>'+
+    '<div class="ctl"><label class="btn primary" style="cursor:pointer">Choose wallpaper<input type="file" data-wallfile accept="image/*" hidden></label><button class="btn" data-wallremove'+(S.wallpaper?'':' disabled')+'>Use default background</button></div>'+
     '<label class="video-control">Dim wallpaper for readability<input type="range" min="0" max="75" value="'+Math.round(numIn(S.wallpaperShade,0,.75,.35)*100)+'" data-wallshade></label>';
   openModal(h,function(m){
     m.style.maxWidth='min(680px,96vw)';m.style.width='min(680px,96vw)';
@@ -2427,7 +2429,7 @@ $('#isz').oninput=function(e){
   var el=layer.querySelector('[data-id="'+o.id+'"]');if(el)el.style.width=el.style.height=o.size+'px';
   save();
 };
-$('#bManage').onclick=function(){ui.manageTab='players';manage()};
+$('#bManage').onclick=function(){ui.manageTab='wallpaper';manage()};
 $('#bManageP').onclick=function(){ui.manageTab='players';manage()};
 $('#bAdd').onclick=function(){playerForm(null)};
 $('#bPlayers').onclick=rolesView;
