@@ -152,7 +152,8 @@ input[type=checkbox]{accent-color:var(--accent);width:17px;height:17px}
 .rvwrap{max-height:52vh;overflow:auto;margin-top:8px}
 .rv{display:grid;grid-template-columns:28px minmax(110px,1.2fr) 92px minmax(120px,1.2fr) minmax(120px,1.2fr) 86px minmax(100px,1fr);gap:8px;align-items:center;padding:5px 2px;border-bottom:2px dotted var(--line)}
 .rv input[type=text],.rv select{width:100%;min-width:0}
-.rv.nt{grid-template-columns:28px minmax(110px,1.2fr) 92px minmax(120px,1.2fr) minmax(120px,1.2fr) minmax(100px,1fr)}
+.rv.nt{grid-template-columns:28px minmax(110px,1.2fr) 92px minmax(120px,1.2fr) minmax(120px,1.2fr)}
+.rv.nt.rvteam{grid-template-columns:28px minmax(110px,1.2fr) 92px minmax(120px,1.2fr) minmax(120px,1.2fr) 82px}
 .rvh{font-weight:700;font-size:13px;color:var(--muted);position:sticky;top:0;background:var(--panel);z-index:1}
 
 /* ---- map tabs + toolbar ---- */
@@ -2102,8 +2103,8 @@ $('#bImport').onclick=function(){
   });
 };
 /* ===================== Screenshot scan (OCR) ===================== */
-var OCR_ALIASES=['Twin Blades','Rope Dart','Rope Darts','Mo Blade'];
-var OCR_STOP=/^(team|squad|party|group|unit|roster|members?|name|names|player|players|role|roles|class|weapon|weapons|build|level|power|score|rank|close|back|confirm|cancel|ok|invite|guild|online|offline|none|empty|total|select|all)$/i;
+var OCR_ALIASES=['Twin Blades','Rope Dart','Rope Darts','Mo Blade','Stormbreaker'];
+var OCR_STOP=/^(team|squad|party|group|unit|roster|members?|name|names|player|players|role|roles|class|weapon|weapons|build|builds|level|power|score|rank|close|back|confirm|cancel|ok|invite|guild|online|offline|none|empty|total|select|all)$/i;
 function ocrNorm(t){return String(t||'').toLowerCase().replace(/[^a-z]/g,'')}
 function lev(a,b){
   var m=a.length,n=b.length,p=[],i,j,prev,tmp;if(a===b)return 0;if(!m)return n;if(!n)return m;
@@ -2121,19 +2122,20 @@ function ocrRole(tok){
 function ocrWeapon(norm){
   var best=null,bs=0;
   WEAPONS.concat(OCR_ALIASES).forEach(function(w){var sc=simil(norm,ocrNorm(w));if(sc>bs){bs=sc;best=w}});
+  if(best==='Stormbreaker')best='Stormbreaker Spear';
   return bs>=0.84?{w:best,score:bs}:null;
 }
 function ocrCleanName(t){
   t=String(t||'').replace(/[|\[\]{}()<>_~=*#@\u2022\u00b7]+/g,' ').replace(/^[^A-Za-z0-9\u00c0-\uffff]+|[^A-Za-z0-9\u00c0-\uffff]+$/g,'').replace(/\s+/g,' ').trim();
   return t.slice(0,40);
 }
-/* ---- Reading the screenshot: a player is only counted when a line STARTS WITH "Name".
-   Role and Weapons lines (or the Role / Weapons parts of the same line) then belong to that player. ---- */
+/* ---- Read only labeled fields, so a weapon line can never be mistaken for a player name. ---- */
 function ocrLabel(t){
   var colon=/[:\uFF1A]$/.test(t),n=ocrNorm(t);
   if(n.length<3)return '';
-  var defs=[['name','name'],['role','role'],['weapons','weapon'],['weapon','weapon']],best='',bs=0;
+  var defs=[['name','name'],['names','name'],['player','name'],['players','name'],['character','name'],['ign','name'],['role','role'],['class','role'],['profession','role'],['weapons','weapon'],['weapon','weapon'],['builds','weapon'],['build','weapon'],['weapon1','weapon1'],['weapon2','weapon2'],['team','team']],best='',bs=0;
   defs.forEach(function(d){var sc=simil(n,d[0]);if(sc>bs){bs=sc;best=d[1]}});
+  if(best==='team'&&!colon)return '';
   if(bs>=1)return best;
   if(colon&&bs>=0.7)return best;
   return bs>=0.8&&n.length>=5?best:'';
@@ -2201,15 +2203,14 @@ function ocrParse(words){
         /* only a line that STARTS with "Name" begins a player (a few leading symbols/numbers are allowed) */
         var lead=toks.slice(0,sg.start).filter(function(t){return /[A-Za-z]{2,}/.test(t.t)}).length;
         if(lead>0)return;
-        cur={name:ocrCleanName(sg.toks.map(function(t){return t.t}).join(' ')),role:'',weapons:[]};
+        cur={name:ocrCleanName(sg.toks.map(function(t){return t.t}).join(' ')),role:'',weapons:[],team:0};
         players.push(cur);
       }else if(sg.label==='role'&&cur){var rl=ocrRoleFrom(sg.toks);if(rl&&!cur.role)cur.role=rl}
-      else if(sg.label==='weapon'&&cur){var wp=ocrWeaponsFrom(sg.toks,mh);if(wp.length&&!cur.weapons.length)cur.weapons=wp}
+      else if((sg.label==='weapon'||sg.label==='weapon1'||sg.label==='weapon2')&&cur){var wp=ocrWeaponsFrom(sg.toks,mh);if(wp.length){if(sg.label==='weapon1')cur.weapons[0]=wp[0];else if(sg.label==='weapon2')cur.weapons[1]=wp[0];else if(!cur.weapons.length)cur.weapons=wp}}
+      else if(sg.label==='team'&&cur){var tm=sg.toks.map(function(t){var m=String(t.t).match(/\d{1,2}/);return m?parseInt(m[0],10):0}).filter(function(n){return n>=1&&n<=10})[0];if(tm)cur.team=tm}
     });
   });
-  return players.filter(function(p){return p.name&&p.name.length>=1&&/[A-Za-z0-9\u00c0-\uffff]/.test(p.name)}).map(function(p){
-    return {name:p.name,role:p.role,w1:p.weapons[0]||'',w2:p.weapons[1]||'',checked:true};
-  });
+  return players.filter(function(p){return p.name&&p.name.length>=1&&/[A-Za-z0-9\u00c0-\uffff]/.test(p.name)}).map(function(p){return {name:p.name,role:p.role,w1:p.weapons[0]||'',w2:p.weapons[1]||'',team:p.team||0,checked:true}});
 }
 function scanPrep(img,invert){
   var mx=Math.max(img.naturalWidth,img.naturalHeight),sc=Math.min(3,Math.max(0.5,2400/mx));if(mx*sc>3400)sc=3400/mx;
@@ -2273,7 +2274,7 @@ function runScan(file,progress){
 function scanModal(target){
   var has=ocrEngineAvailable();
   openModal('<div class="panel-h"><h2>Scan screenshot</h2><button class="btn sm" data-x>Close</button></div>'+
-    (has?'<p class="hint">Choose a screenshot, drag it in, or paste it with Ctrl+V. A player is counted only where a line starts with &quot;Name&quot;; the Role and Weapons lines under it are attached to that player. Everything is read on this computer (no internet needed) and you can check it before anything is added.</p>'+
+    (has?'<p class="hint">Choose a screenshot, drag it in, or paste it with Ctrl+V. Player names are read only after Name:, roles after Role:, and weapons after Weapons: or Builds:. Optional Team: numbers are kept per player. Everything is read on this computer (no internet needed) and you can review it before anything is added.</p>'+
       '<div id="scz" class="scz" tabindex="0"><label class="btn primary" style="cursor:pointer">Choose screenshot<input type="file" id="scf" accept="image/*" hidden></label><div class="muted" style="margin-top:8px">or drop an image here / press Ctrl+V</div><img id="scp" alt="Preview" hidden></div>'+
       '<div id="scs" class="hint" style="margin-top:8px"></div><div class="scbar" id="scbw" hidden><i id="scb"></i></div>'
      :'<p class="hint">Screenshot scanning is not available in this copy of the planner.</p>'),function(m){
@@ -2310,16 +2311,17 @@ function scanReview(entries,rawText,target){
   var roleOpts=function(sel){return ['','tank','dps','healer','hunter'].map(function(r){return '<option value="'+r+'"'+(sel===r?' selected':'')+'>'+(r?roleName(r):'Auto')+'</option>'}).join('')};
   var h='<div class="panel-h"><h2>Check scanned players</h2><button class="btn sm" data-x>Close</button></div>';
   if(!entries.length){
-    h+='<p class="hint">No lines starting with "Name" were found in this screenshot, so no players were counted. Check the text that was read below, or try a sharper or larger screenshot.</p>';
+    h+='<p class="hint">No player names were found after a Name label. Use lines such as Name: Lin Yue, Role: Tank, Weapons: Thundercry Blade / Stormbreaker, or Builds: ... . Check the text that was read below, or try a sharper screenshot.</p>';
   }else{
     var topt='';for(var t=1;t<=10;t++)topt+='<option value="'+t+'"'+(t===defTeam?' selected':'')+'>Team '+t+'</option>';
-    h+='<p class="hint">'+entries.length+' line'+(entries.length===1?'':'s')+' found. Untick anything that is not a player and fix any mistakes. Names already on the planner are matched and updated.</p>'+
-      '<div class="ctl">'+(members?'<label class="muted" for="rvteam" style="font-size:12px">Add to</label><select id="rvteam">'+topt+'</select>':'<span class="muted" style="font-size:12px">Added to the Extra roster</span>')+'<button class="btn sm" data-all>Select all</button><button class="btn sm" data-none>Select none</button></div>'+
-      '<div class="rvwrap"><div class="rv nt rvh"><span></span><span>Name</span><span>Role</span><span>Weapon 1</span><span>Weapon 2</span></div>';
+    h+='<p class="hint">'+entries.length+' player'+(entries.length===1?'':'s')+' found. Names come only from Name labels, roles from Role, and weapons from Weapons or Builds. Optional Team values are applied per player. Review and correct anything uncertain before adding.</p>'+
+      '<div class="ctl">'+(members?'<label class="muted" for="rvteam" style="font-size:12px">Default team when none is shown</label><select id="rvteam">'+topt+'</select>':'<span class="muted" style="font-size:12px">Added to the Extra roster</span>')+'<button class="btn sm" data-all>Select all</button><button class="btn sm" data-none>Select none</button></div>'+
+      '<div class="rvwrap"><div class="rv nt'+(members?' rvteam':'')+' rvh"><span></span><span>Name</span><span>Role</span><span>Weapon 1</span><span>Weapon 2</span>'+(members?'<span>Team</span>':'')+'</div>';
     entries.forEach(function(e,i){
-      h+='<div class="rv nt" data-i="'+i+'"><input type="checkbox" class="rc"'+(e.checked?' checked':'')+' aria-label="Include"><input type="text" class="rn" maxlength="40" value="'+esc(e.name)+'">'+
+      var teamOpts='';for(var t=1;t<=10;t++)teamOpts+='<option value="'+t+'"'+(t===(Number(e.team)||defTeam)?' selected':'')+'>Team '+t+'</option>';
+      h+='<div class="rv nt'+(members?' rvteam':'')+'" data-i="'+i+'" data-has-team="'+(e.team?1:0)+'"><input type="checkbox" class="rc"'+(e.checked?' checked':'')+' aria-label="Include"><input type="text" class="rn" maxlength="40" value="'+esc(e.name)+'">'+
         '<select class="rr">'+roleOpts(e.role)+'</select>'+
-        '<input type="text" class="rw1" list="wl" maxlength="40" value="'+esc(e.w1)+'"><input type="text" class="rw2" list="wl" maxlength="40" value="'+esc(e.w2)+'"></div>';
+        '<input type="text" class="rw1" list="wl" maxlength="40" value="'+esc(e.w1)+'"><input type="text" class="rw2" list="wl" maxlength="40" value="'+esc(e.w2)+'">'+(members?'<select class="rtm" aria-label="Team">'+teamOpts+'</select>':'')+'</div>';
     });
     h+='</div>';
   }
@@ -2330,6 +2332,7 @@ function scanReview(entries,rawText,target){
     m.querySelector('[data-x]').onclick=closeModal;m.querySelector('[data-x2]').onclick=closeModal;
     function count(){var n=m.querySelectorAll('.rc:checked').length,b=m.querySelector('[data-ok]');b.textContent='Add '+n+' player'+(n===1?'':'s');b.disabled=!n}
     m.querySelectorAll('.rc').forEach(function(c){c.onchange=count});count();
+    if(members)m.querySelector('#rvteam').onchange=function(){var value=this.value;m.querySelectorAll('.rv[data-i][data-has-team="0"] .rtm').forEach(function(x){x.value=value})};
     var all=m.querySelector('[data-all]'),none=m.querySelector('[data-none]');
     if(all){all.onclick=function(){m.querySelectorAll('.rc').forEach(function(c){c.checked=true});count()};none.onclick=function(){m.querySelectorAll('.rc').forEach(function(c){c.checked=false});count()}}
     m.querySelector('[data-ok]').onclick=function(){
@@ -2337,7 +2340,7 @@ function scanReview(entries,rawText,target){
       m.querySelectorAll('.rv[data-i]').forEach(function(row){
         if(!row.querySelector('.rc').checked)return;
         var name=row.querySelector('.rn').value.trim();if(!name)return;
-        list.push({name:name.slice(0,40),role:row.querySelector('.rr').value,w1:row.querySelector('.rw1').value.trim(),w2:row.querySelector('.rw2').value.trim()});
+        list.push({name:name.slice(0,40),role:row.querySelector('.rr').value,w1:row.querySelector('.rw1').value.trim(),w2:row.querySelector('.rw2').value.trim(),team:members?parseInt(row.querySelector('.rtm').value,10):0});
       });
       closeModal();
       if(list.length){if(members)ui.poolTeam=team;importEntries(list,target,team,'dps')}
