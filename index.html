@@ -2611,13 +2611,13 @@ document.addEventListener('visibilitychange',function(){if(document.visibilitySt
 window.addEventListener('pagehide',function(){clearTimeout(saveT);flushSave()});
 var paw=document.querySelector('.cat-paw');
 document.querySelectorAll('.ambient-fish').forEach(function(fish){
-  function catchFish(e){
+  function catchFish(){
     if(fish.classList.contains('is-catching'))return;
-    var box=fish.getBoundingClientRect(),pawSize=126;
-    var x=e&&e.type==='click'?e.clientX:box.left+box.width/2;
-    var y=e&&e.type==='click'?e.clientY:box.top+box.height/2;
-    paw.style.left=Math.max(4,Math.min(window.innerWidth-pawSize,x-pawSize/2))+'px';
-    paw.style.top=Math.max(0,y-pawSize/2)+'px';
+    var fishArt=fish.querySelector('.goldie')||fish;
+    var box=fishArt.getBoundingClientRect(),pawSize=126;
+    var x=box.left+box.width/2,y=box.top+box.height/2;
+    paw.style.left=Math.max(4,Math.min(window.innerWidth-pawSize,x-pawSize*.55))+'px';
+    paw.style.top=Math.max(0,y-pawSize*.75)+'px';
     fish.classList.add('is-catching');
     paw.classList.remove('dragging');paw.classList.add('active');
     window.setTimeout(function(){fish.classList.add('is-lifted');paw.classList.add('dragging')},360);
