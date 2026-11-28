@@ -2702,7 +2702,7 @@ function placeFishInOpenSpace(){
   if(!fish.length)return;
   var w=window.innerWidth,h=window.innerHeight;
   var headerBand=document.querySelector('header'),headerRect=headerBand?headerBand.getBoundingClientRect():null;
-  var blockers=Array.prototype.slice.call(document.querySelectorAll('#mapScroll,#toolbar,.panel-h,.sub,.tag,p,button,[role=button],[role=tab],.tcard,.row,input,select,textarea,h1,h2,h3,.tabs,.logo')).filter(function(el){return !el.classList.contains('ambient-fish')}).map(function(el){return el.getBoundingClientRect()}).filter(function(b){return b.width&&b.height&&b.right>0&&b.left<w&&b.bottom>0&&b.top<h});
+  var blockers=Array.prototype.slice.call(document.querySelectorAll('#mapScroll,#toolbar,.panel-h,.sub,.tag,p,button,[role=button],[role=tab],.layout>aside,#list,#pool,.poolbox,.tcard,.row,.prow,input,select,textarea,h1,h2,h3,.tabs,.logo')).filter(function(el){return !el.classList.contains('ambient-fish')}).map(function(el){return el.getBoundingClientRect()}).filter(function(b){return b.width&&b.height&&b.right>0&&b.left<w&&b.bottom>0&&b.top<h});
   var occupied=[];
   fish.forEach(function(item,index){
     var fw=88,fh=112,choices=[];
