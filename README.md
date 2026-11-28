@@ -1,4 +1,4 @@
-# Strawberry Where Winds Meet Planner
+# STRAW Where Winds Meet Planner
 
 A browser-based strategy planner for **Where Winds Meet**. It runs as a static website; it does not need a backend or build step.
 
