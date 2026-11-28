@@ -2673,6 +2673,8 @@ var meowSound=new Audio('assets/cat-cute-meow.mp3');
 meowSound.preload='auto';
 var runnerSound=new Audio('assets/runner-running.mp3');
 runnerSound.preload='auto';
+var duckCallSound=new Audio('assets/duck-calling.mp3');
+duckCallSound.preload='auto';
 function replayAmbientSound(sound){
   try{sound.pause();sound.currentTime=0;var playback=sound.play();if(playback&&playback.catch)playback.catch(function(){/* Sound is optional if the browser blocks playback. */})}catch(_){/* Sound is optional if the browser blocks playback. */}
 }
@@ -2776,6 +2778,7 @@ document.querySelectorAll('.ambient-runner').forEach(function(runner){
   }
   function sprint(){
     replayAmbientSound(runnerSound);
+    if(!runner.classList.contains('panda'))replayAmbientSound(duckCallSound);
     if(runner.classList.contains('waiting')||boostAnimation)return;
     var startX=runner.getBoundingClientRect().left;
     var endX=window.innerWidth+runner.offsetWidth+80;

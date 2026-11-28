@@ -42,3 +42,4 @@ Ambient sound credits:
 
 - The fish-catch meow is the MP3 provided by the project owner and is included as `assets/cat-cute-meow.mp3`.
 - The panda and duck runner sound is the MP3 provided by the project owner and is included as `assets/runner-running.mp3`.
+- The duck’s call is layered over the running sound and uses the MP3 provided by the project owner at `assets/duck-calling.mp3`.
