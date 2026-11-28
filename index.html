@@ -370,8 +370,9 @@ body:not(.wallpaper-active) .ambient-fish-layer{display:none}
 .ambient-runner>img.runner-art{display:block;position:relative;z-index:1;width:100%;height:100%;object-fit:contain;overflow:visible;transform-origin:50% 82%;animation:none;will-change:transform}
 .ambient-runner.duck>img.runner-art{scale:1 1}
 body.map-bottom-peek .ambient-runner{opacity:1;visibility:visible;pointer-events:auto}
-body.map-bottom-peek .ambient-runner.panda{transform:translateX(0);animation:panda-run-lane 9.6s linear infinite;will-change:transform}
-body.map-bottom-peek .ambient-runner.duck{transform:translateX(0);animation:duck-run-lane 9.6s linear infinite;will-change:transform}
+body.map-bottom-peek .ambient-runner.panda{transform:translateX(0);animation:panda-run-lane 11.6s linear infinite;will-change:transform}
+body.map-bottom-peek .ambient-runner.duck{transform:translateX(0);animation:duck-run-lane 11.6s linear infinite;will-change:transform}
+body.map-bottom-peek .ambient-runner.returning{animation:runner-return-lane 9.6s linear 1!important}
 body.map-bottom-peek .ambient-runner.waiting{opacity:0;visibility:hidden;pointer-events:none;animation-play-state:paused!important}
 body.map-bottom-peek .ambient-runner>img.runner-art{animation:runner-body-motion .56s ease-in-out infinite}
 body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .3s ease-in-out infinite alternate}
@@ -394,8 +395,9 @@ body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-s
 @keyframes goldfish-jump{0%,4%{transform:translateY(24px) rotate(3deg) scaleX(-1) scale(.72);opacity:0}8%{transform:translateY(12px) rotate(1deg) scaleX(-1) scale(.82);opacity:.92}18%{transform:translateY(-34px) rotate(-7deg) scaleX(-1) scale(1);opacity:1}27%{transform:translateY(-48px) rotate(-2deg) scaleX(-1) scale(1.02);opacity:1}36%{transform:translateY(-22px) rotate(7deg) scaleX(-1) scale(.96);opacity:1}43%{transform:translateY(0) rotate(10deg) scaleX(-1) scale(.9);opacity:1}49%{transform:translateY(13px) rotate(6deg) scaleX(-1) scale(.88);opacity:.94}56%{transform:translateY(29px) rotate(2deg) scaleX(-1) scale(.84);opacity:.74}64%{transform:translateY(43px) rotate(0) scaleX(-1) scale(.78);opacity:.48}72%,91%{transform:translateY(54px) rotate(0) scaleX(-1) scale(.72);opacity:0}100%{transform:translateY(24px) rotate(3deg) scaleX(-1) scale(.72);opacity:0}}
 @keyframes splash-burst{0%,5%{opacity:0;transform:scale(.35,.25)}8%{opacity:.75;transform:scale(.8,.65)}14%{opacity:.24;transform:scale(1,.72)}18%,42%{opacity:0;transform:scale(1.15,.4)}47%{opacity:.96;transform:scale(.62,.55)}53%{opacity:.78;transform:scale(1.05,.88)}61%{opacity:.28;transform:scale(1.28,.6)}68%,100%{opacity:0;transform:scale(1.42,.42)}}
 @keyframes water-drift{to{stroke-dashoffset:-104}}
-@keyframes panda-run-lane{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 400px))}}
-@keyframes duck-run-lane{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 400px))}}
+@keyframes panda-run-lane{0%,17.24%{transform:translateX(0)}100%{transform:translateX(calc(100vw + 400px))}}
+@keyframes duck-run-lane{0%,17.24%{transform:translateX(0)}100%{transform:translateX(calc(100vw + 400px))}}
+@keyframes runner-return-lane{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 400px))}}
 @keyframes runner-body-motion{0%,100%{transform:translateY(2px) rotate(-3deg) scale(.95,.98)}24%{transform:translateY(-4px) rotate(1deg) scale(1.015,1.02)}50%{transform:translateY(-10px) rotate(3deg) scale(1.035,.97)}76%{transform:translateY(-3px) rotate(-1deg) scale(.985,1.03)}}
 @keyframes runner-sprint-motion{0%{transform:translate(-3px,3px) rotate(-7deg) scale(.93,.96)}35%{transform:translate(2px,-8px) rotate(5deg) scale(1.04,1.02)}68%{transform:translate(4px,-2px) rotate(-4deg) scale(.98,1.04)}100%{transform:translate(-2px,-10px) rotate(7deg) scale(1.03,.96)}}
 @keyframes cartoon-smoke{from{transform:translate(-4px,2px) scale(.78);filter:blur(2px)}to{transform:translate(-18px,-3px) scale(1.18);filter:blur(4px)}}
@@ -403,8 +405,9 @@ body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-s
 @media (prefers-reduced-motion:reduce){
  body.wallpaper-active .ambient-fish .goldie{animation:goldfish-jump 8.6s cubic-bezier(.34,.08,.56,.98) infinite!important}
  body.wallpaper-active .ambient-fish .splash{animation:splash-burst 8.6s ease-out infinite!important}
- body.map-bottom-peek .ambient-runner.panda{animation:panda-run-lane 9.6s linear infinite!important}
- body.map-bottom-peek .ambient-runner.duck{animation:duck-run-lane 9.6s linear infinite!important}
+ body.map-bottom-peek .ambient-runner.panda{animation:panda-run-lane 11.6s linear infinite!important}
+ body.map-bottom-peek .ambient-runner.duck{animation:duck-run-lane 11.6s linear infinite!important}
+ body.map-bottom-peek .ambient-runner.returning{animation:runner-return-lane 9.6s linear 1!important}
  body.map-bottom-peek .ambient-runner>img.runner-art{animation:runner-body-motion .56s ease-in-out infinite!important}
  body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .3s ease-in-out infinite alternate!important}
  body.map-bottom-peek .ambient-runner>svg.runner-art{display:none!important}
@@ -2766,15 +2769,14 @@ document.addEventListener('scroll',scheduleMapBottomPeek,{passive:true,capture:t
 window.addEventListener('resize',scheduleMapBottomPeek,{passive:true});
 scheduleMapBottomPeek();
 document.querySelectorAll('.ambient-runner').forEach(function(runner){
-  var partner=document.querySelector(runner.classList.contains('panda')?'.ambient-runner.duck':'.ambient-runner.panda');
-  var laneAnimation=runner.classList.contains('panda')?'panda-run-lane':'duck-run-lane';
   var boostAnimation=null;
-  function resumeFromLeft(target){
+  function resumeFromLeft(target,afterTouch){
     if(target._boostAnimation){target._boostAnimation.cancel();target._boostAnimation=null}
-    target.style.left='';target.style.transform='';target.style.transition='';target.style.animation='none';
+    target.style.left='';target.style.transform='';target.style.transition='';target.style.animation='none';target.style.animationDelay='';
     void target.offsetWidth;
     target.style.animation='';
     target.classList.remove('waiting','sprinting');
+    if(afterTouch)target.classList.add('returning');
   }
   function sprint(){
     if(runner.classList.contains('waiting')||boostAnimation)return;
@@ -2795,12 +2797,11 @@ document.querySelectorAll('.ambient-runner').forEach(function(runner){
       runnerSound.pause();runnerSound.currentTime=0;
       if(!runner.classList.contains('panda')){duckCallSound.pause();duckCallSound.currentTime=0}
       runner.classList.remove('sprinting');runner.classList.add('waiting');
-      if(partner&&partner.classList.contains('waiting')){resumeFromLeft(runner);resumeFromLeft(partner)}
+      window.setTimeout(function(){resumeFromLeft(runner,true)},5000);
     };
   }
-  runner.addEventListener('animationiteration',function(event){
-    if(event.animationName!==laneAnimation)return;
-    if(partner&&partner.classList.contains('waiting'))resumeFromLeft(partner);
+  runner.addEventListener('animationend',function(event){
+    if(event.animationName==='runner-return-lane')runner.classList.remove('returning');
   });
   runner.addEventListener('click',sprint);
   runner.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();sprint()}});
