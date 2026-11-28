@@ -2781,7 +2781,7 @@ document.querySelectorAll('.ambient-runner').forEach(function(runner){
     replayAmbientSound(runnerSound);
     if(!runner.classList.contains('panda'))replayAmbientSound(duckCallSound);
     var startX=runner.getBoundingClientRect().left;
-    var endX=window.innerWidth+runner.offsetWidth+80;
+    var endX=window.innerWidth;
     var duration=Math.max(900,Math.min(4000,(endX-startX)/(window.innerWidth+360)*4000));
     runner.style.transition='none';
     runner.style.animation='none';
@@ -2792,6 +2792,7 @@ document.querySelectorAll('.ambient-runner').forEach(function(runner){
     runner._boostAnimation=boostAnimation;
     boostAnimation.onfinish=function(){
       boostAnimation=null;runner._boostAnimation=null;
+      runnerSound.pause();runnerSound.currentTime=0;
       if(!runner.classList.contains('panda')){duckCallSound.pause();duckCallSound.currentTime=0}
       runner.classList.remove('sprinting');runner.classList.add('waiting');
       if(partner&&partner.classList.contains('waiting')){resumeFromLeft(runner);resumeFromLeft(partner)}
