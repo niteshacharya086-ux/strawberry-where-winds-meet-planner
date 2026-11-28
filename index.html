@@ -218,7 +218,7 @@ body.wallpaper-active .tcard.dropx{background:var(--glow)!important}
 .map.drop{outline:4px dashed var(--accent);outline-offset:-8px}
 .map.tool,.map.drawing #cv{cursor:crosshair}
 .map svg.arena{position:absolute;inset:0;width:100%;height:100%}
-#mapScroll{border-radius:var(--r-card)!important;box-shadow:5px 5px 0 var(--shd)!important}
+#mapScroll{border-radius:var(--r-card)!important;box-shadow:0 0 0 1px var(--line)!important}
 #bg{position:absolute;inset:0;background-size:100% 100%;background-repeat:no-repeat}
 #videoLayer{position:absolute;inset:0;overflow:hidden;pointer-events:none;transform:translateZ(0);backface-visibility:hidden}
 #videoLayer[hidden]{display:none!important}
@@ -356,7 +356,7 @@ body.map-bottom-peek .ambient-runner.duck{transform:translateX(0);animation:duck
 body.map-bottom-peek .ambient-runner.waiting{opacity:0;visibility:hidden;pointer-events:none;animation-play-state:paused!important}
 body.map-bottom-peek .ambient-runner>img.runner-art{animation:runner-body-motion .56s ease-in-out infinite}
 body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .3s ease-in-out infinite alternate}
-#runnerRunway{height:96px;width:100%;pointer-events:none}
+#runnerRunway{height:112px;width:100%;pointer-events:none}
 .editor-stage.video-mode #runnerRunway{grid-column:1/-1}
 .ambient-runner::after{content:"";position:absolute;z-index:0;left:-42px;bottom:12px;width:55px;height:38px;opacity:0;background:radial-gradient(ellipse at 22% 68%,rgba(248,248,250,.82) 0 18%,transparent 40%),radial-gradient(ellipse at 58% 42%,rgba(224,227,232,.74) 0 22%,transparent 44%),radial-gradient(ellipse at 78% 74%,rgba(251,251,253,.8) 0 17%,transparent 42%);filter:blur(2px);pointer-events:none}
 .ambient-runner.sprinting::after{opacity:.95;animation:cartoon-smoke .3s ease-out infinite alternate}
