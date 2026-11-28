@@ -388,8 +388,8 @@ body.wallpaper-runners-off .ambient-runner-layer{display:none!important}
 .ambient-runner>img.runner-art{display:block;position:relative;z-index:1;width:100%;height:100%;object-fit:contain;overflow:visible;transform-origin:50% 82%;animation:none;will-change:transform}
 .ambient-runner.duck>img.runner-art{scale:1 1}
 body.map-bottom-peek .ambient-runner{opacity:1;visibility:visible;pointer-events:auto}
-body.map-bottom-peek .ambient-runner.panda{transform:translateX(0);animation:panda-run-lane 11.6s linear 1 both;will-change:transform}
-body.map-bottom-peek .ambient-runner.duck{transform:translateX(0);animation:duck-run-lane 11.6s linear 1 both;will-change:transform}
+body.map-bottom-peek .ambient-runner.panda{transform:translateX(0);animation:panda-run-lane 11.6s linear infinite;will-change:transform}
+body.map-bottom-peek .ambient-runner.duck{transform:translateX(0);animation:duck-run-lane 11.6s linear infinite;will-change:transform}
 body.map-bottom-peek .ambient-runner.waiting{opacity:0;visibility:hidden;pointer-events:none;animation-play-state:paused!important}
 body.map-bottom-peek .ambient-runner>img.runner-art{animation:runner-body-motion .56s ease-in-out infinite}
 body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .3s ease-in-out infinite alternate}
@@ -422,11 +422,12 @@ body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-s
 @media (prefers-reduced-motion:reduce){
  body.wallpaper-active .ambient-fish .goldie{animation:goldfish-jump 8.6s cubic-bezier(.34,.08,.56,.98) infinite!important}
  body.wallpaper-active .ambient-fish .splash{animation:splash-burst 8.6s ease-out infinite!important}
- body.map-bottom-peek .ambient-runner.panda{animation:panda-run-lane 11.6s linear 1 both!important}
- body.map-bottom-peek .ambient-runner.duck{animation:duck-run-lane 11.6s linear 1 both!important}
+ body.map-bottom-peek .ambient-runner.panda{animation:panda-run-lane 11.6s linear infinite!important}
+ body.map-bottom-peek .ambient-runner.duck{animation:duck-run-lane 11.6s linear infinite!important}
  body.map-bottom-peek .ambient-runner>img.runner-art{animation:runner-body-motion .56s ease-in-out infinite!important}
  body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .3s ease-in-out infinite alternate!important}
  body.map-bottom-peek .ambient-runner>svg.runner-art{display:none!important}
+ body.map-bottom-peek .ambient-runner.sprinting{animation:none!important}
 }
 </style>
 
@@ -2811,10 +2812,6 @@ runnerPair.forEach(function(runner){
       restartRunner();
     };
   }
-  runner.addEventListener('animationend',function(event){
-    if(event.target!==runner||boostAnimation||!document.body.classList.contains('map-bottom-peek'))return;
-    if(event.animationName==='panda-run-lane'||event.animationName==='duck-run-lane')restartRunner();
-  });
   runner.addEventListener('click',sprintRunner);
   runner.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();sprintRunner()}});
 });sizeCanvas();
