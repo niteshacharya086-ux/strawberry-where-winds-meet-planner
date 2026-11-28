@@ -31,6 +31,19 @@
   --accent:#FF3F67; --accent-fg:#FFFFFF; --seed:#FFD25E; --leaf:#3DDC97; --lilac:#482A56; --strip:#40224C;
   --ally:#6C93FF; --enemy:#FF5A78; --gold:#FFD25E; --danger:#FF5A78;
   --map:#2D1839; --grid:#3E2450; --shadow:0 2px 0 rgba(0,0,0,.55); color-scheme:dark}
+:root[data-theme="anime"]{
+  --bg:#f4f4f4; --panel:#fff; --fg:#111; --muted:#4a4a4a; --line:#888;
+  --edge:#111; --shd:#111; --dot:#bcbcbc; --accent:#111; --accent-fg:#fff; --seed:#222; --leaf:#333; --lilac:#e8e8e8; --strip:#111;
+  --ally:#111; --enemy:#666; --gold:#444; --danger:#111;
+  --map:#fff; --grid:#d0d0d0; --shadow:3px 3px 0 #111; --r-panel:3px; --r-card:2px; --r-ctl:2px; color-scheme:light}
+:root[data-theme="anime"] body{background-image:radial-gradient(#999 0.65px,transparent .8px);background-size:6px 6px}
+:root[data-theme="anime"] .panel,:root[data-theme="anime"] #videoTools,:root[data-theme="anime"] .tcard,:root[data-theme="anime"] .rbox,:root[data-theme="anime"] .tpl{border:2px solid #111;box-shadow:4px 4px 0 #111;background:repeating-linear-gradient(135deg,rgba(0,0,0,.025) 0 1px,transparent 1px 5px),#fff}
+:root[data-theme="anime"] .btn,:root[data-theme="anime"] .seg,:root[data-theme="anime"] select,:root[data-theme="anime"] input[type=text],:root[data-theme="anime"] textarea{border-radius:2px;border-color:#111;box-shadow:2px 2px 0 #111}
+:root[data-theme="anime"] .layout>aside>.panel-h:first-child,:root[data-theme="anime"] .layout>section>.tabs{background:#111;color:#fff;border-color:#111}
+:root[data-theme="anime"] .map{border-color:#111;background-color:#fff;background-image:linear-gradient(#d0d0d0 1px,transparent 1px),linear-gradient(90deg,#d0d0d0 1px,transparent 1px)}
+:root[data-theme="anime"] #bg,:root[data-theme="anime"] #bgVideo,:root[data-theme="anime"] img{filter:grayscale(1) contrast(1.08)}
+:root[data-theme="anime"] .ambient-fish .goldie{filter:grayscale(1) contrast(1.08) drop-shadow(0 4px 4px rgba(0,0,0,.35))}
+:root[data-theme="anime"] .logo{filter:grayscale(1) drop-shadow(3px 3px 0 #111)}
 
 *{box-sizing:border-box}
 html{scrollbar-width:thin;scrollbar-color:var(--accent) transparent}
@@ -2590,9 +2603,14 @@ $('#bUndo').onclick=undo;$('#bRedo').onclick=redo;
 $('#bClearD').onclick=function(){if(!S.strokes.length)return;confirmBox('Clear all drawings?',function(){S.strokes=[];S.redo=[];drawStrokes();save()})};
 $('#bAuto').onclick=function(){ui.auto=!ui.auto;this.classList.toggle('on',ui.auto);this.setAttribute('aria-pressed',String(ui.auto));void 0};
 $('#bClearMap').onclick=function(){confirmBox('Remove every player, objective and drawing from the map?',function(){S.placed={};S.objects=[];S.strokes=[];S.redo=[];ui.sel=null;drawStrokes();afterChange()})};
-$('#bTheme').onclick=function(){
-  var r=document.documentElement,cur=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
-  r.setAttribute('data-theme',cur==='dark'?'light':'dark');
+var themeOrder=['light','dark','anime'],themeLabels={light:'Light',dark:'Dark',anime:'Anime Sketch'};
+var themeButton=$('#bTheme');
+function currentTheme(){return document.documentElement.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function labelThemeButton(){var active=currentTheme();themeButton.textContent='Theme: '+themeLabels[active];themeButton.title='Click to cycle Light, Dark, and Anime Sketch themes'}
+labelThemeButton();
+themeButton.onclick=function(){
+  var next=themeOrder[(themeOrder.indexOf(currentTheme())+1)%themeOrder.length];
+  document.documentElement.setAttribute('data-theme',next);labelThemeButton();
 };
 
 /* ---------- keyboard ---------- */
@@ -2640,6 +2658,20 @@ var paw=document.querySelector('.cat-paw');
 var fishLayer=document.querySelector('.ambient-fish-layer');
 var runnerLayer=document.querySelector('.ambient-runner-layer');
 var fishCatchBusy=false;
+var meowContext=null;
+function playCatchMeow(){
+  try{
+    var AudioContextClass=window.AudioContext||window.webkitAudioContext;
+    if(!AudioContextClass)return;
+    meowContext=meowContext||new AudioContextClass();
+    if(meowContext.state==='suspended')meowContext.resume();
+    var now=meowContext.currentTime,voice=meowContext.createOscillator(),formant=meowContext.createBiquadFilter(),volume=meowContext.createGain();
+    voice.type='triangle';voice.frequency.setValueAtTime(690,now);voice.frequency.exponentialRampToValueAtTime(440,now+.16);voice.frequency.exponentialRampToValueAtTime(720,now+.34);voice.frequency.exponentialRampToValueAtTime(500,now+.62);
+    formant.type='bandpass';formant.frequency.setValueAtTime(1050,now);formant.Q.setValueAtTime(.9,now);
+    volume.gain.setValueAtTime(.0001,now);volume.gain.exponentialRampToValueAtTime(.13,now+.045);volume.gain.setValueAtTime(.085,now+.28);volume.gain.exponentialRampToValueAtTime(.0001,now+.66);
+    voice.connect(formant);formant.connect(volume);volume.connect(meowContext.destination);voice.start(now);voice.stop(now+.68);
+  }catch(_){/* Audio is optional if the browser blocks Web Audio. */}
+}
 document.querySelectorAll('.ambient-life > .ambient-fish').forEach(function(fish){fishLayer.appendChild(fish)});
 document.querySelectorAll('.ambient-life > .ambient-runner').forEach(function(runner){runnerLayer.appendChild(runner)});
 function placeFishInOpenSpace(){
@@ -2684,6 +2716,7 @@ document.querySelectorAll('.ambient-fish').forEach(function(fish){
     var fishArt=fish.querySelector('.goldie')||fish,box=fishArt.getBoundingClientRect();
     if(!box.width||!box.height)return;
     fishCatchBusy=true;
+    playCatchMeow();
     var fishY=box.top+box.height*.5,extendHand=fishY>window.innerHeight*.5;
     var pawWidth=190,pawHeight=300;
     var pawScaleLimit=Math.max(1,(window.innerWidth-24)/(pawWidth*1.05));
