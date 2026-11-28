@@ -333,6 +333,8 @@ footer{position:relative;min-height:88px;display:grid;place-items:center;color:v
 .prow[class*="rc-"] .px{color:inherit}
 .row.flash[class*="rc-"]{background:var(--rb)!important}
 .row[class*="rc-"] .btn{color:#26102F}
+:root[data-theme="dark"] .row[class*="rc-"] .btn:not(.primary),:root[data-theme="dark"] .prow[class*="rc-"] .btn:not(.primary){background:#fff;color:#26102F;border-color:#26102F;box-shadow:1px 1px 0 #07030B}
+:root[data-theme="dark"] .row[class*="rc-"] .btn:not(.primary):hover,:root[data-theme="dark"] .prow[class*="rc-"] .btn:not(.primary):hover{background:#F4EAF8}
 /* ---- compact rows so every player name is visible as soon as a team is opened ---- */
 #list{max-height:max(420px,74vh)}
 .row{flex-wrap:nowrap;align-items:center}
