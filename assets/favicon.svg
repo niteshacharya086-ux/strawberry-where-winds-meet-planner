@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="berry" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff6682"/>
+      <stop offset="1" stop-color="#d91f4e"/>
+    </linearGradient>
+  </defs>
+  <path fill="#39a66a" d="M31 15c-2-8-10-9-15-8 2 6 7 10 15 10-5-7-2-13 2-16 4 5 5 10 2 16 6-7 12-5 16-2-4 6-10 8-17 5z"/>
+  <path fill="url(#berry)" d="M32 18c-9-9-25-4-26 9-1 13 13 28 24 35 1 1 3 1 4 0 11-7 25-22 24-35-1-13-17-18-26-9z"/>
+  <g fill="#fff0a8">
+    <ellipse cx="19" cy="29" rx="1.5" ry="2.3" transform="rotate(-25 19 29)"/>
+    <ellipse cx="31" cy="26" rx="1.5" ry="2.3"/>
+    <ellipse cx="44" cy="30" rx="1.5" ry="2.3" transform="rotate(25 44 30)"/>
+    <ellipse cx="24" cy="41" rx="1.5" ry="2.3" transform="rotate(-12 24 41)"/>
+    <ellipse cx="39" cy="42" rx="1.5" ry="2.3" transform="rotate(12 39 42)"/>
+    <ellipse cx="32" cy="54" rx="1.5" ry="2.3"/>
+  </g>
+</svg>
