@@ -2655,8 +2655,9 @@ function placeFishInOpenSpace(){
       var rect={left:x-8,right:x+fw+8,top:y-8,bottom:y+fh+8};
       var blocked=blockers.some(function(b){return b.right>rect.left&&b.left<rect.right&&b.bottom>rect.top&&b.top<rect.bottom});
       if(blocked||occupied.some(function(b){return b.right>rect.left&&b.left<rect.right&&b.bottom>rect.top&&b.top<rect.bottom}))continue;
-      var targetY=index===0?h*.1:index===1?h*.22:h*.68;
-      var score=(y<h*.42?0:5)+(x<w*.3?0:2)+Math.abs(y-targetY)/h+(index<2&&y>h*.42?8:0);
+      var targetX=index===0?8:index===1?w-fw-8:(w-fw)*.5;
+      var targetY=index===0?h*.1:index===1?h*.12:h*.68;
+      var score=Math.abs((x+fw*.5)-(targetX+fw*.5))/w*3+Math.abs(y-targetY)/h+(index<2&&y>h*.46?20:0);
       choices.push({x:x,y:y,score:score,rect:rect});
     }}
     choices.sort(function(a,b){return a.score-b.score});
