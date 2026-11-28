@@ -275,7 +275,7 @@ textarea{width:100%;min-height:200px;font:13px/1.45 ui-monospace,Consolas,monosp
 .mrow{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:2px dotted var(--line)}
 .kbd{display:grid;grid-template-columns:auto 1fr;gap:6px 14px}
 kbd{font:700 12px var(--font-body);background:var(--lilac);border:2px solid var(--edge);border-radius:8px;padding:1px 8px;white-space:nowrap}
-footer{color:var(--muted);font-size:13px;text-align:center}
+footer{position:relative;min-height:88px;display:grid;place-items:center;color:var(--muted);font-size:13px;text-align:center}
 
 @media (max-width:480px){h1{font-size:40px}.logo{width:52px;height:52px}.panel{padding:14px}.layout>aside>.panel-h:first-child{margin:-14px -14px 2px}.layout>section>.tabs{margin:-14px -14px 0}}
 
@@ -356,8 +356,7 @@ body.map-bottom-peek .ambient-runner.duck{transform:translateX(0);animation:duck
 body.map-bottom-peek .ambient-runner.waiting{opacity:0;visibility:hidden;pointer-events:none;animation-play-state:paused!important}
 body.map-bottom-peek .ambient-runner>img.runner-art{animation:runner-body-motion .56s ease-in-out infinite}
 body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .3s ease-in-out infinite alternate}
-#runnerRunway{height:128px;width:100%;pointer-events:none}
-.editor-stage.video-mode #runnerRunway{grid-column:1/-1}
+#runnerRunway{position:absolute;left:0;right:0;top:auto;bottom:8px;height:0;width:100%;pointer-events:none}
 .ambient-runner::after{content:"";position:absolute;z-index:0;left:-42px;bottom:12px;width:55px;height:38px;opacity:0;background:radial-gradient(ellipse at 22% 68%,rgba(248,248,250,.82) 0 18%,transparent 40%),radial-gradient(ellipse at 58% 42%,rgba(224,227,232,.74) 0 22%,transparent 44%),radial-gradient(ellipse at 78% 74%,rgba(251,251,253,.8) 0 17%,transparent 42%);filter:blur(2px);pointer-events:none}
 .ambient-runner.sprinting::after{opacity:.95;animation:cartoon-smoke .3s ease-out infinite alternate}
 .ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .3s ease-in-out infinite alternate}
@@ -1420,7 +1419,7 @@ function addMarker(file){
 var wrapEl=(function(){var w=document.createElement('div');w.id='mapScroll';
   w.style.cssText='position:relative;width:100%;overflow:hidden;border-radius:10px;box-shadow:0 0 0 1px var(--line);aspect-ratio:var(--ar,1.9)';
   map.parentNode.insertBefore(w,map);w.appendChild(map);
-  map.style.border='0';map.style.borderRadius='0';map.style.maxWidth='none';var runway=document.createElement('div');runway.id='runnerRunway';runway.setAttribute('aria-hidden','true');w.after(runway);return w})();
+  map.style.border='0';map.style.borderRadius='0';map.style.maxWidth='none';var runway=document.createElement('div');runway.id='runnerRunway';runway.setAttribute('aria-hidden','true');var footer=document.querySelector('footer');if(footer)footer.appendChild(runway);return w})();
 function applyMapSize(fx,fy){
   var v=S.mapSize||100,vw=wrapEl.clientWidth,vh=wrapEl.clientHeight,ow=map.offsetWidth,oh=map.offsetHeight;
   if(typeof fx!=='number'){fx=.5;fy=.5}
@@ -2647,6 +2646,7 @@ function placeFishInOpenSpace(){
   var fish=Array.prototype.slice.call(document.querySelectorAll('.ambient-fish'));
   if(!fish.length)return;
   var w=window.innerWidth,h=window.innerHeight;
+  var headerBand=document.querySelector('header'),headerRect=headerBand?headerBand.getBoundingClientRect():null;
   var blockers=Array.prototype.slice.call(document.querySelectorAll('#mapScroll,#toolbar,.panel-h,.sub,.tag,p,button,[role=button],[role=tab],.tcard,.row,input,select,textarea,h1,h2,h3,.tabs,svg.logo')).filter(function(el){return !el.classList.contains('ambient-fish')}).map(function(el){return el.getBoundingClientRect()}).filter(function(b){return b.width&&b.height&&b.right>0&&b.left<w&&b.bottom>0&&b.top<h});
   var occupied=[];
   fish.forEach(function(item,index){
@@ -2655,9 +2655,10 @@ function placeFishInOpenSpace(){
       var rect={left:x-8,right:x+fw+8,top:y-8,bottom:y+fh+8};
       var blocked=blockers.some(function(b){return b.right>rect.left&&b.left<rect.right&&b.bottom>rect.top&&b.top<rect.bottom});
       if(blocked||occupied.some(function(b){return b.right>rect.left&&b.left<rect.right&&b.bottom>rect.top&&b.top<rect.bottom}))continue;
-      var targetX=index===0?8:index===1?w-fw-8:(w-fw)*.5;
-      var targetY=index===0?h*.1:index===1?h*.12:h*.68;
-      var score=Math.abs((x+fw*.5)-(targetX+fw*.5))/w*3+Math.abs(y-targetY)/h+(index<2&&y>h*.46?20:0);
+      var targetX=index===0?w*.42-fw*.5:index===1?w*.58-fw*.5:(w-fw)*.5;
+      var targetY=index<2&&headerRect?Math.max(8,headerRect.top+(headerRect.height-fh)*.5):index===2?h*.68:h*.1;
+      var inHeader=index<2&&headerRect&&y+fh>headerRect.top&&y<headerRect.bottom;
+      var score=Math.abs((x+fw*.5)-(targetX+fw*.5))/w*3+Math.abs(y-targetY)/h-(inHeader?20:0)+(index<2&&y>h*.46?20:0);
       choices.push({x:x,y:y,score:score,rect:rect});
     }}
     choices.sort(function(a,b){return a.score-b.score});
@@ -2682,21 +2683,16 @@ document.querySelectorAll('.ambient-fish').forEach(function(fish){
     if(fishCatchBusy||fish.classList.contains('is-catching'))return;
     var fishArt=fish.querySelector('.goldie')||fish,box=fishArt.getBoundingClientRect();
     if(!box.width||!box.height)return;
-    var fishStartLeft=fish.style.left,fishStartTop=fish.style.top;
     fishCatchBusy=true;
     var fishY=box.top+box.height*.5,extendHand=fishY>window.innerHeight*.5;
     var pawWidth=190,pawHeight=300;
     var pawScaleLimit=Math.max(1,(window.innerWidth-24)/(pawWidth*1.05));
-    var pawStretch=Math.max(1,Math.min(4.8,(fishY+36)/pawHeight,pawScaleLimit));
+    var pawStretch=Math.max(1,Math.min(4.8,fishY/(pawHeight*.78),pawScaleLimit));
     var visiblePawWidth=pawWidth*pawStretch*1.05;
     var pawCenter=Math.max(visiblePawWidth*.5+4,Math.min(window.innerWidth-visiblePawWidth*.5-4,box.left+box.width*.52));
     paw.style.left=(pawCenter-pawWidth*.5)+'px';
     paw.style.top='0px';paw.style.setProperty('--paw-stretch',pawStretch.toFixed(2));paw.style.setProperty('--paw-stretch-x',(pawStretch*1.05).toFixed(2));
     fish.classList.add('is-catching');
-    void fish.offsetWidth;
-    var palmCenterY=pawHeight*pawStretch*.78;
-    fish.style.left=Math.max(0,Math.min(window.innerWidth-fish.offsetWidth,pawCenter-fish.offsetWidth*.5))+'px';
-    fish.style.top=Math.max(0,palmCenterY-fish.offsetHeight*.5)+'px';
     paw.classList.remove('dragging','extended');
     if(extendHand)paw.classList.add('extended');
     paw.classList.add('active');
@@ -2704,7 +2700,6 @@ document.querySelectorAll('.ambient-fish').forEach(function(fish){
     window.setTimeout(function(){fish.classList.add('is-lifted');paw.classList.add('dragging')},420);
     window.setTimeout(function(){
       fish.classList.remove('is-catching','is-lifted');paw.classList.remove('active','dragging','extended');
-      fish.style.left=fishStartLeft;fish.style.top=fishStartTop;
       paw.style.left='';paw.style.top='';paw.style.removeProperty('--paw-stretch');paw.style.removeProperty('--paw-stretch-x');fishCatchBusy=false;scheduleFishPlacement();
     },2200);
   }
@@ -2720,7 +2715,7 @@ function updateMapBottomPeek(){
   var runwayRect=runway.getBoundingClientRect();
   var runwayVisible=runwayRect.bottom>0&&runwayRect.top<window.innerHeight&&mapRect.top<window.innerHeight;
   document.body.style.setProperty('--runner-lane-bottom',Math.max(0,window.innerHeight-runwayRect.bottom-8)+'px');
-  document.body.classList.toggle('map-bottom-peek',runwayVisible&&window.scrollY>24&&!stage.classList.contains('video-mode'));
+  document.body.classList.toggle('map-bottom-peek',runwayVisible&&mapRect.top<window.innerHeight&&!stage.classList.contains('video-mode'));
 }
 var mapPeekFrame=0;
 function scheduleMapBottomPeek(){if(mapPeekFrame)return;mapPeekFrame=window.requestAnimationFrame(function(){mapPeekFrame=0;updateMapBottomPeek()})}
