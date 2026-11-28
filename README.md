@@ -38,4 +38,4 @@ Double-click `Start_Planner_Locally.cmd` and keep the opened PowerShell window r
 
 No software license is included yet, so public visibility does not grant permission to reuse or redistribute the code. The planner HTML contains embedded images and fonts. Review the rights for all bundled artwork and add an appropriate license before inviting others to copy or modify the project. *Where Winds Meet* and related game materials belong to their respective owners.
 
-The fish-catch meow is [Meow.ogg](https://commons.wikimedia.org/wiki/File:Meow.ogg) by Dan Crosby, licensed under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). The audio is included unchanged as `assets/cat-meow.ogg`.
+The fish-catch meow is [Meow of a Siamese cat - freemaster2.wav](https://commons.wikimedia.org/wiki/File:Meow_of_a_Siamese_cat_-_freemaster2.wav) by freemaster2, dedicated to the public domain under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). The audio is included unchanged as `assets/cat-meow.wav`.

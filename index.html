@@ -2669,10 +2669,24 @@ var paw=document.querySelector('.cat-paw');
 var fishLayer=document.querySelector('.ambient-fish-layer');
 var runnerLayer=document.querySelector('.ambient-runner-layer');
 var fishCatchBusy=false;
-var meowSound=new Audio('assets/cat-meow.ogg');
+var meowSound=new Audio('assets/cat-meow.wav');
 meowSound.preload='auto';
 function playCatchMeow(){
   try{meowSound.pause();meowSound.currentTime=0;var playback=meowSound.play();if(playback&&playback.catch)playback.catch(function(){/* Audio is optional if the browser blocks playback. */})}catch(_){/* Audio is optional if the browser blocks playback. */}
+}
+var runnerSoundContext=null;
+function playRunnerWooo(){
+  try{
+    var AudioContextClass=window.AudioContext||window.webkitAudioContext;
+    if(!AudioContextClass)return;
+    runnerSoundContext=runnerSoundContext||new AudioContextClass();
+    if(runnerSoundContext.state==='suspended')runnerSoundContext.resume();
+    var now=runnerSoundContext.currentTime,voice=runnerSoundContext.createOscillator(),undertone=runnerSoundContext.createOscillator(),filter=runnerSoundContext.createBiquadFilter(),volume=runnerSoundContext.createGain();
+    voice.type='sine';voice.frequency.setValueAtTime(250,now);voice.frequency.exponentialRampToValueAtTime(520,now+.18);voice.frequency.exponentialRampToValueAtTime(260,now+1.05);
+    undertone.type='sine';undertone.frequency.setValueAtTime(125,now);undertone.frequency.exponentialRampToValueAtTime(260,now+.18);undertone.frequency.exponentialRampToValueAtTime(130,now+1.05);
+    filter.type='lowpass';filter.frequency.setValueAtTime(1100,now);volume.gain.setValueAtTime(.0001,now);volume.gain.exponentialRampToValueAtTime(.2,now+.05);volume.gain.setValueAtTime(.16,now+.7);volume.gain.exponentialRampToValueAtTime(.0001,now+1.08);
+    voice.connect(filter);undertone.connect(filter);filter.connect(volume);volume.connect(runnerSoundContext.destination);voice.start(now);undertone.start(now);voice.stop(now+1.1);undertone.stop(now+1.1);
+  }catch(_){/* Runner sound is optional if the browser blocks Web Audio. */}
 }
 document.querySelectorAll('.ambient-life > .ambient-fish').forEach(function(fish){fishLayer.appendChild(fish)});
 document.querySelectorAll('.ambient-life > .ambient-runner').forEach(function(runner){runnerLayer.appendChild(runner)});
@@ -2770,6 +2784,7 @@ document.querySelectorAll('.ambient-runner').forEach(function(runner){
     target.classList.remove('waiting','sprinting');
   }
   function sprint(){
+    playRunnerWooo();
     if(runner.classList.contains('waiting')||boostAnimation)return;
     var startX=runner.getBoundingClientRect().left;
     var endX=window.innerWidth+runner.offsetWidth+80;
