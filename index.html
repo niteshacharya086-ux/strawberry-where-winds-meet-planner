@@ -69,6 +69,7 @@ header{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-
 h1{font-size:50px;line-height:.92;font-weight:800;letter-spacing:-.035em;color:var(--accent);text-shadow:3px 3px 0 var(--shd)}
 .straw-initial{position:relative;display:inline-block}
 .straw-hat{position:absolute;width:37px;height:20px;left:50%;top:-13px;overflow:visible;transform:translateX(-50%) rotate(-8deg);filter:drop-shadow(1px 1px 0 var(--shd))}
+.brand .sub,.brand .tag{display:table;width:fit-content;max-width:100%;padding:2px 6px;border-radius:3px}
 .sub{margin:6px 0 0;font:600 17px var(--font-display);letter-spacing:-.005em;color:var(--fg)}
 .tag{margin:1px 0 0;color:var(--muted);font-size:13px}
 .btns{display:flex;flex-wrap:wrap;gap:10px}
@@ -103,6 +104,8 @@ body.wallpaper-active .layout>aside>.panel-h:first-child{background:transparent;
 body.wallpaper-active .layout>section>.tabs{background:transparent;border-bottom-color:transparent}
 :root[data-theme="light"] body.wallpaper-active .layout>section>.tabs .tab:not(.on),:root[data-theme="anime"] body.wallpaper-active .layout>section>.tabs .tab:not(.on){background:var(--panel);color:var(--fg);border-color:var(--edge)}
 :root[data-theme="light"] body.wallpaper-active .layout>section>.tabs .btn,:root[data-theme="anime"] body.wallpaper-active .layout>section>.tabs .btn{background:var(--panel);color:var(--fg);border-color:var(--edge)}
+body.wallpaper-active .brand .sub,body.wallpaper-active .brand .tag{background:var(--panel);background:color-mix(in srgb,var(--panel) 88%,transparent)}
+body.wallpaper-active #toolbar{background:var(--panel)!important;background:color-mix(in srgb,var(--panel) 88%,transparent)!important;border:1px solid var(--line);border-radius:var(--r-card);padding:8px}
 body.wallpaper-active .map{background-color:var(--map)}
 body.wallpaper-active .tcard .th,body.wallpaper-active .rvh{background:transparent}
 body.wallpaper-active .tcard.dropx{background:var(--glow)!important}
