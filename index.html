@@ -2671,28 +2671,13 @@ var runnerLayer=document.querySelector('.ambient-runner-layer');
 var fishCatchBusy=false;
 var meowSound=new Audio('assets/cat-cute-meow.mp3');
 meowSound.preload='auto';
-var duckQuackSound=new Audio('assets/duck-quack.ogg');
-duckQuackSound.preload='auto';
+var runnerSound=new Audio('assets/runner-running.mp3');
+runnerSound.preload='auto';
 function replayAmbientSound(sound){
   try{sound.pause();sound.currentTime=0;var playback=sound.play();if(playback&&playback.catch)playback.catch(function(){/* Sound is optional if the browser blocks playback. */})}catch(_){/* Sound is optional if the browser blocks playback. */}
 }
 function playCatchMeow(){
   replayAmbientSound(meowSound);
-}
-var runnerSoundContext=null;
-function playPandaWhoosh(){
-  try{
-    var AudioContextClass=window.AudioContext||window.webkitAudioContext;
-    if(!AudioContextClass)return;
-    runnerSoundContext=runnerSoundContext||new AudioContextClass();
-    if(runnerSoundContext.state==='suspended')runnerSoundContext.resume();
-    var now=runnerSoundContext.currentTime,duration=.48,buffer=runnerSoundContext.createBuffer(1,Math.ceil(runnerSoundContext.sampleRate*duration),runnerSoundContext.sampleRate),samples=buffer.getChannelData(0);
-    for(var i=0;i<samples.length;i++)samples[i]=Math.random()*2-1;
-    var noise=runnerSoundContext.createBufferSource(),filter=runnerSoundContext.createBiquadFilter(),volume=runnerSoundContext.createGain();
-    noise.buffer=buffer;filter.type='bandpass';filter.Q.value=.55;filter.frequency.setValueAtTime(380,now);filter.frequency.exponentialRampToValueAtTime(1900,now+.16);filter.frequency.exponentialRampToValueAtTime(700,now+duration);
-    volume.gain.setValueAtTime(.0001,now);volume.gain.exponentialRampToValueAtTime(.22,now+.035);volume.gain.exponentialRampToValueAtTime(.0001,now+duration);
-    noise.connect(filter);filter.connect(volume);volume.connect(runnerSoundContext.destination);noise.start(now);noise.stop(now+duration);
-  }catch(_){/* Runner sound is optional if the browser blocks Web Audio. */}
 }
 document.querySelectorAll('.ambient-life > .ambient-fish').forEach(function(fish){fishLayer.appendChild(fish)});
 document.querySelectorAll('.ambient-life > .ambient-runner').forEach(function(runner){runnerLayer.appendChild(runner)});
@@ -2790,8 +2775,7 @@ document.querySelectorAll('.ambient-runner').forEach(function(runner){
     target.classList.remove('waiting','sprinting');
   }
   function sprint(){
-    if(runner.classList.contains('panda'))playPandaWhoosh();
-    else replayAmbientSound(duckQuackSound);
+    replayAmbientSound(runnerSound);
     if(runner.classList.contains('waiting')||boostAnimation)return;
     var startX=runner.getBoundingClientRect().left;
     var endX=window.innerWidth+runner.offsetWidth+80;

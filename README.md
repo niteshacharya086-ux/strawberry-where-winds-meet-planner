@@ -41,5 +41,4 @@ No software license is included yet, so public visibility does not grant permiss
 Ambient sound credits:
 
 - The fish-catch meow is the MP3 provided by the project owner and is included as `assets/cat-cute-meow.mp3`.
-- The duck click sound is [Ducks snatching.ogg](https://commons.wikimedia.org/wiki/File:Ducks_snatching.ogg), recorded by Bert76 in Ravenhof park, Torhout, Belgium, and dedicated to the public domain under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). It is included unchanged as `assets/duck-quack.ogg`.
-- The panda click sound is synthesized in the browser as a short whoosh using the Web Audio API; no external sound file is needed.
+- The panda and duck runner sound is the MP3 provided by the project owner and is included as `assets/runner-running.mp3`.
