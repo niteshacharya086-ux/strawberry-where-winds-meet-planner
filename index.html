@@ -2802,7 +2802,7 @@ runnerPair.forEach(function(runner){
     runnerCycleEnded.add(runner);
     if(runnerCycleEnded.size===runnerPair.length){
       stopRunnerAudio();runnerPair.forEach(function(item){item.classList.add('waiting')});
-      restartRunnerCycle(2000);
+      restartRunnerCycle(0);
     }
   });
   function sprintPair(){
