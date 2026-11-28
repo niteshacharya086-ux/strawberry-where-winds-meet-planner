@@ -354,6 +354,7 @@ body.map-bottom-peek .ambient-runner{opacity:1;visibility:visible;pointer-events
 body.map-bottom-peek .ambient-runner.panda{transform:translateX(0);animation:panda-run-lane 9.6s linear infinite;will-change:transform}
 body.map-bottom-peek .ambient-runner.duck{transform:translateX(0);animation:duck-run-lane 9.6s linear infinite;will-change:transform}
 body.map-bottom-peek .ambient-runner.sprinting{animation-duration:1.2s}
+body.map-bottom-peek .ambient-runner.waiting{opacity:0;visibility:hidden;pointer-events:none;animation-play-state:paused!important}
 body.map-bottom-peek .ambient-runner>img.runner-art{animation:runner-body-motion .56s ease-in-out infinite}
 body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .3s ease-in-out infinite alternate}
 #runnerRunway{height:96px;width:100%;pointer-events:none}
@@ -2717,14 +2718,23 @@ document.addEventListener('scroll',scheduleMapBottomPeek,{passive:true,capture:t
 window.addEventListener('resize',scheduleMapBottomPeek,{passive:true});
 scheduleMapBottomPeek();
 document.querySelectorAll('.ambient-runner').forEach(function(runner){
-  var sprintTimer=null;
+  var partner=document.querySelector(runner.classList.contains('panda')?'.ambient-runner.duck':'.ambient-runner.panda');
+  var laneAnimation=runner.classList.contains('panda')?'panda-run-lane':'duck-run-lane';
   function sprint(){
+    if(runner.classList.contains('waiting')||(partner&&partner.classList.contains('waiting')))return;
     runner.classList.remove('sprinting');
     void runner.offsetWidth;
     runner.classList.add('sprinting');
-    window.clearTimeout(sprintTimer);
-    sprintTimer=window.setTimeout(function(){runner.classList.remove('sprinting')},1800);
   }
+  runner.addEventListener('animationiteration',function(event){
+    if(event.animationName!==laneAnimation)return;
+    if(runner.classList.contains('sprinting')){
+      runner.classList.remove('sprinting');
+      runner.classList.add('waiting');
+    }else if(partner&&partner.classList.contains('waiting')){
+      partner.classList.remove('waiting');
+    }
+  });
   runner.addEventListener('click',sprint);
   runner.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();sprint()}});
 });
