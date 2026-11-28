@@ -331,6 +331,8 @@ footer{color:var(--muted);font-size:13px;text-align:center}
 .ambient-life{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;user-select:none}
 body:not(.wallpaper-active) .ambient-life{display:none}
 .ambient-fish-layer{position:fixed;inset:0;z-index:20;overflow:hidden;pointer-events:none;user-select:none}
+.ambient-runner-layer{position:fixed;inset:0;z-index:21;overflow:hidden;pointer-events:none;user-select:none}
+body:not(.wallpaper-active) .ambient-runner-layer{display:none}
 body:not(.wallpaper-active) .ambient-fish-layer{display:none}
 .ambient-water{position:absolute;left:0;top:22vh;width:100%;height:34px;opacity:.38;filter:drop-shadow(0 2px 6px rgba(36,190,255,.5))}
 .ambient-fish{position:absolute;left:-130px;top:calc(14vh - 91px);width:128px;height:100px;animation:fish-route 38s linear infinite;will-change:transform,translate}
@@ -341,11 +343,13 @@ body:not(.wallpaper-active) .ambient-fish-layer{display:none}
 .ambient-fish.fish-two .goldie,.ambient-fish.fish-two .splash{animation-delay:-2.4s}
 .ambient-fish.fish-three .goldie,.ambient-fish.fish-three .splash{animation-delay:-4.8s}
 .water-stroke{fill:none;stroke:#9aefff;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2 11;animation:water-drift 8s linear infinite}
-.ambient-runner{position:fixed;left:-120px;bottom:max(2px,env(safe-area-inset-bottom,0px));width:112px;height:104px;line-height:1;filter:drop-shadow(0 5px 4px rgba(0,0,0,.45));animation:run-across 23s linear infinite;pointer-events:auto;cursor:pointer;touch-action:manipulation}
-.ambient-runner.duck{width:124px;height:104px;animation-duration:20s;animation-delay:-12s}
+.ambient-runner{position:fixed;left:-120px;bottom:max(2px,env(safe-area-inset-bottom,0px));width:112px;height:104px;line-height:1;filter:drop-shadow(0 5px 4px rgba(0,0,0,.45));animation:run-across 17s linear infinite;pointer-events:auto;cursor:pointer;touch-action:manipulation;isolation:isolate}
+.ambient-runner.duck{width:124px;height:104px;animation-duration:15s;animation-delay:-12s}
 .ambient-runner>svg.runner-art{display:none}
-.ambient-runner>img.runner-art{display:block;width:100%;height:100%;overflow:visible;transform-origin:50% 82%;animation:runner-body-motion .34s cubic-bezier(.4,0,.6,1) infinite alternate;will-change:transform}
-.ambient-runner.sprinting>img.runner-art{animation-duration:.19s}
+.ambient-runner>img.runner-art{display:block;position:relative;z-index:1;width:100%;height:100%;object-fit:contain;overflow:visible;transform-origin:50% 82%;animation:runner-body-motion .34s cubic-bezier(.4,0,.6,1) infinite alternate;will-change:transform}
+.ambient-runner::after{content:"";position:absolute;z-index:0;left:-42px;bottom:12px;width:55px;height:38px;opacity:0;background:radial-gradient(ellipse at 22% 68%,rgba(248,248,250,.82) 0 18%,transparent 40%),radial-gradient(ellipse at 58% 42%,rgba(224,227,232,.74) 0 22%,transparent 44%),radial-gradient(ellipse at 78% 74%,rgba(251,251,253,.8) 0 17%,transparent 42%);filter:blur(2px);pointer-events:none}
+.ambient-runner.sprinting::after{opacity:.95;animation:cartoon-smoke .3s ease-out infinite alternate}
+.ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .13s ease-in-out infinite alternate}
 .ambient-fish{z-index:1;pointer-events:auto;cursor:pointer;touch-action:manipulation}
 .ambient-fish:focus-visible{outline:2px solid #fff;outline-offset:5px;border-radius:50%}
 .ambient-fish.is-catching{pointer-events:none;z-index:4;animation-play-state:paused}
@@ -359,7 +363,9 @@ body:not(.wallpaper-active) .ambient-fish-layer{display:none}
 @keyframes splash-burst{0%,22%{opacity:0;transform:scale(.5,.3)}30%{opacity:.85;transform:scale(1,.75)}37%{opacity:.56;transform:scale(1.22,.9)}46%,100%{opacity:0;transform:scale(1.4,.5)}}
 @keyframes water-drift{to{stroke-dashoffset:-104}}
 @keyframes run-across{from{transform:translateX(-12vw)}to{transform:translateX(115vw)}}
-@keyframes runner-body-motion{from{transform:translateY(1px) rotate(-1.5deg) scaleY(.985)}to{transform:translateY(-5px) rotate(1.5deg) scaleY(1.015)}}
+@keyframes runner-body-motion{from{transform:translateY(1px) rotate(-1.8deg) scaleY(.985)}to{transform:translateY(-5px) rotate(1.8deg) scaleY(1.015)}}
+@keyframes runner-sprint-motion{from{transform:translateY(2px) rotate(-4deg) scale(.98,.97)}to{transform:translateY(-7px) rotate(4deg) scale(1.02,1.03)}}
+@keyframes cartoon-smoke{from{transform:translate(-4px,2px) scale(.78);filter:blur(2px)}to{transform:translate(-18px,-3px) scale(1.18);filter:blur(4px)}}
 @media (prefers-reduced-motion:reduce){.ambient-life{display:none}}
 </style>
 
@@ -372,7 +378,7 @@ body:not(.wallpaper-active) .ambient-fish-layer{display:none}
   <span class="ambient-fish fish-two" role="button" tabindex="0" aria-label="Catch this goldfish with the cat paw"><img class="goldie" src="assets/goldfish-reference.png" alt=""><svg class="splash" viewBox="0 0 112 44" aria-hidden="true"><path d="M7 37Q15 31 23 36T39 36T55 36T71 36T87 36T105 36" fill="none" stroke="#79e7ff" stroke-width="3" stroke-linecap="round"/><path d="M38 35Q31 25 34 18Q38 22 41 28Q40 16 45 8Q51 18 49 28Q54 22 59 20Q57 30 51 36Z" fill="#8cecff" fill-opacity=".72" stroke="#d8fbff" stroke-width="1.2"/></svg></span>
   <span class="ambient-fish fish-three" role="button" tabindex="0" aria-label="Catch this goldfish with the cat paw"><img class="goldie" src="assets/goldfish-reference.png" alt=""><svg class="splash" viewBox="0 0 112 44" aria-hidden="true"><path d="M7 37Q15 31 23 36T39 36T55 36T71 36T87 36T105 36" fill="none" stroke="#79e7ff" stroke-width="3" stroke-linecap="round"/><path d="M38 35Q31 25 34 18Q38 22 41 28Q40 16 45 8Q51 18 49 28Q54 22 59 20Q57 30 51 36Z" fill="#8cecff" fill-opacity=".72" stroke="#d8fbff" stroke-width="1.2"/></svg></span>
   <div class="ambient-runner panda" role="button" tabindex="0" aria-label="Panda runner, click to sprint">
-    <img class="runner-art" src="assets/panda-runner.svg" alt="">
+    <img class="runner-art" src="assets/panda-runner.png" alt="">
     <svg class="runner-art" viewBox="0 0 100 92" aria-hidden="true">
       <defs>
         <radialGradient id="pandaFur" cx="34%" cy="24%" r="78%"><stop stop-color="#fff"/><stop offset=".58" stop-color="#f5f4ef"/><stop offset="1" stop-color="#c9c8c4"/></radialGradient>
@@ -399,7 +405,7 @@ body:not(.wallpaper-active) .ambient-fish-layer{display:none}
     </svg>
   </div>
   <div class="ambient-runner duck" role="button" tabindex="0" aria-label="Duck runner, click to sprint">
-    <img class="runner-art" src="assets/duck-runner.svg" alt="">
+    <img class="runner-art" src="assets/duck-runner.png" alt="">
     <svg class="runner-art" viewBox="0 0 108 92" aria-hidden="true">
       <defs>
         <radialGradient id="gooseFeather" cx="32%" cy="20%" r="80%"><stop stop-color="#fff"/><stop offset=".64" stop-color="#f2f2ee"/><stop offset="1" stop-color="#bfc5ca"/></radialGradient>
@@ -431,6 +437,7 @@ body:not(.wallpaper-active) .ambient-fish-layer{display:none}
   </div>
 </div>
 <div class="ambient-fish-layer" aria-label="Interactive wallpaper fish"></div>
+<div class="ambient-runner-layer" aria-label="Interactive panda and duck runners"></div>
 <img class="cat-paw" src="assets/cat-paw.png" alt="">
 <div class="wrap">
   <header>
@@ -2608,8 +2615,10 @@ document.addEventListener('visibilitychange',function(){if(document.visibilitySt
 window.addEventListener('pagehide',function(){clearTimeout(saveT);flushSave()});
 var paw=document.querySelector('.cat-paw');
 var fishLayer=document.querySelector('.ambient-fish-layer');
+var runnerLayer=document.querySelector('.ambient-runner-layer');
 var fishCatchBusy=false;
 document.querySelectorAll('.ambient-life > .ambient-fish').forEach(function(fish){fishLayer.appendChild(fish)});
+document.querySelectorAll('.ambient-life > .ambient-runner').forEach(function(runner){runnerLayer.appendChild(runner)});
 document.querySelectorAll('.ambient-fish').forEach(function(fish){
   function catchFish(){
     if(fishCatchBusy||fish.classList.contains('is-catching'))return;
@@ -2634,16 +2643,10 @@ document.querySelectorAll('.ambient-fish').forEach(function(fish){
 document.querySelectorAll('.ambient-runner').forEach(function(runner){
   var sprintTimer=null;
   function sprint(){
-    var route=runner.getAnimations().find(function(animation){return animation.effect&&animation.effect.target===runner});
     runner.classList.add('sprinting');
-    if(route){runner.style.animationDuration='';route.playbackRate=4}
-    else runner.style.animationDuration='7s';
+    runner.style.setProperty('animation-duration','2.2s','important');
     window.clearTimeout(sprintTimer);
-    sprintTimer=window.setTimeout(function(){
-      runner.classList.remove('sprinting');
-      if(route)route.playbackRate=1;
-      runner.style.animationDuration='';
-    },3600);
+    sprintTimer=window.setTimeout(function(){runner.classList.remove('sprinting');runner.style.removeProperty('animation-duration')},1800);
   }
   runner.addEventListener('click',sprint);
   runner.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();sprint()}});
