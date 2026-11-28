@@ -1238,7 +1238,7 @@ function resetHint(){
   var h='Drag players from the list to place them on the battle map.';
   if(ui.placing){h='Click the map to place '+((pById(ui.placing)||{}).name||'player')+'. Press Esc to cancel.'}
   else if(ui.tool){h='Click the map to place: '+getDef(ui.tool).label+'. Press Esc to stop.'}
-  else if(ui.draw){h=ui.erase?'Click a line to erase it.':'Drag on the map to draw. Press D to leave draw mode.'}
+  else if(ui.draw){h=ui.erase?'Click a line to erase it.':ui.auto?'Drag on the map to draw. New strokes fade away after a few seconds.':'Drag on the map to draw. Press D to leave draw mode.'}
   $('#mapHint').textContent=h;
 }
 function setPlacing(id){
@@ -1333,7 +1333,7 @@ function setDraw(on,erase){
   map.classList.toggle('drawing',on);
   $('#bDraw').classList.toggle('on',on&&!ui.erase); $('#bDraw').setAttribute('aria-pressed',String(on&&!ui.erase));
   $('#bErase').classList.toggle('on',ui.erase); $('#bErase').setAttribute('aria-pressed',String(ui.erase));
-  if(on)$('#mapHint').textContent=ui.erase?'Click a line to erase it.':'Drag on the map to draw. Press D to leave draw mode.';
+  if(on)$('#mapHint').textContent=ui.erase?'Click a line to erase it.':ui.auto?'Drag on the map to draw. New strokes fade away after a few seconds.':'Drag on the map to draw. Press D to leave draw mode.';
   else if(!ui.tool)$('#mapHint').textContent='Drag players from the list to place them on the battle map.';
 }
 function sizeCanvas(){
@@ -2622,7 +2622,7 @@ $('#bDraw').onclick=function(){setDraw(!(ui.draw&&!ui.erase))};
 $('#bErase').onclick=function(){setDraw(!ui.erase,true)};
 $('#bUndo').onclick=undo;$('#bRedo').onclick=redo;
 $('#bClearD').onclick=function(){if(!S.strokes.length)return;confirmBox('Clear all drawings?',function(){S.strokes=[];S.redo=[];drawStrokes();save()})};
-$('#bAuto').onclick=function(){ui.auto=!ui.auto;this.classList.toggle('on',ui.auto);this.setAttribute('aria-pressed',String(ui.auto));void 0};
+$('#bAuto').onclick=function(){ui.auto=!ui.auto;if(ui.auto)setDraw(true,false);this.classList.toggle('on',ui.auto);this.setAttribute('aria-pressed',String(ui.auto))};
 $('#bClearMap').onclick=function(){confirmBox('Remove every player, objective and drawing from the map?',function(){S.placed={};S.objects=[];S.strokes=[];S.redo=[];ui.sel=null;drawStrokes();afterChange()})};
 var themeOrder=['light','dark','anime'],themeLabels={light:'Light',dark:'Dark',anime:'Anime Sketch'};
 var themeButton=$('#bTheme');
