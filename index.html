@@ -32,18 +32,22 @@
   --ally:#6C93FF; --enemy:#FF5A78; --gold:#FFD25E; --danger:#FF5A78;
   --map:#2D1839; --grid:#3E2450; --shadow:0 2px 0 rgba(0,0,0,.55); color-scheme:dark}
 :root[data-theme="anime"]{
-  --bg:#f4f4f4; --panel:#fff; --fg:#111; --muted:#4a4a4a; --line:#888;
-  --edge:#111; --shd:#111; --dot:#bcbcbc; --accent:#111; --accent-fg:#fff; --seed:#222; --leaf:#333; --lilac:#e8e8e8; --strip:#111;
-  --ally:#111; --enemy:#666; --gold:#444; --danger:#111;
-  --map:#fff; --grid:#d0d0d0; --shadow:3px 3px 0 #111; --r-panel:3px; --r-card:2px; --r-ctl:2px; color-scheme:light}
-:root[data-theme="anime"] body{background-image:radial-gradient(#999 0.65px,transparent .8px);background-size:6px 6px}
-:root[data-theme="anime"] .panel,:root[data-theme="anime"] #videoTools,:root[data-theme="anime"] .tcard,:root[data-theme="anime"] .rbox,:root[data-theme="anime"] .tpl{border:2px solid #111;box-shadow:4px 4px 0 #111;background:repeating-linear-gradient(135deg,rgba(0,0,0,.025) 0 1px,transparent 1px 5px),#fff}
-:root[data-theme="anime"] .btn,:root[data-theme="anime"] .seg,:root[data-theme="anime"] select,:root[data-theme="anime"] input[type=text],:root[data-theme="anime"] textarea{border-radius:2px;border-color:#111;box-shadow:2px 2px 0 #111}
-:root[data-theme="anime"] .layout>aside>.panel-h:first-child,:root[data-theme="anime"] .layout>section>.tabs{background:#111;color:#fff;border-color:#111}
-:root[data-theme="anime"] .map{border-color:#111;background-color:#fff;background-image:linear-gradient(#d0d0d0 1px,transparent 1px),linear-gradient(90deg,#d0d0d0 1px,transparent 1px)}
-:root[data-theme="anime"] #bg,:root[data-theme="anime"] #bgVideo,:root[data-theme="anime"] img{filter:grayscale(1) contrast(1.08)}
-:root[data-theme="anime"] .ambient-fish .goldie{filter:grayscale(1) contrast(1.08) drop-shadow(0 4px 4px rgba(0,0,0,.35))}
-:root[data-theme="anime"] .logo{filter:grayscale(1) drop-shadow(3px 3px 0 #111)}
+  --bg:#fff8f1; --panel:#fffdf8; --fg:#211a1a; --muted:#655858; --line:#b8a8a0;
+  --edge:#211a1a; --shd:#382626; --dot:#f0c9cc; --accent:#d94150; --accent-fg:#fff; --seed:#ffd467; --leaf:#39885c; --lilac:#f7e8dc; --strip:#302326;
+  --ally:#347fc1; --enemy:#d94150; --gold:#dfaa36; --danger:#bf293c;
+  --map:#fffdf8; --grid:#ddd1c6; --shadow:3px 3px 0 #382626; --r-panel:3px; --r-card:2px; --r-ctl:2px; color-scheme:light}
+:root[data-theme="anime"] body{background-image:radial-gradient(#c9a9a1 .65px,transparent .8px);background-size:6px 6px}
+:root[data-theme="anime"] .panel,:root[data-theme="anime"] #videoTools,:root[data-theme="anime"] .tcard,:root[data-theme="anime"] .rbox,:root[data-theme="anime"] .tpl{border:2px solid #211a1a;box-shadow:4px 4px 0 #382626;background:repeating-linear-gradient(135deg,rgba(67,38,35,.025) 0 1px,transparent 1px 5px),#fffdf8}
+:root[data-theme="anime"] .btn,:root[data-theme="anime"] .seg,:root[data-theme="anime"] select,:root[data-theme="anime"] input[type=text],:root[data-theme="anime"] textarea{border-radius:2px;border-color:#211a1a;box-shadow:2px 2px 0 #382626}
+:root[data-theme="anime"] .btn:not(.primary):not(.on),:root[data-theme="anime"] .seg{background:#fff4df}
+:root[data-theme="anime"] .btn.primary,:root[data-theme="anime"] .btn.on,:root[data-theme="anime"] .seg button.on{background:#d94150;color:#fff}
+:root[data-theme="anime"] .layout>aside>.panel-h:first-child,:root[data-theme="anime"] .layout>section>.tabs{background:#302326;color:#fff;border-color:#211a1a}
+:root[data-theme="anime"] .map{border-color:#211a1a;background-color:#fffdf8;background-image:linear-gradient(#ddd1c6 1px,transparent 1px),linear-gradient(90deg,#ddd1c6 1px,transparent 1px)}
+:root[data-theme="anime"] button img,:root[data-theme="anime"] .toolbar img{filter:drop-shadow(1px 1px 0 #211a1a) saturate(.9)}
+:root[data-theme="anime"] .ambient-fish .goldie{filter:drop-shadow(0 4px 4px rgba(0,0,0,.35))}
+:root[data-theme="anime"] .logo{filter:drop-shadow(3px 3px 0 #382626)}
+:root[data-theme="anime"] .swatch{border-style:dashed}
+:root[data-theme="anime"] .row{border-bottom:1px dashed #b8a8a0}
 
 *{box-sizing:border-box}
 html{scrollbar-width:thin;scrollbar-color:var(--accent) transparent}
