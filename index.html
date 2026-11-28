@@ -2678,7 +2678,11 @@ function scheduleFishPlacement(){if(fishLayoutFrame)return;fishLayoutFrame=reque
 window.addEventListener('scroll',scheduleFishPlacement,{passive:true});
 document.addEventListener('scroll',scheduleFishPlacement,{passive:true,capture:true});
 window.addEventListener('resize',scheduleFishPlacement,{passive:true});
+var fishContentObserver=window.MutationObserver?new MutationObserver(scheduleFishPlacement):null;
+if(fishContentObserver&&document.querySelector('.wrap'))fishContentObserver.observe(document.querySelector('.wrap'),{childList:true,subtree:true});
+window.addEventListener('load',scheduleFishPlacement,{once:true});
 placeFishInOpenSpace();
+window.setTimeout(scheduleFishPlacement,250);
 document.querySelectorAll('.ambient-fish').forEach(function(fish){
   function catchFish(){
     if(fishCatchBusy||fish.classList.contains('is-catching'))return;
