@@ -356,7 +356,7 @@ body.map-bottom-peek .ambient-runner.duck{transform:translateX(0);animation:duck
 body.map-bottom-peek .ambient-runner.waiting{opacity:0;visibility:hidden;pointer-events:none;animation-play-state:paused!important}
 body.map-bottom-peek .ambient-runner>img.runner-art{animation:runner-body-motion .56s ease-in-out infinite}
 body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .3s ease-in-out infinite alternate}
-#runnerRunway{height:112px;width:100%;pointer-events:none}
+#runnerRunway{height:128px;width:100%;pointer-events:none}
 .editor-stage.video-mode #runnerRunway{grid-column:1/-1}
 .ambient-runner::after{content:"";position:absolute;z-index:0;left:-42px;bottom:12px;width:55px;height:38px;opacity:0;background:radial-gradient(ellipse at 22% 68%,rgba(248,248,250,.82) 0 18%,transparent 40%),radial-gradient(ellipse at 58% 42%,rgba(224,227,232,.74) 0 22%,transparent 44%),radial-gradient(ellipse at 78% 74%,rgba(251,251,253,.8) 0 17%,transparent 42%);filter:blur(2px);pointer-events:none}
 .ambient-runner.sprinting::after{opacity:.95;animation:cartoon-smoke .3s ease-out infinite alternate}
@@ -2647,7 +2647,7 @@ function placeFishInOpenSpace(){
   var fish=Array.prototype.slice.call(document.querySelectorAll('.ambient-fish'));
   if(!fish.length)return;
   var w=window.innerWidth,h=window.innerHeight;
-  var blockers=Array.prototype.slice.call(document.querySelectorAll('header,#mapScroll,#toolbar,.panel-h,.sub,.tag,p,button,[role=button],[role=tab],.tcard,.row,input,select,textarea,h1,h2,h3,.tabs')).filter(function(el){return !el.classList.contains('ambient-fish')}).map(function(el){return el.getBoundingClientRect()}).filter(function(b){return b.width&&b.height&&b.right>0&&b.left<w&&b.bottom>0&&b.top<h});
+  var blockers=Array.prototype.slice.call(document.querySelectorAll('#mapScroll,#toolbar,.panel-h,.sub,.tag,p,button,[role=button],[role=tab],.tcard,.row,input,select,textarea,h1,h2,h3,.tabs,svg.logo')).filter(function(el){return !el.classList.contains('ambient-fish')}).map(function(el){return el.getBoundingClientRect()}).filter(function(b){return b.width&&b.height&&b.right>0&&b.left<w&&b.bottom>0&&b.top<h});
   var occupied=[];
   fish.forEach(function(item,index){
     var fw=88,fh=112,choices=[];
@@ -2713,7 +2713,7 @@ function updateMapBottomPeek(){
   var mapRect=viewport.getBoundingClientRect();
   var runwayRect=runway.getBoundingClientRect();
   var runwayVisible=runwayRect.bottom>0&&runwayRect.top<window.innerHeight&&mapRect.top<window.innerHeight;
-  document.body.style.setProperty('--runner-lane-bottom',Math.max(2,window.innerHeight-runwayRect.bottom)+'px');
+  document.body.style.setProperty('--runner-lane-bottom',Math.max(0,window.innerHeight-runwayRect.bottom-8)+'px');
   document.body.classList.toggle('map-bottom-peek',runwayVisible&&window.scrollY>24&&!stage.classList.contains('video-mode'));
 }
 var mapPeekFrame=0;
