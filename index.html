@@ -66,9 +66,9 @@ body.wallpaper-active .wrap{position:relative;z-index:1}
 /* ---- header ---- */
 header{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
 .brand{display:flex;align-items:center;gap:14px}
-.logo{width:62px;height:62px;flex:none;filter:drop-shadow(3px 3px 0 var(--shd));transform-origin:50% 90%;animation:berry-in .7s cubic-bezier(.2,1.3,.4,1) both}
-@keyframes berry-in{0%{transform:translateY(-26px) rotate(-14deg) scale(.7);opacity:0}60%{opacity:1}100%{transform:none}}
 h1{font-size:50px;line-height:.92;font-weight:800;letter-spacing:-.035em;color:var(--accent);text-shadow:3px 3px 0 var(--shd)}
+.straw-initial{position:relative;display:inline-block}
+.straw-hat{position:absolute;width:37px;height:20px;left:50%;top:-13px;overflow:visible;transform:translateX(-50%) rotate(-8deg);filter:drop-shadow(1px 1px 0 var(--shd))}
 .sub{margin:6px 0 0;font:600 17px var(--font-display);letter-spacing:-.005em;color:var(--fg)}
 .tag{margin:1px 0 0;color:var(--muted);font-size:13px}
 .btns{display:flex;flex-wrap:wrap;gap:10px}
@@ -296,7 +296,7 @@ textarea{width:100%;min-height:200px;font:13px/1.45 ui-monospace,Consolas,monosp
 kbd{font:700 12px var(--font-body);background:var(--lilac);border:2px solid var(--edge);border-radius:8px;padding:1px 8px;white-space:nowrap}
 footer{position:relative;min-height:88px;display:grid;place-items:center;color:var(--muted);font-size:13px;text-align:center}
 
-@media (max-width:480px){h1{font-size:40px}.logo{width:52px;height:52px}.panel{padding:14px}.layout>aside>.panel-h:first-child{margin:-14px -14px 2px}.layout>section>.tabs{margin:-14px -14px 0}}
+@media (max-width:480px){h1{font-size:40px}.straw-hat{width:31px;height:17px;top:-11px}.panel{padding:14px}.layout>aside>.panel-h:first-child{margin:-14px -14px 2px}.layout>section>.tabs{margin:-14px -14px 0}}
 
 /* ---- players are shown in a colour box for their role, with the full name ---- */
 .rc-tank{--rb:#FF9F43;--rf:#26102F}
@@ -489,9 +489,8 @@ body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-s
 <div class="wrap">
   <header>
     <div class="brand">
-      <img class="logo" src="assets/straw-logo.svg" alt="">
       <div>
-        <h1>STRAW</h1>
+        <h1><span class="straw-initial">S<svg class="straw-hat" viewBox="0 0 64 32" aria-hidden="true"><path d="M15 22C17 10 23 4 32 4s16 6 18 18c-10 4-25 4-35 0Z" fill="#f4c45a" stroke="#26102f" stroke-width="3" stroke-linejoin="round"/><ellipse cx="32" cy="23" rx="29" ry="6" fill="#ffdc79" stroke="#26102f" stroke-width="3"/><path d="M18 19c9 3 19 3 28 0" fill="none" stroke="#b20d36" stroke-width="3" stroke-linecap="round"/><path d="M25 9l-2 9m17-9 2 9" fill="none" stroke="#fff1bd" stroke-width="1.5" stroke-linecap="round"/></svg></span>TRAW</h1>
         <p class="sub">Strategic Planner</p>
         <p class="tag">Plan teams, builds and positions.</p>
       </div>
