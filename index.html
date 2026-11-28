@@ -84,7 +84,7 @@ input[type=checkbox]{accent-color:var(--accent);width:17px;height:17px}
 body.wallpaper-active .panel,body.wallpaper-active .tcard,body.wallpaper-active .rbox,body.wallpaper-active .tpl,body.wallpaper-active #videoTools,body.wallpaper-active .scz,body.wallpaper-active .rvh{background:transparent!important;box-shadow:none}
 body.wallpaper-active .layout>aside>.panel-h:first-child{background:transparent;color:var(--fg);border-bottom-color:transparent}
 body.wallpaper-active .layout>section>.tabs{background:transparent;border-bottom-color:transparent}
-body.wallpaper-active .map{background-color:transparent}
+body.wallpaper-active .map{background-color:var(--map)}
 body.wallpaper-active .tcard .th,body.wallpaper-active .rvh{background:transparent}
 body.wallpaper-active .tcard.dropx{background:var(--glow)!important}
 .panel-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -330,7 +330,7 @@ footer{color:var(--muted);font-size:13px;text-align:center}
 /* Decorative characters sit behind the app and only appear with a custom wallpaper. */
 .ambient-life{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;user-select:none}
 body:not(.wallpaper-active) .ambient-life{display:none}
-.ambient-fish-layer{position:fixed;inset:0;z-index:20;overflow:hidden;pointer-events:none;user-select:none}
+.ambient-fish-layer{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;user-select:none}
 .ambient-runner-layer{position:fixed;inset:0;z-index:21;overflow:hidden;pointer-events:none;user-select:none}
 body:not(.wallpaper-active) .ambient-runner-layer{display:none}
 body:not(.wallpaper-active) .ambient-fish-layer{display:none}
@@ -344,15 +344,20 @@ body:not(.wallpaper-active) .ambient-fish-layer{display:none}
 .ambient-fish.fish-two .goldie,.ambient-fish.fish-two .splash{animation-delay:-2.86s}
 .ambient-fish.fish-three .goldie,.ambient-fish.fish-three .splash{animation-delay:-5.73s}
 .water-stroke{fill:none;stroke:#9aefff;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2 11;animation:water-drift 8s linear infinite}
-.ambient-runner{position:fixed;left:-76px;right:auto;bottom:max(2px,env(safe-area-inset-bottom,0px));width:112px;height:104px;line-height:1;filter:drop-shadow(0 5px 4px rgba(0,0,0,.45));animation:none;transform:translateX(0);transition:transform .38s cubic-bezier(.2,.8,.2,1);pointer-events:auto;cursor:pointer;touch-action:manipulation;isolation:isolate}
-.ambient-runner.duck{width:124px;height:104px;left:auto;right:-82px;animation:none}
+.ambient-runner{position:fixed;left:-76px;right:auto;bottom:var(--runner-lane-bottom,2px);width:112px;height:88px;line-height:1;filter:drop-shadow(0 5px 4px rgba(0,0,0,.45));animation:none;opacity:0;visibility:hidden;transform:translateX(-112px);transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .25s ease,visibility .25s;pointer-events:none;cursor:pointer;touch-action:manipulation;isolation:isolate}
+.ambient-runner.duck{width:124px;height:88px;left:auto;right:-82px;animation:none;transform:translateX(124px)}
 .ambient-runner>svg.runner-art{display:none}
-.ambient-runner>img.runner-art{display:block;position:relative;z-index:1;width:100%;height:100%;object-fit:contain;overflow:visible;transform-origin:50% 82%;animation:runner-body-motion .34s cubic-bezier(.4,0,.6,1) infinite alternate;will-change:transform}
+.ambient-runner>img.runner-art{display:block;position:relative;z-index:1;width:100%;height:100%;object-fit:contain;overflow:visible;transform-origin:50% 82%;animation:none;will-change:transform}
+.ambient-runner.duck>img.runner-art{scale:-1 1}
+body.map-bottom-peek .ambient-runner{opacity:1;visibility:visible;pointer-events:auto}
+body.map-bottom-peek .ambient-runner.panda{transform:translateX(62px)}
+body.map-bottom-peek .ambient-runner.duck{transform:translateX(-68px)}
+body.map-bottom-peek .ambient-runner>img.runner-art{animation:runner-body-motion .32s ease-in-out infinite}
+#runnerRunway{height:96px;width:100%;pointer-events:none}
+.editor-stage.video-mode #runnerRunway{grid-column:1/-1}
 .ambient-runner::after{content:"";position:absolute;z-index:0;left:-42px;bottom:12px;width:55px;height:38px;opacity:0;background:radial-gradient(ellipse at 22% 68%,rgba(248,248,250,.82) 0 18%,transparent 40%),radial-gradient(ellipse at 58% 42%,rgba(224,227,232,.74) 0 22%,transparent 44%),radial-gradient(ellipse at 78% 74%,rgba(251,251,253,.8) 0 17%,transparent 42%);filter:blur(2px);pointer-events:none}
 .ambient-runner.sprinting::after{opacity:.95;animation:cartoon-smoke .3s ease-out infinite alternate}
 .ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .15s ease-in-out infinite alternate}
-body.map-bottom-peek .ambient-runner.panda{transform:translateX(62px)}
-body.map-bottom-peek .ambient-runner.duck{transform:translateX(-68px)}
 .ambient-fish{z-index:1;pointer-events:auto;cursor:pointer;touch-action:manipulation}
 .ambient-fish:focus-visible{outline:2px solid #fff;outline-offset:5px;border-radius:50%}
 .ambient-fish.is-catching{pointer-events:none;z-index:4;animation-play-state:paused}
@@ -1399,7 +1404,7 @@ function addMarker(file){
 var wrapEl=(function(){var w=document.createElement('div');w.id='mapScroll';
   w.style.cssText='position:relative;width:100%;overflow:hidden;border-radius:10px;box-shadow:0 0 0 1px var(--line);aspect-ratio:var(--ar,1.9)';
   map.parentNode.insertBefore(w,map);w.appendChild(map);
-  map.style.border='0';map.style.borderRadius='0';map.style.maxWidth='none';return w})();
+  map.style.border='0';map.style.borderRadius='0';map.style.maxWidth='none';var runway=document.createElement('div');runway.id='runnerRunway';runway.setAttribute('aria-hidden','true');w.after(runway);return w})();
 function applyMapSize(fx,fy){
   var v=S.mapSize||100,vw=wrapEl.clientWidth,vh=wrapEl.clientHeight,ow=map.offsetWidth,oh=map.offsetHeight;
   if(typeof fx!=='number'){fx=.5;fy=.5}
@@ -2645,9 +2650,14 @@ document.querySelectorAll('.ambient-fish').forEach(function(fish){
 });
 function updateMapBottomPeek(){
   var viewport=document.querySelector('#mapScroll');
-  if(!viewport)return;
-  var rect=viewport.getBoundingClientRect();
-  document.body.classList.toggle('map-bottom-peek',rect.top<window.innerHeight&&rect.bottom>=window.innerHeight-24);
+  var runway=document.querySelector('#runnerRunway');
+  var stage=document.querySelector('#editorStage');
+  if(!viewport||!runway||!stage)return;
+  var mapRect=viewport.getBoundingClientRect();
+  var runwayRect=runway.getBoundingClientRect();
+  var runwayVisible=runwayRect.bottom>0&&runwayRect.top<window.innerHeight&&mapRect.top<window.innerHeight;
+  document.body.style.setProperty('--runner-lane-bottom',Math.max(2,window.innerHeight-runwayRect.bottom)+'px');
+  document.body.classList.toggle('map-bottom-peek',runwayVisible&&!stage.classList.contains('video-mode'));
 }
 var mapPeekFrame=0;
 function scheduleMapBottomPeek(){if(mapPeekFrame)return;mapPeekFrame=window.requestAnimationFrame(function(){mapPeekFrame=0;updateMapBottomPeek()})}
