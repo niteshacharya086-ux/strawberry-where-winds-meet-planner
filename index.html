@@ -2655,7 +2655,7 @@ function placeFishInOpenSpace(){
   var fish=Array.prototype.slice.call(document.querySelectorAll('.ambient-fish'));
   if(!fish.length)return;
   var w=window.innerWidth,h=window.innerHeight;
-  var blockers=Array.prototype.slice.call(document.querySelectorAll('#mapScroll,#toolbar,button,input,select,textarea,h1,h2,h3,.tabs')).map(function(el){return el.getBoundingClientRect()}).filter(function(b){return b.width&&b.height&&b.right>0&&b.left<w&&b.bottom>0&&b.top<h});
+  var blockers=Array.prototype.slice.call(document.querySelectorAll('#mapScroll,#toolbar,button,[role=button],[role=tab],input,select,textarea,h1,h2,h3,.tabs')).map(function(el){return el.getBoundingClientRect()}).filter(function(b){return b.width&&b.height&&b.right>0&&b.left<w&&b.bottom>0&&b.top<h});
   var occupied=[];
   fish.forEach(function(item,index){
     var fw=88,fh=112,choices=[];
