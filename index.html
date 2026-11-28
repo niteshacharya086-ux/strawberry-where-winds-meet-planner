@@ -344,8 +344,8 @@ body:not(.wallpaper-active) .ambient-fish-layer{display:none}
 .ambient-fish.fish-two .goldie,.ambient-fish.fish-two .splash{animation-delay:-2.86s}
 .ambient-fish.fish-three .goldie,.ambient-fish.fish-three .splash{animation-delay:-5.73s}
 .water-stroke{fill:none;stroke:#9aefff;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2 11;animation:water-drift 8s linear infinite}
-.ambient-runner{position:fixed;left:-76px;right:auto;bottom:var(--runner-lane-bottom,2px);width:112px;height:88px;line-height:1;filter:drop-shadow(0 5px 4px rgba(0,0,0,.45));animation:none;opacity:0;visibility:hidden;transform:translateX(-112px);transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .25s ease,visibility .25s;pointer-events:none;cursor:pointer;touch-action:manipulation;isolation:isolate}
-.ambient-runner.duck{width:124px;height:88px;left:auto;right:-82px;animation:none;transform:translateX(124px)}
+.ambient-runner{position:fixed;left:-94px;right:auto;bottom:var(--runner-lane-bottom,2px);width:150px;height:128px;line-height:1;filter:drop-shadow(0 5px 4px rgba(0,0,0,.45));animation:none;opacity:0;visibility:hidden;transform:translateX(-150px);transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .25s ease,visibility .25s;pointer-events:none;cursor:pointer;touch-action:manipulation;isolation:isolate}
+.ambient-runner.duck{width:168px;height:128px;left:auto;right:-112px;animation:none;transform:translateX(168px)}
 .ambient-runner>svg.runner-art{display:none}
 .ambient-runner>img.runner-art{display:block;position:relative;z-index:1;width:100%;height:100%;object-fit:contain;overflow:visible;transform-origin:50% 82%;animation:none;will-change:transform}
 .ambient-runner>svg.runner-art{position:relative;z-index:1;width:100%;height:100%;overflow:visible}
@@ -354,10 +354,10 @@ body.map-bottom-peek .ambient-runner>svg.runner-art{display:block}
 .ambient-runner .runner-leg,.ambient-runner .runner-arm{transform-box:fill-box;transform-origin:center}
 .ambient-runner.duck>img.runner-art{scale:-1 1}
 body.map-bottom-peek .ambient-runner{opacity:1;visibility:visible;pointer-events:auto}
-body.map-bottom-peek .ambient-runner.panda{transform:translateX(62px)}
-body.map-bottom-peek .ambient-runner.duck{transform:translateX(-68px)}
+body.map-bottom-peek .ambient-runner.panda{transform:translateX(76px)}
+body.map-bottom-peek .ambient-runner.duck{transform:translateX(-92px)}
 body.map-bottom-peek .ambient-runner>svg.runner-art{display:block;animation:panda-lane-run 1.05s ease-in-out infinite}
-body.map-bottom-peek .ambient-runner.duck>svg.runner-art{animation:duck-lane-run 1.05s ease-in-out infinite;scale:-1 1}
+body.map-bottom-peek .ambient-runner.duck>svg.runner-art{animation:duck-lane-run 1.05s ease-in-out infinite}
 body.map-bottom-peek .ambient-runner .runner-core{animation:runner-core-bounce .22s ease-in-out infinite alternate}
 body.map-bottom-peek .ambient-runner .runner-leg.front{animation:runner-leg-front .2s ease-in-out infinite alternate}
 body.map-bottom-peek .ambient-runner .runner-leg.back{animation:runner-leg-back .2s ease-in-out infinite alternate}
@@ -390,11 +390,11 @@ body.map-bottom-peek .ambient-runner.sprinting .runner-leg,body.map-bottom-peek 
 @keyframes run-across{from{transform:translateX(0)}to{transform:translateX(0)}}
 @keyframes runner-body-motion{0%,100%{transform:translateY(2px) rotate(-3deg) scale(.95,.98)}24%{transform:translateY(-4px) rotate(1deg) scale(1.015,1.02)}50%{transform:translateY(-10px) rotate(3deg) scale(1.035,.97)}76%{transform:translateY(-3px) rotate(-1deg) scale(.985,1.03)}}
 @keyframes runner-core-bounce{from{transform:translateY(1px) rotate(-2deg)}to{transform:translateY(-8px) rotate(2deg)}}
-@keyframes panda-lane-run{0%,100%{transform:translate(0,0)}50%{transform:translateX(22vw) translateY(-3px)}}
-@keyframes duck-lane-run{0%,100%{transform:translate(0,0)}50%{transform:translateX(-22vw) translateY(-3px)}}
+@keyframes panda-lane-run{0%,100%{transform:translate(0,0)}20%{transform:translateX(4vw) translateY(-7px)}50%{transform:translateX(30vw) translateY(-10px)}80%{transform:translateX(8vw) translateY(-4px)}}
+@keyframes duck-lane-run{0%,100%{transform:translate(0,0) scaleX(-1)}20%{transform:translateX(-4vw) translateY(-7px) scaleX(-1)}50%{transform:translateX(-30vw) translateY(-10px) scaleX(-1)}80%{transform:translateX(-8vw) translateY(-4px) scaleX(-1)}}
 @keyframes runner-shadow{from{transform:scaleX(1);opacity:.38}to{transform:scaleX(.72);opacity:.18}}
-@keyframes runner-leg-front{from{transform:rotate(-28deg) translateY(-1px)}to{transform:rotate(34deg) translateY(3px)}}
-@keyframes runner-leg-back{from{transform:rotate(32deg) translateY(2px)}to{transform:rotate(-30deg) translateY(-2px)}}
+@keyframes runner-leg-front{from{transform:rotate(-52deg) translateY(-2px)}to{transform:rotate(58deg) translateY(5px)}}
+@keyframes runner-leg-back{from{transform:rotate(54deg) translateY(4px)}to{transform:rotate(-50deg) translateY(-3px)}}
 @keyframes runner-sprint-motion{0%{transform:translate(-3px,3px) rotate(-7deg) scale(.93,.96)}35%{transform:translate(2px,-8px) rotate(5deg) scale(1.04,1.02)}68%{transform:translate(4px,-2px) rotate(-4deg) scale(.98,1.04)}100%{transform:translate(-2px,-10px) rotate(7deg) scale(1.03,.96)}}
 @keyframes cartoon-smoke{from{transform:translate(-4px,2px) scale(.78);filter:blur(2px)}to{transform:translate(-18px,-3px) scale(1.18);filter:blur(4px)}}
 @media (prefers-reduced-motion:reduce){.ambient-life{display:none}}
@@ -2716,7 +2716,7 @@ function updateMapBottomPeek(){
   var runwayRect=runway.getBoundingClientRect();
   var runwayVisible=runwayRect.bottom>0&&runwayRect.top<window.innerHeight&&mapRect.top<window.innerHeight;
   document.body.style.setProperty('--runner-lane-bottom',Math.max(2,window.innerHeight-runwayRect.bottom)+'px');
-  document.body.classList.toggle('map-bottom-peek',runwayVisible&&!stage.classList.contains('video-mode'));
+  document.body.classList.toggle('map-bottom-peek',runwayVisible&&window.scrollY>24&&!stage.classList.contains('video-mode'));
 }
 var mapPeekFrame=0;
 function scheduleMapBottomPeek(){if(mapPeekFrame)return;mapPeekFrame=window.requestAnimationFrame(function(){mapPeekFrame=0;updateMapBottomPeek()})}
