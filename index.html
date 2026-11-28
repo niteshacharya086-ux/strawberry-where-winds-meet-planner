@@ -368,10 +368,10 @@ body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-s
 .ambient-fish.is-catching .goldie,.ambient-fish.is-catching .splash{animation-play-state:paused}
 .ambient-fish.is-lifted{translate:0 -135vh;transition:translate 1.35s cubic-bezier(.22,.72,.24,1)}
 .cat-paw{position:fixed;z-index:22;left:0;top:0;width:190px;height:300px;object-fit:contain;opacity:0;pointer-events:none;filter:drop-shadow(0 9px 8px rgba(0,0,0,.48));transform:translateY(-325px) rotate(-12deg) scale(.78);transform-origin:50% 0%;transition:transform .32s cubic-bezier(.18,.82,.3,1),opacity .12s ease-out;will-change:transform,opacity}
-.cat-paw.active{opacity:1;transform:translateY(0) rotate(0) scale(var(--paw-stretch-x,1.2),var(--paw-stretch,1))}
-.cat-paw.dragging{transition:transform 1.35s cubic-bezier(.22,.72,.24,1);transform:translateY(-135vh) rotate(-5deg) scale(var(--paw-stretch-x,1.2),var(--paw-stretch,1))}
-.cat-paw.extended.active{transform:translateY(0) rotate(0) scale(var(--paw-stretch-x,1.2),var(--paw-stretch,1))}
-.cat-paw.extended.dragging{transform:translateY(-135vh) rotate(-5deg) scale(var(--paw-stretch-x,1.2),var(--paw-stretch,1))}
+.cat-paw.active{opacity:1;transform:translateY(0) rotate(0) scale(var(--paw-stretch-x,1.05),var(--paw-stretch,1))}
+.cat-paw.dragging{transition:transform 1.35s cubic-bezier(.22,.72,.24,1);transform:translateY(-135vh) rotate(-5deg) scale(var(--paw-stretch-x,1.05),var(--paw-stretch,1))}
+.cat-paw.extended.active{transform:translateY(0) rotate(0) scale(var(--paw-stretch-x,1.05),var(--paw-stretch,1))}
+.cat-paw.extended.dragging{transform:translateY(-135vh) rotate(-5deg) scale(var(--paw-stretch-x,1.05),var(--paw-stretch,1))}
 @keyframes fish-route{from{transform:translateX(0)}to{transform:translateX(0)}}
 @keyframes goldfish-jump{0%,4%{transform:translateY(24px) rotate(3deg) scaleX(-1) scale(.72);opacity:0}8%{transform:translateY(12px) rotate(1deg) scaleX(-1) scale(.82);opacity:.92}18%{transform:translateY(-34px) rotate(-7deg) scaleX(-1) scale(1);opacity:1}27%{transform:translateY(-48px) rotate(-2deg) scaleX(-1) scale(1.02);opacity:1}36%{transform:translateY(-22px) rotate(7deg) scaleX(-1) scale(.96);opacity:1}43%{transform:translateY(0) rotate(10deg) scaleX(-1) scale(.9);opacity:1}49%{transform:translateY(13px) rotate(6deg) scaleX(-1) scale(.88);opacity:.94}56%{transform:translateY(29px) rotate(2deg) scaleX(-1) scale(.84);opacity:.74}64%{transform:translateY(43px) rotate(0) scaleX(-1) scale(.78);opacity:.48}72%,91%{transform:translateY(54px) rotate(0) scaleX(-1) scale(.72);opacity:0}100%{transform:translateY(24px) rotate(3deg) scaleX(-1) scale(.72);opacity:0}}
 @keyframes splash-burst{0%,5%{opacity:0;transform:scale(.35,.25)}8%{opacity:.75;transform:scale(.8,.65)}14%{opacity:.24;transform:scale(1,.72)}18%,42%{opacity:0;transform:scale(1.15,.4)}47%{opacity:.96;transform:scale(.62,.55)}53%{opacity:.78;transform:scale(1.05,.88)}61%{opacity:.28;transform:scale(1.28,.6)}68%,100%{opacity:0;transform:scale(1.42,.42)}}
@@ -2685,12 +2685,12 @@ document.querySelectorAll('.ambient-fish').forEach(function(fish){
     fishCatchBusy=true;
     var fishY=box.top+box.height*.5,extendHand=fishY>window.innerHeight*.5;
     var pawWidth=190,pawHeight=300;
-    var pawScaleLimit=Math.max(1,(window.innerWidth-24)/(pawWidth*1.2));
+    var pawScaleLimit=Math.max(1,(window.innerWidth-24)/(pawWidth*1.05));
     var pawStretch=Math.max(1,Math.min(4.8,(fishY+36)/pawHeight,pawScaleLimit));
-    var visiblePawWidth=pawWidth*pawStretch*1.2;
+    var visiblePawWidth=pawWidth*pawStretch*1.05;
     var pawCenter=Math.max(visiblePawWidth*.5+4,Math.min(window.innerWidth-visiblePawWidth*.5-4,box.left+box.width*.52));
     paw.style.left=(pawCenter-pawWidth*.5)+'px';
-    paw.style.top='0px';paw.style.setProperty('--paw-stretch',pawStretch.toFixed(2));paw.style.setProperty('--paw-stretch-x',(pawStretch*1.2).toFixed(2));
+    paw.style.top='0px';paw.style.setProperty('--paw-stretch',pawStretch.toFixed(2));paw.style.setProperty('--paw-stretch-x',(pawStretch*1.05).toFixed(2));
     fish.classList.add('is-catching');
     paw.classList.remove('dragging','extended');
     if(extendHand)paw.classList.add('extended');
