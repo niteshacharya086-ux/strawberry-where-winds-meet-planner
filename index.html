@@ -345,15 +345,15 @@ body:not(.wallpaper-active) .ambient-fish-layer{display:none}
 .ambient-fish.fish-three .goldie,.ambient-fish.fish-three .splash{animation-delay:-5.73s}
 .water-stroke{fill:none;stroke:#9aefff;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2 11;animation:water-drift 8s linear infinite}
 .ambient-runner{position:fixed;left:-76px;right:auto;bottom:var(--runner-lane-bottom,2px);width:112px;height:88px;line-height:1;filter:drop-shadow(0 5px 4px rgba(0,0,0,.45));animation:none;opacity:0;visibility:hidden;transform:translateX(-112px);transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .25s ease,visibility .25s;pointer-events:none;cursor:pointer;touch-action:manipulation;isolation:isolate}
-.ambient-runner.duck{width:124px;height:88px;left:auto;right:-82px;animation:none;transform:translateX(124px)}
+.ambient-runner.duck{width:124px;height:88px;left:-76px;right:auto;animation:none;transform:translateX(150px)}
 .ambient-runner>svg.runner-art{display:none}
 .ambient-runner>img.runner-art{display:block;position:relative;z-index:1;width:100%;height:100%;object-fit:contain;overflow:visible;transform-origin:50% 82%;animation:none;will-change:transform}
-.ambient-runner.duck>img.runner-art{scale:-1 1}
+.ambient-runner.duck>img.runner-art{scale:1 1}
 body.map-bottom-peek .ambient-runner{opacity:1;visibility:visible;pointer-events:auto}
-body.map-bottom-peek .ambient-runner.panda{transform:translateX(62px);animation:panda-run-lane 2.4s ease-in-out infinite;will-change:transform}
-body.map-bottom-peek .ambient-runner.duck{transform:translateX(-68px);animation:duck-run-lane 2.4s ease-in-out infinite;will-change:transform}
+body.map-bottom-peek .ambient-runner.panda{transform:translateX(90px);animation:panda-run-lane 4.8s ease-in-out infinite alternate;will-change:transform}
+body.map-bottom-peek .ambient-runner.duck{transform:translateX(150px);animation:duck-run-lane 4.8s ease-in-out -.3s infinite alternate;will-change:transform}
 body.map-bottom-peek .ambient-runner.sprinting{animation-duration:1.2s}
-body.map-bottom-peek .ambient-runner>img.runner-art{animation:runner-body-motion .56s ease-in-out infinite}
+body.map-bottom-peek .ambient-runner>img.runner-art{animation:runner-body-motion .56s ease-in-out infinite,runner-face-direction 9.6s steps(1,end) infinite}
 body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .3s ease-in-out infinite alternate}
 #runnerRunway{height:96px;width:100%;pointer-events:none}
 .editor-stage.video-mode #runnerRunway{grid-column:1/-1}
@@ -377,16 +377,17 @@ body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-s
 @keyframes water-drift{to{stroke-dashoffset:-104}}
 @keyframes run-across{from{transform:translateX(0)}to{transform:translateX(0)}}
 @keyframes runner-body-motion{0%,100%{transform:translateY(2px) rotate(-3deg) scale(.95,.98)}24%{transform:translateY(-4px) rotate(1deg) scale(1.015,1.02)}50%{transform:translateY(-10px) rotate(3deg) scale(1.035,.97)}76%{transform:translateY(-3px) rotate(-1deg) scale(.985,1.03)}}
-@keyframes panda-run-lane{0%,100%{transform:translateX(62px)}50%{transform:translateX(calc(62px + 12vw))}}
-@keyframes duck-run-lane{0%,100%{transform:translateX(-68px)}50%{transform:translateX(calc(-68px - 12vw))}}
+@keyframes panda-run-lane{from{transform:translateX(90px)}to{transform:translateX(calc(90px + 50vw))}}
+@keyframes duck-run-lane{from{transform:translateX(150px)}to{transform:translateX(calc(150px + 50vw))}}
+@keyframes runner-face-direction{0%,49.9%{scale:1 1}50%,99.9%{scale:-1 1}100%{scale:1 1}}
 @keyframes runner-sprint-motion{0%{transform:translate(-3px,3px) rotate(-7deg) scale(.93,.96)}35%{transform:translate(2px,-8px) rotate(5deg) scale(1.04,1.02)}68%{transform:translate(4px,-2px) rotate(-4deg) scale(.98,1.04)}100%{transform:translate(-2px,-10px) rotate(7deg) scale(1.03,.96)}}
 @keyframes cartoon-smoke{from{transform:translate(-4px,2px) scale(.78);filter:blur(2px)}to{transform:translate(-18px,-3px) scale(1.18);filter:blur(4px)}}
 @media (prefers-reduced-motion:reduce){.ambient-life{display:none}}
 @media (prefers-reduced-motion:reduce){
  body.wallpaper-active .ambient-fish .goldie{animation:goldfish-jump 8.6s cubic-bezier(.34,.08,.56,.98) infinite!important}
  body.wallpaper-active .ambient-fish .splash{animation:splash-burst 8.6s ease-out infinite!important}
- body.map-bottom-peek .ambient-runner.panda{animation:panda-run-lane 2.4s ease-in-out infinite!important}
- body.map-bottom-peek .ambient-runner.duck{animation:duck-run-lane 2.4s ease-in-out infinite!important}
+ body.map-bottom-peek .ambient-runner.panda{animation:panda-run-lane 4.8s ease-in-out infinite alternate!important}
+ body.map-bottom-peek .ambient-runner.duck{animation:duck-run-lane 4.8s ease-in-out -.3s infinite alternate!important}
  body.map-bottom-peek .ambient-runner>img.runner-art{animation:runner-body-motion .56s ease-in-out infinite!important}
  body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-sprint-motion .3s ease-in-out infinite alternate!important}
  body.map-bottom-peek .ambient-runner>svg.runner-art{display:none!important}
