@@ -2780,56 +2780,44 @@ document.addEventListener('scroll',scheduleMapBottomPeek,{passive:true,capture:t
 window.addEventListener('resize',scheduleMapBottomPeek,{passive:true});
 scheduleMapBottomPeek();
 var runnerPair=Array.prototype.slice.call(document.querySelectorAll('.ambient-runner'));
-var runnerCycleTimer=0,runnerCycleEnded=new Set(),runnerBoostBusy=false;
-function stopRunnerAudio(){runnerSound.pause();runnerSound.currentTime=0;duckCallSound.pause();duckCallSound.currentTime=0}
-function restartRunnerCycle(delay){
-  window.clearTimeout(runnerCycleTimer);
-  runnerCycleTimer=window.setTimeout(function(){
-    runnerCycleEnded.clear();runnerBoostBusy=false;
-    runnerPair.forEach(function(runner){
-      if(runner._boostAnimation){runner._boostAnimation.cancel();runner._boostAnimation=null}
-      runner.style.animation='none';runner.style.left='';runner.style.transform='';runner.style.transition='';
-      runner.classList.remove('waiting','sprinting','returning');
-    });
-    void document.body.offsetWidth;
-    runnerPair.forEach(function(runner){runner.style.animation=''});
-  },delay);
-}
 runnerPair.forEach(function(runner){
-  runner.addEventListener('animationend',function(event){
-    if(runnerBoostBusy||!document.body.classList.contains('map-bottom-peek'))return;
-    if(event.animationName!=='panda-run-lane'&&event.animationName!=='duck-run-lane')return;
-    runnerCycleEnded.add(runner);
-    if(runnerCycleEnded.size===runnerPair.length){
-      stopRunnerAudio();runnerPair.forEach(function(item){item.classList.add('waiting')});
-      restartRunnerCycle(0);
-    }
-  });
-  function sprintPair(){
-    if(runnerBoostBusy||runner.classList.contains('waiting'))return;
-    runnerBoostBusy=true;runnerCycleEnded.clear();window.clearTimeout(runnerCycleTimer);
-    replayAmbientSound(runnerSound);replayAmbientSound(duckCallSound);
-    var starts=runnerPair.map(function(item){return item.getBoundingClientRect().left});
-    var travel=Math.max.apply(Math,starts.map(function(x,index){return window.innerWidth+runnerPair[index].offsetWidth+8-x}));
-    var duration=Math.max(900,Math.min(2400,travel*2.2));
-    var finished=0;
-    runnerPair.forEach(function(item,index){
-      var startX=starts[index];
-      item.style.animation='none';item.style.transition='none';item.style.left=startX+'px';item.style.transform='none';
-      item.classList.remove('waiting');item.classList.add('sprinting');
-      var animation=item.animate([{left:startX+'px'},{left:(startX+travel)+'px'}],{duration:duration,easing:'linear',fill:'forwards'});
-      item._boostAnimation=animation;
-      animation.onfinish=function(){
-        item._boostAnimation=null;finished++;
-        if(finished!==runnerPair.length)return;
-        stopRunnerAudio();runnerPair.forEach(function(participant){participant.classList.remove('sprinting');participant.classList.add('waiting')});
-        restartRunnerCycle(0);
-      };
-    });
+  var boostAnimation=null;
+  var runSound=runnerSound.cloneNode(),duckSound=duckCallSound.cloneNode();
+  runSound.preload='auto';duckSound.preload='auto';
+  function stopSound(sound){sound.pause();sound.currentTime=0}
+  function restartRunner(){
+    if(boostAnimation){boostAnimation.cancel();boostAnimation=null}
+    runner._boostAnimation=null;
+    runner.style.animation='none';runner.style.left='';runner.style.transform='';runner.style.transition='';
+    runner.classList.remove('waiting','sprinting','returning');
+    void runner.offsetWidth;
+    runner.style.animation='';
   }
-  runner.addEventListener('click',sprintPair);
-  runner.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();sprintPair()}});
-});sizeCanvas();
+  function sprintRunner(){
+    if(boostAnimation||runner.classList.contains('waiting'))return;
+    replayAmbientSound(runSound);
+    if(runner.classList.contains('duck'))replayAmbientSound(duckSound);
+    var startX=runner.getBoundingClientRect().left;
+    var endX=window.innerWidth+runner.offsetWidth+8;
+    var travel=Math.max(0,endX-startX);
+    var duration=Math.max(900,Math.min(2400,travel*2.2));
+    runner.style.animation='none';runner.style.transition='none';runner.style.left=startX+'px';runner.style.transform='none';
+    runner.classList.add('sprinting');
+    boostAnimation=runner.animate([{left:startX+'px'},{left:endX+'px'}],{duration:duration,easing:'linear',fill:'forwards'});
+    runner._boostAnimation=boostAnimation;
+    boostAnimation.onfinish=function(){
+      boostAnimation=null;runner._boostAnimation=null;
+      stopSound(runSound);if(runner.classList.contains('duck'))stopSound(duckSound);
+      restartRunner();
+    };
+  }
+  runner.addEventListener('animationend',function(event){
+    if(event.target!==runner||boostAnimation||!document.body.classList.contains('map-bottom-peek'))return;
+    if(event.animationName==='panda-run-lane'||event.animationName==='duck-run-lane')restartRunner();
+  });
+  runner.addEventListener('click',sprintRunner);
+  runner.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();sprintRunner()}});
+});});sizeCanvas();
 })();
 </script>
 
