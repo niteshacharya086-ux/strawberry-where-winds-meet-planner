@@ -364,7 +364,7 @@ body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-s
 .ambient-fish{z-index:1;pointer-events:auto;cursor:pointer;touch-action:manipulation}
 .ambient-fish.open-space{opacity:1}
 .ambient-fish:focus-visible{outline:2px solid #fff;outline-offset:5px;border-radius:50%}
-.ambient-fish.is-catching{pointer-events:none;z-index:4;animation-play-state:paused}
+.ambient-fish.is-catching{pointer-events:none;z-index:4;animation-play-state:paused;transition:opacity .15s ease,left .32s ease-out,top .32s ease-out}
 .ambient-fish.is-catching .goldie,.ambient-fish.is-catching .splash{animation-play-state:paused}
 .ambient-fish.is-lifted{translate:0 -135vh;transition:translate 1.35s cubic-bezier(.22,.72,.24,1)}
 .cat-paw{position:fixed;z-index:22;left:0;top:0;width:190px;height:300px;object-fit:contain;opacity:0;pointer-events:none;filter:drop-shadow(0 9px 8px rgba(0,0,0,.48));transform:translateY(-325px) rotate(-12deg) scale(.78);transform-origin:50% 0%;transition:transform .32s cubic-bezier(.18,.82,.3,1),opacity .12s ease-out;will-change:transform,opacity}
@@ -2682,6 +2682,7 @@ document.querySelectorAll('.ambient-fish').forEach(function(fish){
     if(fishCatchBusy||fish.classList.contains('is-catching'))return;
     var fishArt=fish.querySelector('.goldie')||fish,box=fishArt.getBoundingClientRect();
     if(!box.width||!box.height)return;
+    var fishStartLeft=fish.style.left,fishStartTop=fish.style.top;
     fishCatchBusy=true;
     var fishY=box.top+box.height*.5,extendHand=fishY>window.innerHeight*.5;
     var pawWidth=190,pawHeight=300;
@@ -2692,6 +2693,10 @@ document.querySelectorAll('.ambient-fish').forEach(function(fish){
     paw.style.left=(pawCenter-pawWidth*.5)+'px';
     paw.style.top='0px';paw.style.setProperty('--paw-stretch',pawStretch.toFixed(2));paw.style.setProperty('--paw-stretch-x',(pawStretch*1.05).toFixed(2));
     fish.classList.add('is-catching');
+    void fish.offsetWidth;
+    var palmCenterY=pawHeight*pawStretch*.78;
+    fish.style.left=Math.max(0,Math.min(window.innerWidth-fish.offsetWidth,pawCenter-fish.offsetWidth*.5))+'px';
+    fish.style.top=Math.max(0,palmCenterY-fish.offsetHeight*.5)+'px';
     paw.classList.remove('dragging','extended');
     if(extendHand)paw.classList.add('extended');
     paw.classList.add('active');
@@ -2699,7 +2704,8 @@ document.querySelectorAll('.ambient-fish').forEach(function(fish){
     window.setTimeout(function(){fish.classList.add('is-lifted');paw.classList.add('dragging')},420);
     window.setTimeout(function(){
       fish.classList.remove('is-catching','is-lifted');paw.classList.remove('active','dragging','extended');
-      paw.style.left='';paw.style.top='';paw.style.removeProperty('--paw-stretch');paw.style.removeProperty('--paw-stretch-x');fishCatchBusy=false;
+      fish.style.left=fishStartLeft;fish.style.top=fishStartTop;
+      paw.style.left='';paw.style.top='';paw.style.removeProperty('--paw-stretch');paw.style.removeProperty('--paw-stretch-x');fishCatchBusy=false;scheduleFishPlacement();
     },2200);
   }
   fish.addEventListener('click',catchFish);
