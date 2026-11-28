@@ -98,9 +98,11 @@ input[type=checkbox]{accent-color:var(--accent);width:17px;height:17px}
 .layout{display:grid;grid-template-columns:minmax(270px,330px) minmax(0,1fr);gap:24px;align-items:start}
 @media (max-width:820px){.layout{grid-template-columns:minmax(0,1fr)}}
 .panel{background:var(--panel);border:2px solid var(--edge);border-radius:var(--r-panel);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0;box-shadow:6px 6px 0 var(--shd)}
-body.wallpaper-active .panel,body.wallpaper-active .tcard,body.wallpaper-active .rbox,body.wallpaper-active .tpl,body.wallpaper-active #videoTools,body.wallpaper-active .scz,body.wallpaper-active .rvh{background:transparent!important;box-shadow:none}
+body.wallpaper-active .panel,body.wallpaper-active .tcard,body.wallpaper-active .rbox,body.wallpaper-active .tpl,body.wallpaper-active #videoTools,body.wallpaper-active .scz,body.wallpaper-active .rvh{background:var(--panel)!important;background:color-mix(in srgb,var(--panel) 88%,transparent)!important;box-shadow:none}
 body.wallpaper-active .layout>aside>.panel-h:first-child{background:transparent;color:var(--fg);border-bottom-color:transparent}
 body.wallpaper-active .layout>section>.tabs{background:transparent;border-bottom-color:transparent}
+:root[data-theme="light"] body.wallpaper-active .layout>section>.tabs .tab:not(.on),:root[data-theme="anime"] body.wallpaper-active .layout>section>.tabs .tab:not(.on){background:var(--panel);color:var(--fg);border-color:var(--edge)}
+:root[data-theme="light"] body.wallpaper-active .layout>section>.tabs .btn,:root[data-theme="anime"] body.wallpaper-active .layout>section>.tabs .btn{background:var(--panel);color:var(--fg);border-color:var(--edge)}
 body.wallpaper-active .map{background-color:var(--map)}
 body.wallpaper-active .tcard .th,body.wallpaper-active .rvh{background:transparent}
 body.wallpaper-active .tcard.dropx{background:var(--glow)!important}
@@ -120,7 +122,7 @@ body.wallpaper-active .tcard.dropx{background:var(--glow)!important}
 .dot{width:12px;height:12px;border-radius:50%;display:inline-block;flex:none;border:2px solid var(--edge)}
 .row{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--r-ctl);border:2px solid transparent;min-width:0;cursor:grab;transition:background .1s,border-color .1s}
 .row:hover{background:var(--lilac);border-color:var(--edge)}
-.row.placed .nm2{opacity:.5}
+.row.placed .nm2{opacity:.86}
 .grip{cursor:grab;touch-action:none;color:var(--muted);user-select:none;padding:2px 4px;font-weight:800;letter-spacing:-.1em}
 .row .grip{font-size:15px;padding:8px 9px;margin:-6px -4px -6px -6px;border-radius:10px}
 .row .grip:hover{background:var(--line)}
@@ -166,6 +168,14 @@ body.wallpaper-active .tcard.dropx{background:var(--glow)!important}
 @media(max-width:600px){.rgrid{grid-template-columns:1fr}}
 .rbox{border:2px solid var(--edge);border-radius:var(--r-card);padding:10px 12px 12px;background:var(--panel);min-height:120px;max-height:42vh;overflow:auto;box-shadow:3px 3px 0 var(--shd)}
 .rbox h3{margin:2px 0 8px;font:800 19px var(--font-display);letter-spacing:-.01em}
+.rbox.role-tank h3{color:#A34200!important}
+.rbox.role-dps h3{color:#1F4FB4!important}
+.rbox.role-healer h3{color:#087247!important}
+.rbox.role-hunter h3{color:#6432B2!important}
+:root[data-theme="dark"] .rbox.role-tank h3{color:#FFB566!important}
+:root[data-theme="dark"] .rbox.role-dps h3{color:#85B2FF!important}
+:root[data-theme="dark"] .rbox.role-healer h3{color:#60DDA5!important}
+:root[data-theme="dark"] .rbox.role-hunter h3{color:#C6A5FF!important}
 .rp{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:12px;cursor:pointer}
 .rp:hover{background:var(--lilac)}
 .scz{border:3px dashed var(--edge);border-radius:var(--r-card);padding:24px;text-align:center;background:var(--lilac)}
@@ -310,7 +320,7 @@ footer{position:relative;min-height:88px;display:grid;place-items:center;color:v
 .row[class*="rc-"] .grip:hover{background:rgba(255,255,255,.28)}
 .row[class*="rc-"] .dot,.prow[class*="rc-"] .dot{background:var(--rf)!important;border-color:var(--rf)}
 .row[class*="rc-"] .chip{background:#fff;color:#26102F!important;border-color:#26102F!important}
-.row.placed[class*="rc-"]{opacity:.78}
+.row.placed[class*="rc-"]{opacity:1}
 .row{flex-wrap:wrap;row-gap:4px}
 .row .info{flex:1 1 130px}
 .row .nm2,.prow .pn{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.25}
@@ -904,10 +914,10 @@ function rolesView(){
   var h='<div class="ctl" style="justify-content:space-between"><h2 style="margin:0">Players by Role <span class="count">('+all.length+')</span></h2><button class="btn sm" data-x>Close</button></div><div class="rgrid">';
   order.forEach(function(r){
     var list=all.filter(function(x){return x.role===r}).sort(function(a,b){return a.name.localeCompare(b.name)}),c=ROLE_COL[r]||'#888';
-    h+='<section class="rbox" style="border-top:4px solid '+c+'"><h3 style="color:'+c+'">'+roleName(r)+' <span class="count">('+list.length+')</span></h3>';
+    h+='<section class="rbox role-'+r+'" style="border-top:4px solid '+c+'"><h3>'+roleName(r)+' <span class="count">('+list.length+')</span></h3>';
     if(!list.length)h+='<div class="empty" style="padding:6px 2px">No '+roleName(r).toLowerCase()+' players.</div>';
     list.forEach(function(x,i){
-      var tag=x.src==='r'?'<span class="chip" style="color:'+TEAM_COL[(x.p.team||1)-1]+';border-color:'+TEAM_COL[(x.p.team||1)-1]+'">Team '+x.p.team+'</span>':'<span class="chip">Extra</span>';
+      var tag=x.src==='r'?'<span class="chip" style="border-color:'+TEAM_COL[(x.p.team||1)-1]+'">Team '+x.p.team+'</span>':'<span class="chip">Extra</span>';
       h+='<div class="rp" data-k="'+r+':'+i+'"><div style="min-width:0;flex:1"><div class="rn" style="font-weight:700;overflow:hidden;text-overflow:ellipsis">'+esc(x.name)+'</div><div class="muted" style="font-size:12px">'+esc([x.w1,x.w2].filter(Boolean).join(' / '))+'</div></div>'+tag+'</div>';
     });
     h+='</section>';
@@ -2066,7 +2076,7 @@ function teamPicker(team,lock){
       var h='';
       function row(k,name,role,sub){
         var col=ROLE_COL[role]||'#888';
-        return '<label class="tprow"><input type="checkbox" data-k="'+k+'"'+(sel[k]?' checked':'')+'><span class="dot" style="background:'+col+'"></span><span class="nm">'+esc(name)+'</span><span class="chip" style="color:'+col+';border-color:'+col+'">'+roleName(role)+'</span><span class="muted">'+esc(sub)+'</span></label>';
+        return '<label class="tprow"><input type="checkbox" data-k="'+k+'"'+(sel[k]?' checked':'')+'><span class="dot" style="background:'+col+'"></span><span class="nm">'+esc(name)+'</span><span class="chip" style="border-color:'+col+'">'+roleName(role)+'</span><span class="muted">'+esc(sub)+'</span></label>';
       }
       if(mem.length){h+='<div class="tpsec">All players ('+mem.length+')</div>';mem.forEach(function(p){h+=row('m:'+p.id,p.name,p.role,'Team '+p.team)})}
       if(pl.length){h+='<div class="tpsec">Extra roster ('+pl.length+')</div>';pl.forEach(function(e){h+=row('p:'+e.id,e.name,e.role||'dps','Extra')})}
