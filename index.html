@@ -243,8 +243,10 @@ body.wallpaper-active .tcard.dropx{background:var(--glow)!important}
 .video-hud{position:absolute;z-index:12;left:10px;right:10px;bottom:10px;display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:12px;background:linear-gradient(transparent,rgba(10,8,14,.88));color:#fff;opacity:0;pointer-events:none;transform:translateY(6px);transition:opacity .18s,transform .18s}
 .map.hud-visible .video-hud{opacity:1;pointer-events:auto;transform:translateY(0)}
 .video-hud .btn{background:rgba(35,25,42,.9);color:#fff;border-color:rgba(255,255,255,.38);box-shadow:none}
-.video-hud input[type=range]{width:auto;flex:1;min-width:45px}
+.video-hud #vhSeek{width:auto;flex:1;min-width:45px}
+.video-hud #vhVolume{width:clamp(56px,9vw,92px);flex:0 1 92px;min-width:52px}
 .video-hud span{font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media(max-width:560px){.video-hud{gap:4px;padding:7px}.video-hud #vhVolume{width:58px;flex-basis:58px;min-width:48px}.video-hud span{font-size:10px}}
 #cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 #mapScroll.zoomed .map:not(.tool):not(.drawing){cursor:grab}
 #mapScroll.zoomed .map:not(.tool):not(.drawing):active{cursor:grabbing}
@@ -595,6 +597,8 @@ body.map-bottom-peek .ambient-runner.sprinting>img.runner-art{animation:runner-s
           <button class="btn sm" type="button" id="vhBack" aria-label="Skip back 10 seconds">−10</button>
           <button class="btn sm primary" type="button" id="vhPlay" aria-label="Play video">Play</button>
           <button class="btn sm" type="button" id="vhForward" aria-label="Skip forward 10 seconds">+10</button>
+          <button class="btn sm" type="button" id="vhMute" aria-label="Mute video" disabled>Mute</button>
+          <input type="range" id="vhVolume" min="0" max="100" value="60" aria-label="Video volume" disabled>
           <input type="range" id="vhSeek" min="0" max="1000" value="0" aria-label="Video timeline" disabled>
           <span id="vhTime">0:00 / 0:00</span>
         </div>
@@ -1499,11 +1503,12 @@ function videoTimeText(s){s=isFinite(s)&&s>0?Math.floor(s):0;return Math.floor(s
 function videoDuration(){var d=$('#bgVideo').duration;return isFinite(d)?d:0}
 function videoCurrentTime(){return $('#bgVideo').currentTime||0}
 function videoIsPlaying(){return !$('#bgVideo').paused}
-function syncVideoTools(){var v=$('#bgVideo'),ok=!!S.video,d=videoDuration(),t=videoCurrentTime(),playing=videoIsPlaying(),muted=v.muted,volume=v.volume,rate=v.playbackRate,play=$('#vePlay'),mute=$('#veMute'),seek=$('#veSeek'),vol=$('#veVolume'),speed=$('#veSpeed');$('#veStatus').textContent=ok?S.video.name:'No video loaded';play.disabled=!ok;mute.disabled=!ok;seek.disabled=!ok||!d;vol.disabled=!ok;speed.disabled=!ok;play.textContent=playing?'Pause':'Play';mute.textContent=muted?'Unmute':'Mute';if(d&&t>=0){seek.value=Math.round(t/d*1000);$('#vhSeek').value=seek.value}$('#veTime').textContent=videoTimeText(t)+' / '+videoTimeText(d);$('#vhTime').textContent=videoTimeText(t)+' / '+videoTimeText(d);$('#vhPlay').textContent=playing?'Pause':'Play';$('#vhPlay').setAttribute('aria-label',playing?'Pause video':'Play video');$('#vhSeek').disabled=!ok||!d;if(ok){vol.value=Math.round(volume*100);speed.value=String(rate||1)}$('#veRemove').disabled=!ok;$('#veOpacity').value=Math.round((S.videoOpacity==null?1:S.videoOpacity)*100)}
+function syncVideoTools(){var v=$('#bgVideo'),ok=!!S.video,d=videoDuration(),t=videoCurrentTime(),playing=videoIsPlaying(),muted=v.muted||v.volume===0,volume=v.volume,rate=v.playbackRate,play=$('#vePlay'),mute=$('#veMute'),hudMute=$('#vhMute'),seek=$('#veSeek'),vol=$('#veVolume'),hudVol=$('#vhVolume'),speed=$('#veSpeed');$('#veStatus').textContent=ok?S.video.name:'No video loaded';play.disabled=!ok;mute.disabled=!ok;hudMute.disabled=!ok;seek.disabled=!ok||!d;vol.disabled=!ok;hudVol.disabled=!ok;speed.disabled=!ok;play.textContent=playing?'Pause':'Play';mute.textContent=muted?'Unmute':'Mute';hudMute.textContent=muted?'Unmute':'Mute';hudMute.setAttribute('aria-label',muted?'Unmute video':'Mute video');if(d&&t>=0){seek.value=Math.round(t/d*1000);$('#vhSeek').value=seek.value}$('#veTime').textContent=videoTimeText(t)+' / '+videoTimeText(d);$('#vhTime').textContent=videoTimeText(t)+' / '+videoTimeText(d);$('#vhPlay').textContent=playing?'Pause':'Play';$('#vhPlay').setAttribute('aria-label',playing?'Pause video':'Play video');$('#vhSeek').disabled=!ok||!d;if(ok){vol.value=hudVol.value=Math.round(volume*100);speed.value=String(rate||1)}$('#veRemove').disabled=!ok;$('#veOpacity').value=Math.round((S.videoOpacity==null?1:S.videoOpacity)*100)}
 function playCurrentVideo(){if(S.video)$('#bgVideo').play().catch(function(){toast('Could not play this video.')});syncVideoTools()}
 function pauseCurrentVideo(){$('#bgVideo').pause();syncVideoTools()}
 function seekCurrentVideo(t){var d=videoDuration();if(!d)return;$('#bgVideo').currentTime=Math.max(0,Math.min(d,t));syncVideoTools()}
 function setCurrentVolume(value){var n=Math.max(0,Math.min(100,Number(value)||0)),v=$('#bgVideo');v.volume=n/100;v.muted=n===0;syncVideoTools()}
+function toggleVideoMute(){var v=$('#bgVideo');if(v.muted||v.volume===0){v.muted=false;if(v.volume===0)v.volume=.6}else v.muted=true;syncVideoTools()}
 function setCurrentRate(value){$('#bgVideo').playbackRate=Number(value)||1;syncVideoTools()}
 function setEditorMode(mode){var video=mode==='video';if(!video){pauseCurrentVideo();map.classList.remove('hud-visible')}currentEditor=video?'video':'image';editorStage.classList.toggle('video-mode',video);videoTools.hidden=!video;if(video)videoTools.appendChild(toolbar);else toolbarHome.insertBefore(toolbar,editorStage);$('#modeImage').classList.toggle('on',!video);$('#modeVideo').classList.toggle('on',video);$('#modeImage').setAttribute('aria-selected',video?'false':'true');$('#modeVideo').setAttribute('aria-selected',video?'true':'false');applyBg();syncVideoTools();requestAnimationFrame(sizeCanvas)}
 $('#modeImage').onclick=function(){setEditorMode('image')};
@@ -1511,9 +1516,11 @@ $('#modeVideo').onclick=function(){setEditorMode('video')};
 $('#veDevice').onclick=function(){$('#veFile').click()};
 $('#veFile').onchange=function(e){importDeviceVideo(e.target.files&&e.target.files[0]);e.target.value=''};
 $('#vePlay').onclick=function(){if(videoIsPlaying())pauseCurrentVideo();else playCurrentVideo()};
-$('#veMute').onclick=function(){var v=$('#bgVideo');v.muted=!v.muted;syncVideoTools()};
+$('#veMute').onclick=toggleVideoMute;
 $('#veSeek').oninput=function(e){var d=videoDuration();if(d)seekCurrentVideo(d*Number(e.target.value)/1000)};
 $('#veVolume').oninput=function(e){setCurrentVolume(e.target.value)};
+$('#vhMute').onclick=toggleVideoMute;
+$('#vhVolume').oninput=function(e){setCurrentVolume(e.target.value)};
 $('#veSpeed').onchange=function(e){setCurrentRate(e.target.value)};
 $('#veOpacity').oninput=function(e){S.videoOpacity=Number(e.target.value)/100;$('#bgVideo').style.opacity=S.videoOpacity;save()};
 $('#vhPlay').onclick=function(){if(videoIsPlaying())pauseCurrentVideo();else playCurrentVideo()};
@@ -2669,11 +2676,12 @@ function playCatchMeow(){
     if(!AudioContextClass)return;
     meowContext=meowContext||new AudioContextClass();
     if(meowContext.state==='suspended')meowContext.resume();
-    var now=meowContext.currentTime,voice=meowContext.createOscillator(),formant=meowContext.createBiquadFilter(),volume=meowContext.createGain();
-    voice.type='triangle';voice.frequency.setValueAtTime(690,now);voice.frequency.exponentialRampToValueAtTime(440,now+.16);voice.frequency.exponentialRampToValueAtTime(720,now+.34);voice.frequency.exponentialRampToValueAtTime(500,now+.62);
-    formant.type='bandpass';formant.frequency.setValueAtTime(1050,now);formant.Q.setValueAtTime(.9,now);
-    volume.gain.setValueAtTime(.0001,now);volume.gain.exponentialRampToValueAtTime(.13,now+.045);volume.gain.setValueAtTime(.085,now+.28);volume.gain.exponentialRampToValueAtTime(.0001,now+.66);
-    voice.connect(formant);formant.connect(volume);volume.connect(meowContext.destination);voice.start(now);voice.stop(now+.68);
+    var now=meowContext.currentTime,voice=meowContext.createOscillator(),nasal=meowContext.createBiquadFilter(),chest=meowContext.createBiquadFilter(),mix=meowContext.createGain(),volume=meowContext.createGain();
+    voice.type='sawtooth';voice.frequency.setValueAtTime(610,now);voice.frequency.exponentialRampToValueAtTime(350,now+.34);voice.frequency.setValueAtTime(405,now+.4);voice.frequency.exponentialRampToValueAtTime(245,now+.88);
+    nasal.type='bandpass';nasal.frequency.setValueAtTime(900,now);nasal.frequency.exponentialRampToValueAtTime(560,now+.88);nasal.Q.setValueAtTime(1.7,now);
+    chest.type='lowpass';chest.frequency.setValueAtTime(1450,now);chest.frequency.exponentialRampToValueAtTime(820,now+.88);chest.Q.setValueAtTime(.7,now);
+    mix.gain.setValueAtTime(.75,now);volume.gain.setValueAtTime(.0001,now);volume.gain.exponentialRampToValueAtTime(.19,now+.055);volume.gain.setValueAtTime(.14,now+.33);volume.gain.exponentialRampToValueAtTime(.0001,now+.92);
+    voice.connect(nasal);nasal.connect(mix);voice.connect(chest);chest.connect(mix);mix.connect(volume);volume.connect(meowContext.destination);voice.start(now);voice.stop(now+.94);
   }catch(_){/* Audio is optional if the browser blocks Web Audio. */}
 }
 document.querySelectorAll('.ambient-life > .ambient-fish').forEach(function(fish){fishLayer.appendChild(fish)});
